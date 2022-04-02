@@ -1,0 +1,14 @@
+@import "~bootstrap/scss/_functions.scss";
+@import "~bootstrap/scss/_variables.scss";
+@import "~bootstrap/scss/mixins/_breakpoints.scss";
+
+
+@include media-breakpoint-up(sm) {
+  .registration-form {
+    width: 350px;
+  }
+}
+
+.registration-form__btn-submit:disabled{
+  color: lightgray;
+}

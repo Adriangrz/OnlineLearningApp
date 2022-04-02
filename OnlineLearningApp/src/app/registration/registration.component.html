@@ -1,0 +1,65 @@
+<form
+  [formGroup]="registrationForm"
+  (ngSubmit)="onSubmit()"
+  class="registration-form"
+>
+  <div class="form-floating mb-3">
+    <input
+      type="email"
+      class="form-control"
+      id="floatingFirstNameInput"
+      placeholder="Imię"
+      formControlName="firstName"
+    />
+    <label for="floatingFirstNameInput">Imię</label>
+  </div>
+  <div class="form-floating mb-3">
+    <input
+      type="text"
+      class="form-control"
+      id="floatingSurnameInput"
+      placeholder="Nazwisko"
+      formControlName="lastName"
+    />
+    <label for="floatingSurnameInput">Nazwisko</label>
+  </div>
+  <div class="form-floating mb-3">
+    <input
+      type="email"
+      class="form-control"
+      id="floatingEmailInput"
+      placeholder="name@example.com"
+      formControlName="email"
+    />
+    <label for="floatingEmailInput">E-mail</label>
+  </div>
+  <div class="form-floating mb-3">
+    <input
+      type="password"
+      class="form-control"
+      id="floatingPasswordInput"
+      placeholder="Hasło"
+      formControlName="password"
+    />
+    <label for="floatingPasswordInput">Hasło</label>
+  </div>
+  <div class="form-check form-switch mb-3">
+    <input
+      class="form-check-input"
+      type="checkbox"
+      role="switch"
+      id="flexRulesSwitchCheck"
+      formControlName="siteRules"
+    />
+    <label class="form-check-label" for="flexRulesSwitchCheck"
+      >Akceptuję regulamin</label
+    >
+  </div>
+  <button
+    type="submit"
+    class="registration-form__btn-submit btn btn-primary w-100 mb-2"
+    [disabled]="registrationForm.invalid"
+  >
+    Zarejestruj
+  </button>
+</form>
