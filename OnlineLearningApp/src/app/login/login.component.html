@@ -1,1 +1,53 @@
-<p>login works!</p>
+<form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+  <div class="form-floating mb-3">
+    <input
+      type="email"
+      class="form-control"
+      [ngClass]="{
+        'is-invalid': !emailIsValid
+      }"
+      id="floatingEmailInput"
+      placeholder="name@example.com"
+      formControlName="email"
+    />
+    <label for="floatingEmailInput">E-mail</label>
+    <div
+      *ngIf="!emailIsValid && email.errors?.['required']"
+      class="invalid-feedback"
+    >
+      E-mail jest wymagany
+    </div>
+    <div
+      *ngIf="!emailIsValid && email.errors?.['email']"
+      class="invalid-feedback"
+    >
+      Niepoprawny adres e-mail
+    </div>
+  </div>
+  <div class="form-floating mb-3">
+    <input
+      type="password"
+      class="form-control"
+      [ngClass]="{
+        'is-invalid': !passwordIsValid
+      }"
+      id="floatingPasswordInput"
+      placeholder="Hasło"
+      formControlName="password"
+    />
+    <label for="floatingPasswordInput">Hasło</label>
+    <div
+      class="invalid-feedback"
+      *ngIf="!passwordIsValid && password.errors?.['required']"
+    >
+      Hasło jest wymagane
+    </div>
+  </div>
+  <button
+    type="submit"
+    class="login-form__btn-submit btn btn-primary w-100 mb-2"
+    [disabled]="loginForm.invalid"
+  >
+    Zaloguj
+  </button>
+</form>
