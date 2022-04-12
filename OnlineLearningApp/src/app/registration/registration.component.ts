@@ -21,6 +21,46 @@ export class RegistrationComponent {
     ],
     siteRules: [false, Validators.requiredTrue],
   });
+
+  get firstName() {
+    return this.registrationForm.get('firstName')!;
+  }
+
+  get firstNameIsValid() {
+    return !(
+      this.firstName.invalid &&
+      (this.firstName.dirty || this.firstName.touched)
+    );
+  }
+
+  get lastName() {
+    return this.registrationForm.get('lastName')!;
+  }
+
+  get lastNameIsValid() {
+    return !(
+      this.lastName.invalid &&
+      (this.lastName.dirty || this.lastName.touched)
+    );
+  }
+  get email() {
+    return this.registrationForm.get('email')!;
+  }
+
+  get emailIsValid() {
+    return !(this.email.invalid && (this.email.dirty || this.email.touched));
+  }
+  get password() {
+    return this.registrationForm.get('password')!;
+  }
+
+  get passwordIsValid() {
+    return !(
+      this.password.invalid &&
+      (this.password.dirty || this.password.touched)
+    );
+  }
+
   constructor(private fb: FormBuilder) {}
 
   onSubmit() {

@@ -3,6 +3,10 @@
 @import "~bootstrap/scss/mixins/_breakpoints.scss";
 
 
+.registration-form {
+  width: 240px;
+}
+
 @include media-breakpoint-up(sm) {
   .registration-form {
     width: 350px;

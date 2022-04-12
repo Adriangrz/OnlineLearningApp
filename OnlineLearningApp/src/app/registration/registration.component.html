@@ -5,43 +5,91 @@
 >
   <div class="form-floating mb-3">
     <input
-      type="email"
+      type="text"
       class="form-control"
+      [ngClass]="{
+        'is-invalid': !firstNameIsValid
+      }"
       id="floatingFirstNameInput"
       placeholder="Imię"
       formControlName="firstName"
     />
     <label for="floatingFirstNameInput">Imię</label>
+    <div
+      *ngIf="!firstNameIsValid && firstName.errors?.['required']"
+      class="invalid-feedback"
+    >
+      Imię jest wymagane
+    </div>
   </div>
   <div class="form-floating mb-3">
     <input
       type="text"
       class="form-control"
+      [ngClass]="{
+        'is-invalid': !lastNameIsValid
+      }"
       id="floatingSurnameInput"
       placeholder="Nazwisko"
       formControlName="lastName"
     />
     <label for="floatingSurnameInput">Nazwisko</label>
+    <div
+      *ngIf="!lastNameIsValid && lastName.errors?.['required']"
+      class="invalid-feedback"
+    >
+      Nazwisko jest wymagane
+    </div>
   </div>
   <div class="form-floating mb-3">
     <input
       type="email"
       class="form-control"
+      [ngClass]="{
+        'is-invalid': !emailIsValid
+      }"
       id="floatingEmailInput"
       placeholder="name@example.com"
       formControlName="email"
     />
     <label for="floatingEmailInput">E-mail</label>
+    <div
+      *ngIf="!emailIsValid && email.errors?.['required']"
+      class="invalid-feedback"
+    >
+      E-mail jest wymagany
+    </div>
+    <div
+      *ngIf="!emailIsValid && email.errors?.['email']"
+      class="invalid-feedback"
+    >
+      Niepoprawny adres e-mail
+    </div>
   </div>
   <div class="form-floating mb-3">
     <input
       type="password"
       class="form-control"
+      [ngClass]="{
+        'is-invalid': !passwordIsValid
+      }"
       id="floatingPasswordInput"
       placeholder="Hasło"
       formControlName="password"
     />
     <label for="floatingPasswordInput">Hasło</label>
+    <div
+      class="invalid-feedback"
+      *ngIf="!passwordIsValid && password.errors?.['required']"
+    >
+      Hasło jest wymagane
+    </div>
+    <div
+      class="invalid-feedback"
+      *ngIf="!passwordIsValid && (password.errors?.['minlength'] || password.errors?.['pattern'])"
+    >
+      Użyj co najmniej ośmiu znaków, w tym jednocześnie liter, cyfr i symboli
+    </div>
   </div>
   <div class="form-check form-switch mb-3">
     <input
@@ -51,9 +99,9 @@
       id="flexRulesSwitchCheck"
       formControlName="siteRules"
     />
-    <label class="form-check-label" for="flexRulesSwitchCheck"
-      >Akceptuję regulamin</label
-    >
+    <label class="form-check-label" for="flexRulesSwitchCheck">
+      Akceptuję regulamin
+    </label>
   </div>
   <button
     type="submit"
