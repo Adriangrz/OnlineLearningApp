@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\OnlineLearningAppApi.Database\OnlineLearningAppApi.Database.csproj" />
+    <ProjectReference Include="..\OnlineLearningAppApi.Services\OnlineLearningAppApi.Services.csproj" />
   </ItemGroup>
 
 </Project>
