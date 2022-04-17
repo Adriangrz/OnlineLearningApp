@@ -19,20 +19,25 @@ namespace OnlineLearningAppApi.Services
     public class AuthService : IAuthService
     {
         private readonly IConfiguration _configuration;
-        private readonly RoleManager<IdentityRole<Guid>> _roleManager;
         private readonly UserManager<User> _userManager;
-        public AuthService(RoleManager<IdentityRole<Guid>> roleManager, UserManager<User> userManager, IConfiguration configuration)
+
+        public AuthService(UserManager<User> userManager, IConfiguration configuration)
         {
             _configuration = configuration;
-            _roleManager = roleManager;
             _userManager = userManager;
         }
         public async Task<BaseResponse<string>> AuthenticationAsync(LoginResource loginCredentials)
         {
             var user = await _userManager.FindByEmailAsync(loginCredentials.Email);
-            
+
+            if (await _userManager.IsLockedOutAsync(user))
+                return new BaseResponse<string>(false, "User is locked out.");
+
             if (user is null || !await _userManager.CheckPasswordAsync(user, loginCredentials.Password))
+            {
+                await _userManager.AccessFailedAsync(user);
                 return new BaseResponse<string>(false, "User credentials is not correct.");
+            }
 
             var userRoles = await _userManager.GetRolesAsync(user);
 
