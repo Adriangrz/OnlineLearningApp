@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using OnlineLearningAppApi.Extensions;
 using OnlineLearningAppApi.Models.ApiModels;
 using OnlineLearningAppApi.Services;
 using OnlineLearningAppApi.Services.Interfaces;
@@ -23,9 +22,6 @@ namespace OnlineLearningAppApi.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Login([FromBody] LoginResource loginResource)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState.GetErrorMessages());
-
             var result = await _authService.AuthenticationAsync(loginResource);
             if (!result.Success)
                 return Unauthorized(result.Message);
