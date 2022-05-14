@@ -42,6 +42,12 @@
     >
       Hasło jest wymagane
     </div>
+    <div
+      class="invalid-feedback"
+      *ngIf="!passwordIsValid && password.errors?.['minlength']"
+    >
+      Hasło ma co najmniej 8 znaków
+    </div>
   </div>
   <button
     type="submit"

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -9,7 +10,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 export class LoginComponent {
   loginForm = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required]],
+    password: ['', [Validators.required, Validators.minLength(8)]],
   });
 
   get email() {
@@ -30,9 +31,14 @@ export class LoginComponent {
     );
   }
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder, private authService: AuthService) {}
 
   onSubmit() {
+    this.authService
+      .login(this.loginForm.value.email, this.loginForm.value.password)
+      .subscribe((res) => {
+        console.log(res);
+      });
     console.log(this.loginForm.value);
   }
 }
