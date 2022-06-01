@@ -10,12 +10,14 @@ namespace OnlineLearningAppApi.Services.Communication
     {
         public bool Success { get; private set; }
         public string Message { get; private set; }
+        public bool IsException { get; set; }
         public T Resource { get; private set; }
 
-        public BaseResponse(bool success, string meessage = null, T resource = default)
+        public BaseResponse(bool success, string meessage = null, bool isException = false, T resource = default)
         {
             Success = success;
             Message = meessage;
+            IsException = isException;
             Resource = resource;
         }
     }

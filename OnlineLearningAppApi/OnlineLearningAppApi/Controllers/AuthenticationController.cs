@@ -23,6 +23,9 @@ namespace OnlineLearningAppApi.Controllers
         public async Task<IActionResult> Login([FromBody] LoginResource loginResource)
         {
             var result = await _authService.AuthenticationAsync(loginResource);
+            if (!result.Success && result.IsException)
+                return StatusCode(500,result.Message);
+
             if (!result.Success)
                 return Unauthorized(result.Message);
 

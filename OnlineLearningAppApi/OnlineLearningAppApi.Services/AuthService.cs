@@ -28,25 +28,34 @@ namespace OnlineLearningAppApi.Services
         }
         public async Task<BaseResponse<string>> AuthenticationAsync(LoginResource loginCredentials)
         {
-            var user = await _userManager.FindByEmailAsync(loginCredentials.Email);
-
-            if (await _userManager.IsLockedOutAsync(user))
-                return new BaseResponse<string>(false, "User is locked out.");
-
-            if (user is null || !await _userManager.CheckPasswordAsync(user, loginCredentials.Password))
+            try
             {
-                await _userManager.AccessFailedAsync(user);
-                return new BaseResponse<string>(false, "User credentials is not correct.");
+                var user = await _userManager.FindByEmailAsync(loginCredentials.Email);
+
+                if (user is null)
+                    return new BaseResponse<string>(false, "Nieprawidłowe dane logowania.");
+
+                if (await _userManager.IsLockedOutAsync(user))
+                    return new BaseResponse<string>(false, "Użytkownik jest zablokowany.");
+
+                if (!await _userManager.CheckPasswordAsync(user, loginCredentials.Password))
+                {
+                    await _userManager.AccessFailedAsync(user);
+                    return new BaseResponse<string>(false, "Nieprawidłowe dane logowania.");
+                }
+
+                var userRoles = await _userManager.GetRolesAsync(user);
+
+                if (userRoles is null)
+                    return new BaseResponse<string>(false, "Użytkownik nie ma przypisanej roli.");
+
+                string token = GenerateJWT(user, userRoles.ToList());
+
+                return new BaseResponse<string>(true, string.Empty, false, token);
+            }catch (Exception ex)
+            {
+                return new BaseResponse<string>(false, "Wystąpił błąd podczas przetwarzania uwierzytelniania", true);
             }
-
-            var userRoles = await _userManager.GetRolesAsync(user);
-
-            if(userRoles is null)
-                return new BaseResponse<string>(false, "User has not role.");
-
-            string token = GenerateJWT(user, userRoles.ToList());
-
-            return new BaseResponse<string>(true, string.Empty, token);
         }
 
         public DateTime GetTokenExpirationDate(string token)
