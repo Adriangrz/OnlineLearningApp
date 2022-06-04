@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using OnlineLearningAppApi.Models;
 using OnlineLearningAppApi.Models.ApiModels;
 using OnlineLearningAppApi.Services;
 using OnlineLearningAppApi.Services.Interfaces;
@@ -12,17 +14,20 @@ namespace OnlineLearningAppApi.Controllers
     public class AuthenticationController : ControllerBase
     {
         private readonly IAuthService _authService;
-        public AuthenticationController(IAuthService authService)
+        private readonly IMapper _mapper;
+        public AuthenticationController(IAuthService authService, IMapper mapper)
         {
             _authService = authService;
+            _mapper = mapper;
         }
 
         // POST api/<AuthenticateController>/Login
         [HttpPost("Login")]
         [AllowAnonymous]
-        public async Task<IActionResult> Login([FromBody] TokenRequestResource loginResource)
+        public async Task<IActionResult> Login([FromBody] LoginResource loginResource)
         {
-            var result = await _authService.AuthenticationAsync(loginResource);
+            var tokenRequestData = _mapper.Map<LoginResource, TokenRequestData>(loginResource);
+            var result = await _authService.AuthenticationAsync(tokenRequestData);
             if (!result.Success && result.IsException)
                 return StatusCode(500,result.Message);
 
@@ -34,9 +39,10 @@ namespace OnlineLearningAppApi.Controllers
 
         [HttpPost("RefreshToken")]
         [AllowAnonymous]
-        public async Task<IActionResult> RefreshToken([FromBody] TokenRequestResource refreshResource)
+        public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenResource refreshTokenResource)
         {
-            var result = await _authService.RefreshToken(refreshResource);
+            var tokenRequestData = _mapper.Map<RefreshTokenResource, TokenRequestData>(refreshTokenResource);
+            var result = await _authService.RefreshToken(tokenRequestData);
             if (!result.Success && result.IsException)
                 return StatusCode(500, result.Message);
 

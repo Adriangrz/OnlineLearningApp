@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OnlineLearningAppApi.Models.ApiModels
+namespace OnlineLearningAppApi.Models
 {
-    public class TokenResponseResource
+    public class TokenResponseData
     {
         public string Token { get; set; }
         public DateTime Expiration { get; set; }

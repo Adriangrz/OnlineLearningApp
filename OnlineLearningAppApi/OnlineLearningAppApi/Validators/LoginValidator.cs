@@ -8,12 +8,14 @@ using System.Threading.Tasks;
 
 namespace OnlineLearningAppApi.Services.Validators
 {
-    public class LoginValidator : AbstractValidator<TokenRequestResource>
+    public class LoginValidator : AbstractValidator<LoginResource>
     {
         public LoginValidator()
         {
             RuleFor(x => x.Email).NotEmpty().EmailAddress();
             RuleFor(x => x.Password).NotEmpty().MinimumLength(8);
+            RuleFor(x => x.ClientId).NotEmpty();
+            RuleFor(x => x.RefreshToken).NotEmpty();
         }
     }
 }

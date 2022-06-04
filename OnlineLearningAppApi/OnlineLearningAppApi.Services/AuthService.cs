@@ -29,28 +29,28 @@ namespace OnlineLearningAppApi.Services
             _userManager = userManager;
             _unitOfWork = unitOfWork;
         }
-        public async Task<BaseResponse<TokenResponseResource>> AuthenticationAsync(TokenRequestResource loginCredentials)
+        public async Task<BaseResponse<TokenResponseData>> AuthenticationAsync(TokenRequestData loginCredentials)
         {
             try
             {
                 var user = await _userManager.FindByEmailAsync(loginCredentials.Email);
 
                 if (user is null)
-                    return new BaseResponse<TokenResponseResource>(false, "Nieprawidłowe dane logowania.");
+                    return new BaseResponse<TokenResponseData>(false, "Nieprawidłowe dane logowania.");
 
                 if (await _userManager.IsLockedOutAsync(user))
-                    return new BaseResponse<TokenResponseResource>(false, "Użytkownik jest zablokowany.");
+                    return new BaseResponse<TokenResponseData>(false, "Użytkownik jest zablokowany.");
 
                 if (!await _userManager.CheckPasswordAsync(user, loginCredentials.Password))
                 {
                     await _userManager.AccessFailedAsync(user);
-                    return new BaseResponse<TokenResponseResource>(false, "Nieprawidłowe dane logowania.");
+                    return new BaseResponse<TokenResponseData>(false, "Nieprawidłowe dane logowania.");
                 }
 
                 var userRoles = await _userManager.GetRolesAsync(user);
 
                 if (userRoles is null)
-                    return new BaseResponse<TokenResponseResource>(false, "Użytkownik nie ma przypisanej roli.");
+                    return new BaseResponse<TokenResponseData>(false, "Użytkownik nie ma przypisanej roli.");
 
                 var rt = CreateRefreshToken(loginCredentials.ClientId, user.Id);
 
@@ -59,26 +59,26 @@ namespace OnlineLearningAppApi.Services
 
                 var t = GenerateJWT(user, userRoles.ToList(), rt.Value);
 
-                return new BaseResponse<TokenResponseResource>(true, string.Empty, false, t);
+                return new BaseResponse<TokenResponseData>(true, string.Empty, false, t);
             }
             catch (Exception ex)
             {
-                return new BaseResponse<TokenResponseResource>(false, "Wystąpił błąd podczas przetwarzania uwierzytelniania", true);
+                return new BaseResponse<TokenResponseData>(false, "Wystąpił błąd podczas przetwarzania uwierzytelniania", true);
             }
         }
 
-        public async Task<BaseResponse<TokenResponseResource>> RefreshToken(TokenRequestResource model)
+        public async Task<BaseResponse<TokenResponseData>> RefreshToken(TokenRequestData model)
         {
             try
             {
                 var rt = await _unitOfWork.Repository<Token>().GetBy(t => t.ClientId == model.ClientId && t.Value == model.RefreshToken);
 
                 if (rt is null)
-                    return new BaseResponse<TokenResponseResource>(false, "Brak tokena odświeżania.");
+                    return new BaseResponse<TokenResponseData>(false, "Brak tokena odświeżania.");
 
                 var user = await _userManager.FindByIdAsync(rt.UserId.ToString());
                 if (user is null)
-                    return new BaseResponse<TokenResponseResource>(false, "Użytkownik nie istnieje.");
+                    return new BaseResponse<TokenResponseData>(false, "Użytkownik nie istnieje.");
 
                 var rtNew = CreateRefreshToken(rt.ClientId, rt.UserId);
 
@@ -91,11 +91,11 @@ namespace OnlineLearningAppApi.Services
                 var userRoles = await _userManager.GetRolesAsync(user);
                 var response = GenerateJWT(user, userRoles.ToList(), rtNew.Value);
 
-                return new BaseResponse<TokenResponseResource>(true, string.Empty, false, response);
+                return new BaseResponse<TokenResponseData>(true, string.Empty, false, response);
             }
             catch (Exception ex)
             {
-                return new BaseResponse<TokenResponseResource>(false, "Wystąpił błąd podczas przetwarzania uwierzytelniania", true);
+                return new BaseResponse<TokenResponseData>(false, "Wystąpił błąd podczas przetwarzania uwierzytelniania", true);
             }
         }
 
@@ -116,7 +116,7 @@ namespace OnlineLearningAppApi.Services
             return new JwtSecurityTokenHandler().ReadToken(token).ValidTo;
         }
 
-        public TokenResponseResource GenerateJWT(User userInfo, List<string> userRoles, string refreshToken)
+        public TokenResponseData GenerateJWT(User userInfo, List<string> userRoles, string refreshToken)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
 
@@ -146,7 +146,7 @@ namespace OnlineLearningAppApi.Services
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
 
-            return new TokenResponseResource()
+            return new TokenResponseData()
             {
                 Token = tokenHandler.WriteToken(token),
                 Expiration = GetTokenExpirationDate(tokenHandler.WriteToken(token)),
