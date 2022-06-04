@@ -29,13 +29,21 @@ namespace OnlineLearningAppApi.Controllers
             if (!result.Success)
                 return Unauthorized(result.Message);
 
-            var response = new TokenResponseResource
-            {
-                Token = result.Resource,
-                Expiration = _authService.GetTokenExpirationDate(result.Resource),
-            };
+            return Ok(result.Resource);
+        }
 
-            return Ok(response);
+        [HttpPost("RefreshToken")]
+        [AllowAnonymous]
+        public async Task<IActionResult> RefreshToken([FromBody] TokenRequestResource refreshResource)
+        {
+            var result = await _authService.RefreshToken(refreshResource);
+            if (!result.Success && result.IsException)
+                return StatusCode(500, result.Message);
+
+            if (!result.Success)
+                return Unauthorized(result.Message);
+
+            return Ok(result.Resource);
         }
 
     }

@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\OnlineLearningAppApi.Models\OnlineLearningAppApi.Models.csproj" />
+    <ProjectReference Include="..\OnlineLearningAppApi.Repositories\OnlineLearningAppApi.Repositories.csproj" />
   </ItemGroup>
 
 </Project>

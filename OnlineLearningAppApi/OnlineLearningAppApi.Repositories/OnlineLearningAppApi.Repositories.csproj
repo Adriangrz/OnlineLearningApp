@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\OnlineLearningAppApi.Database\OnlineLearningAppApi.Database.csproj" />
+  </ItemGroup>
+
 </Project>

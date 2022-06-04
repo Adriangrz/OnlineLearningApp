@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using OnlineLearningAppApi.Models;
 using OnlineLearningAppApi.Models.ApiModels;
+using OnlineLearningAppApi.Repositories;
 using OnlineLearningAppApi.Services.Communication;
 using OnlineLearningAppApi.Services.Interfaces;
 using System;
@@ -20,91 +21,102 @@ namespace OnlineLearningAppApi.Services
     {
         private readonly IConfiguration _configuration;
         private readonly UserManager<User> _userManager;
+        private readonly UnitOfWork _unitOfWork;
 
-        public AuthService(UserManager<User> userManager, IConfiguration configuration)
+        public AuthService(UserManager<User> userManager, IConfiguration configuration, UnitOfWork unitOfWork)
         {
             _configuration = configuration;
             _userManager = userManager;
+            _unitOfWork = unitOfWork;
         }
-        public async Task<BaseResponse<string>> AuthenticationAsync(TokenRequestResource loginCredentials)
+        public async Task<BaseResponse<TokenResponseResource>> AuthenticationAsync(TokenRequestResource loginCredentials)
         {
             try
             {
                 var user = await _userManager.FindByEmailAsync(loginCredentials.Email);
 
                 if (user is null)
-                    return new BaseResponse<string>(false, "Nieprawidłowe dane logowania.");
+                    return new BaseResponse<TokenResponseResource>(false, "Nieprawidłowe dane logowania.");
 
                 if (await _userManager.IsLockedOutAsync(user))
-                    return new BaseResponse<string>(false, "Użytkownik jest zablokowany.");
+                    return new BaseResponse<TokenResponseResource>(false, "Użytkownik jest zablokowany.");
 
                 if (!await _userManager.CheckPasswordAsync(user, loginCredentials.Password))
                 {
                     await _userManager.AccessFailedAsync(user);
-                    return new BaseResponse<string>(false, "Nieprawidłowe dane logowania.");
+                    return new BaseResponse<TokenResponseResource>(false, "Nieprawidłowe dane logowania.");
                 }
 
                 var userRoles = await _userManager.GetRolesAsync(user);
 
                 if (userRoles is null)
-                    return new BaseResponse<string>(false, "Użytkownik nie ma przypisanej roli.");
+                    return new BaseResponse<TokenResponseResource>(false, "Użytkownik nie ma przypisanej roli.");
 
-                string token = GenerateJWT(user, userRoles.ToList());
+                var rt = CreateRefreshToken(loginCredentials.ClientId, user.Id);
 
-                return new BaseResponse<string>(true, string.Empty, false, token);
+                await _unitOfWork.Repository<Token>().Insert(rt);
+                _unitOfWork.SaveChanges();
+
+                var t = GenerateJWT(user, userRoles.ToList(), rt.Value);
+
+                return new BaseResponse<TokenResponseResource>(true, string.Empty, false, t);
             }
             catch (Exception ex)
             {
-                return new BaseResponse<string>(false, "Wystąpił błąd podczas przetwarzania uwierzytelniania", true);
+                return new BaseResponse<TokenResponseResource>(false, "Wystąpił błąd podczas przetwarzania uwierzytelniania", true);
             }
         }
 
-        //public async Task<BaseResponse<string>> RefreshToken(TokenRequestViewModel model)
-        //{
-        //    try
-        //    {
-        //        // Sprawdź, czy otrzymany token odświeżania istnieje dla danego ClientId
-        //        var rt = DbContext.Tokens
-        //        .FirstOrDefault(t =>
-        //        t.ClientId == model.client_id
-        //        && t.Value == model.refresh_token);
-        //        if (rt == null)
-        //        {
-        //            // Token nie istnieje lub jest niepoprawny (albo przekazano złe ClientId)
-        //            return new UnauthorizedResult();
-        //        }
-        //        // Sprawdź, czy istnieje użytkownik o UserId z tokena odświeżania
-        //        var user = await UserManager.FindByIdAsync(rt.UserId);
-        //        if (user == null)
-        //        {
-        //            // Użytkownika nie odnaleziono lub UserId jest nieprawidłowe
-        //            return new UnauthorizedResult();
-        //        }
-        //        // Wygeneruj nowy token odświeżania
-        //        var rtNew = CreateRefreshToken(rt.ClientId, rt.UserId);
-        //        // Unieważnij stary token odświeżania (poprzez jego usunięcie)
-        //        DbContext.Tokens.Remove(rt);
-        //        // Dodaj nowy token odświeżania
-        //        DbContext.Tokens.Add(rtNew);
-        //        // Zapisz zmiany w bazie danych
-        //        DbContext.SaveChanges();
-        //        // Utwórz nowy token dostępowy
-        //        var response = CreateAccessToken(rtNew.UserId, rtNew.Value);
-        //        // …i wyślij go do klienta
-        //        return Json(response);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return new UnauthorizedResult();
-        //    }
-        //}
+        public async Task<BaseResponse<TokenResponseResource>> RefreshToken(TokenRequestResource model)
+        {
+            try
+            {
+                var rt = await _unitOfWork.Repository<Token>().GetBy(t => t.ClientId == model.ClientId && t.Value == model.RefreshToken);
+
+                if (rt is null)
+                    return new BaseResponse<TokenResponseResource>(false, "Brak tokena odświeżania.");
+
+                var user = await _userManager.FindByIdAsync(rt.UserId.ToString());
+                if (user is null)
+                    return new BaseResponse<TokenResponseResource>(false, "Użytkownik nie istnieje.");
+
+                var rtNew = CreateRefreshToken(rt.ClientId, rt.UserId);
+
+                _unitOfWork.Repository<Token>().Delete(rt);
+
+                await _unitOfWork.Repository<Token>().Insert(rtNew);
+
+                _unitOfWork.SaveChanges();
+
+                var userRoles = await _userManager.GetRolesAsync(user);
+                var response = GenerateJWT(user, userRoles.ToList(), rtNew.Value);
+
+                return new BaseResponse<TokenResponseResource>(true, string.Empty, false, response);
+            }
+            catch (Exception ex)
+            {
+                return new BaseResponse<TokenResponseResource>(false, "Wystąpił błąd podczas przetwarzania uwierzytelniania", true);
+            }
+        }
+
+        private Token CreateRefreshToken(string clientId, Guid userId)
+        {
+            return new Token()
+            {
+                ClientId = clientId,
+                UserId = userId,
+                Type = 0,
+                Value = Guid.NewGuid().ToString("N"),
+                CreatedDate = DateTime.UtcNow
+            };
+        }
 
         public DateTime GetTokenExpirationDate(string token)
         {
             return new JwtSecurityTokenHandler().ReadToken(token).ValidTo;
         }
 
-        public string GenerateJWT(User userInfo, List<string> userRoles)
+        public TokenResponseResource GenerateJWT(User userInfo, List<string> userRoles, string refreshToken)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
 
@@ -134,7 +146,12 @@ namespace OnlineLearningAppApi.Services
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
 
-            return tokenHandler.WriteToken(token);
+            return new TokenResponseResource()
+            {
+                Token = tokenHandler.WriteToken(token),
+                Expiration = GetTokenExpirationDate(tokenHandler.WriteToken(token)),
+                RefreshToken = refreshToken
+            };
         }
     }
 }
