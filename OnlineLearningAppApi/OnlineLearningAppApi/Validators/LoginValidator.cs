@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace OnlineLearningAppApi.Services.Validators
 {
-    public class LoginValidator : AbstractValidator<LoginResource>
+    public class LoginValidator : AbstractValidator<TokenRequestResource>
     {
         public LoginValidator()
         {

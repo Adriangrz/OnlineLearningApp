@@ -20,6 +20,8 @@ namespace OnlineLearningAppApi.Database
         {
         }
 
+        public DbSet<Token> Tokens { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

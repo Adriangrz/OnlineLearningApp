@@ -12,10 +12,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Configuration\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\OnlineLearningAppApi.Models\OnlineLearningAppApi.Models.csproj" />
   </ItemGroup>
 

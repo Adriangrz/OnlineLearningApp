@@ -20,7 +20,7 @@ namespace OnlineLearningAppApi.Controllers
         // POST api/<AuthenticateController>/Login
         [HttpPost("Login")]
         [AllowAnonymous]
-        public async Task<IActionResult> Login([FromBody] LoginResource loginResource)
+        public async Task<IActionResult> Login([FromBody] TokenRequestResource loginResource)
         {
             var result = await _authService.AuthenticationAsync(loginResource);
             if (!result.Success && result.IsException)

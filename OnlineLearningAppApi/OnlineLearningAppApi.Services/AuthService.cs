@@ -26,7 +26,7 @@ namespace OnlineLearningAppApi.Services
             _configuration = configuration;
             _userManager = userManager;
         }
-        public async Task<BaseResponse<string>> AuthenticationAsync(LoginResource loginCredentials)
+        public async Task<BaseResponse<string>> AuthenticationAsync(TokenRequestResource loginCredentials)
         {
             try
             {
@@ -52,11 +52,52 @@ namespace OnlineLearningAppApi.Services
                 string token = GenerateJWT(user, userRoles.ToList());
 
                 return new BaseResponse<string>(true, string.Empty, false, token);
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 return new BaseResponse<string>(false, "Wystąpił błąd podczas przetwarzania uwierzytelniania", true);
             }
         }
+
+        //public async Task<BaseResponse<string>> RefreshToken(TokenRequestViewModel model)
+        //{
+        //    try
+        //    {
+        //        // Sprawdź, czy otrzymany token odświeżania istnieje dla danego ClientId
+        //        var rt = DbContext.Tokens
+        //        .FirstOrDefault(t =>
+        //        t.ClientId == model.client_id
+        //        && t.Value == model.refresh_token);
+        //        if (rt == null)
+        //        {
+        //            // Token nie istnieje lub jest niepoprawny (albo przekazano złe ClientId)
+        //            return new UnauthorizedResult();
+        //        }
+        //        // Sprawdź, czy istnieje użytkownik o UserId z tokena odświeżania
+        //        var user = await UserManager.FindByIdAsync(rt.UserId);
+        //        if (user == null)
+        //        {
+        //            // Użytkownika nie odnaleziono lub UserId jest nieprawidłowe
+        //            return new UnauthorizedResult();
+        //        }
+        //        // Wygeneruj nowy token odświeżania
+        //        var rtNew = CreateRefreshToken(rt.ClientId, rt.UserId);
+        //        // Unieważnij stary token odświeżania (poprzez jego usunięcie)
+        //        DbContext.Tokens.Remove(rt);
+        //        // Dodaj nowy token odświeżania
+        //        DbContext.Tokens.Add(rtNew);
+        //        // Zapisz zmiany w bazie danych
+        //        DbContext.SaveChanges();
+        //        // Utwórz nowy token dostępowy
+        //        var response = CreateAccessToken(rtNew.UserId, rtNew.Value);
+        //        // …i wyślij go do klienta
+        //        return Json(response);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return new UnauthorizedResult();
+        //    }
+        //}
 
         public DateTime GetTokenExpirationDate(string token)
         {
@@ -76,7 +117,7 @@ namespace OnlineLearningAppApi.Services
                  new Claim(JwtRegisteredClaimNames.Email, userInfo.Email),
             };
 
-            foreach(var userRole in userRoles)
+            foreach (var userRole in userRoles)
             {
                 claims.Add(new Claim(ClaimTypes.Role, userRole));
             }

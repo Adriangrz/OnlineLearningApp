@@ -11,5 +11,6 @@ namespace OnlineLearningAppApi.Models
     {
         public string Surname { get; set; }
         public bool SiteRules { get; set; }
+        public ICollection<Token> Tokens { get; set; }
     }
 }

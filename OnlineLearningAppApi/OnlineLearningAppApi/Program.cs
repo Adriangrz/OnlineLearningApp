@@ -6,6 +6,8 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using OnlineLearningAppApi.Database;
 using OnlineLearningAppApi.Models;
+using OnlineLearningAppApi.Repositories;
+using OnlineLearningAppApi.Repositories.Interfaces;
 using OnlineLearningAppApi.Services;
 using OnlineLearningAppApi.Services.Interfaces;
 using System.Reflection;
@@ -105,6 +107,8 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
+builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+builder.Services.AddScoped<UnitOfWork>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 
 var app = builder.Build();

@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnlineLearningAppApi.Models
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnlineLearningAppApi.Database", "OnlineLearningAppApi.Database\OnlineLearningAppApi.Database.csproj", "{2C6D0134-10F5-48D7-AD52-039340D43FF9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineLearningAppApi.Services", "OnlineLearningAppApi.Services\OnlineLearningAppApi.Services.csproj", "{E3092FB3-4321-48BC-83F8-40BDA7A2C030}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnlineLearningAppApi.Services", "OnlineLearningAppApi.Services\OnlineLearningAppApi.Services.csproj", "{E3092FB3-4321-48BC-83F8-40BDA7A2C030}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineLearningAppApi.Repositories", "OnlineLearningAppApi.Repositories\OnlineLearningAppApi.Repositories.csproj", "{678DEBBB-585B-4A58-A06E-FC3D4FB191AB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{E3092FB3-4321-48BC-83F8-40BDA7A2C030}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E3092FB3-4321-48BC-83F8-40BDA7A2C030}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E3092FB3-4321-48BC-83F8-40BDA7A2C030}.Release|Any CPU.Build.0 = Release|Any CPU
+		{678DEBBB-585B-4A58-A06E-FC3D4FB191AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{678DEBBB-585B-4A58-A06E-FC3D4FB191AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{678DEBBB-585B-4A58-A06E-FC3D4FB191AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{678DEBBB-585B-4A58-A06E-FC3D4FB191AB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
