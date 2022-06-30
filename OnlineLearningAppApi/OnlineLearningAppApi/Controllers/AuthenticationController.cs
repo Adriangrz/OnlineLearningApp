@@ -26,8 +26,8 @@ namespace OnlineLearningAppApi.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Login([FromBody] LoginResource loginResource)
         {
-            var tokenRequestData = _mapper.Map<LoginResource, TokenRequestData>(loginResource);
-            var result = await _authService.AuthenticationAsync(tokenRequestData);
+            var requestTokenData = _mapper.Map<LoginResource, RequestTokenData>(loginResource);
+            var result = await _authService.AuthenticationAsync(requestTokenData);
             if (!result.Success && result.IsException)
                 return StatusCode(500,result.Message);
 
@@ -41,8 +41,8 @@ namespace OnlineLearningAppApi.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenResource refreshTokenResource)
         {
-            var tokenRequestData = _mapper.Map<RefreshTokenResource, TokenRequestData>(refreshTokenResource);
-            var result = await _authService.RefreshToken(tokenRequestData);
+            var requestTokenData = _mapper.Map<RefreshTokenResource, RequestTokenData>(refreshTokenResource);
+            var result = await _authService.RefreshToken(requestTokenData);
             if (!result.Success && result.IsException)
                 return StatusCode(500, result.Message);
 
@@ -51,6 +51,5 @@ namespace OnlineLearningAppApi.Controllers
 
             return Ok(result.Resource);
         }
-
     }
 }

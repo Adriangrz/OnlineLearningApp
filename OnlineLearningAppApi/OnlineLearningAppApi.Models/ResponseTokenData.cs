@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace OnlineLearningAppApi.Models
 {
-    public class TokenResponseData
+    public class ResponseTokenData
     {
         public string Token { get; set; }
         public DateTime Expiration { get; set; }

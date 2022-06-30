@@ -15,7 +15,6 @@ namespace OnlineLearningAppApi.Services.Validators
             RuleFor(x => x.Email).NotEmpty().EmailAddress();
             RuleFor(x => x.Password).NotEmpty().MinimumLength(8);
             RuleFor(x => x.ClientId).NotEmpty();
-            RuleFor(x => x.RefreshToken).NotEmpty();
         }
     }
 }

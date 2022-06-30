@@ -8,8 +8,8 @@ namespace OnlineLearningAppApi.Mapping
     {
         public ResourceToModelProfile()
         {
-            CreateMap<LoginResource, TokenRequestData>();
-            CreateMap<RefreshTokenResource, TokenRequestData>();
+            CreateMap<LoginResource, RequestTokenData>();
+            CreateMap<RefreshTokenResource, RequestTokenData>();
         }
     }
 }

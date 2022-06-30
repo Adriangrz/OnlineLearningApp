@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace OnlineLearningAppApi.Models
 {
-    public class TokenRequestData
+    public class RequestTokenData
     {
         public string Email { get; set; }
         public string Password { get; set; }

@@ -78,8 +78,8 @@ builder.Services.AddIdentity<User,IdentityRole<Guid>>(
 
         opts.User.RequireUniqueEmail = true;
 
-        opts.Lockout.MaxFailedAccessAttempts = 5;
-        opts.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
+        opts.Lockout.MaxFailedAccessAttempts = 3;
+        opts.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
     })
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();

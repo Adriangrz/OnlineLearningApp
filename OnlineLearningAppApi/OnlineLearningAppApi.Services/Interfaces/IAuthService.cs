@@ -11,9 +11,9 @@ namespace OnlineLearningAppApi.Services.Interfaces
 {
     public interface IAuthService
     {
-        Task<BaseResponse<TokenResponseData>> AuthenticationAsync(TokenRequestData loginCredentials);
-        Task<BaseResponse<TokenResponseData>> RefreshToken(TokenRequestData model);
+        Task<BaseResponse<ResponseTokenData>> AuthenticationAsync(RequestTokenData loginCredentials);
+        Task<BaseResponse<ResponseTokenData>> RefreshToken(RequestTokenData model);
         DateTime GetTokenExpirationDate(string token);
-        TokenResponseData GenerateJWT(User userInfo, List<string> userRoles, string refreshToken);
+        ResponseTokenData GenerateJWT(User userInfo, List<string> userRoles, string refreshToken);
     }
 }
