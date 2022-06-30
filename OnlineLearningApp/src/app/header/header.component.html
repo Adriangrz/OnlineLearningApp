@@ -26,26 +26,37 @@
             </a>
           </li>
           <ul class="navbar-nav ms-lg-auto">
-            <li class="nav-item">
-              <a
-                class="nav-link"
-                [routerLinkActive]="['active']"
-                [routerLinkActiveOptions]="{ exact: true }"
-                aria-current="page"
-                routerLink="./logowanie"
-                >Logowanie</a
+            <ng-container *ngIf="this.authService.isLoggedIn(); else logIn">
+              <button
+                (click)="onLogOut()"
+                type="button"
+                class="btn btn-primary"
               >
-            </li>
-            <li class="nav-item">
-              <a
-                class="nav-link"
-                [routerLinkActive]="['active']"
-                [routerLinkActiveOptions]="{ exact: true }"
-                aria-current="page"
-                routerLink="./rejestracja"
-                >Rejestracja</a
-              >
-            </li>
+                Wyloguj się
+              </button>
+            </ng-container>
+            <ng-template #logIn>
+              <li class="nav-item">
+                <a
+                  class="nav-link"
+                  [routerLinkActive]="['active']"
+                  [routerLinkActiveOptions]="{ exact: true }"
+                  aria-current="page"
+                  routerLink="./logowanie"
+                  >Logowanie</a
+                >
+              </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link"
+                  [routerLinkActive]="['active']"
+                  [routerLinkActiveOptions]="{ exact: true }"
+                  aria-current="page"
+                  routerLink="./rejestracja"
+                  >Rejestracja</a
+                >
+              </li>
+            </ng-template>
           </ul>
         </ul>
       </div>

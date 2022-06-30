@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { ReturnedLoginData } from '../interfaces/returned-login-data.interface';
 import { AuthService } from '../services/auth.service';
 
 @Component({
@@ -12,6 +14,10 @@ export class LoginComponent {
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required, Validators.minLength(8)]],
   });
+  errorMessage?: string;
+  responseStatus: number | null = null;
+  isError: boolean = false;
+  isBeingProcessed: boolean = false;
 
   get email() {
     return this.loginForm.get('email')!;
@@ -31,14 +37,27 @@ export class LoginComponent {
     );
   }
 
-  constructor(private fb: FormBuilder, private authService: AuthService) {}
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private router: Router
+  ) {}
 
   onSubmit() {
+    this.isBeingProcessed = true;
     this.authService
       .login(this.loginForm.value.email, this.loginForm.value.password)
-      .subscribe((res) => {
-        console.log(res);
+      .subscribe((data: ReturnedLoginData) => {
+        this.responseStatus = data.responseStatus;
+        if (data.isSuccess) {
+          this.isError = false;
+          this.router.navigate(['/']);
+          this.isBeingProcessed = false;
+          return;
+        }
+        this.isError = true;
+        this.errorMessage = data.errorResponseMessage;
+        this.isBeingProcessed = false;
       });
-    console.log(this.loginForm.value);
   }
 }
