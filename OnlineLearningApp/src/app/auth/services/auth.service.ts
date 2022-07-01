@@ -32,7 +32,7 @@ export class AuthService {
           return of({
             isSuccess: false,
             responseStatus: errorData.status,
-            errorResponseMessage: errorData.error,
+            responseErrorMessage: errorData.error,
           });
         })
       );
