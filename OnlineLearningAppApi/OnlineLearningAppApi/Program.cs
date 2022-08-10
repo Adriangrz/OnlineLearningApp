@@ -65,18 +65,19 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 });
 
-builder.Services.AddIdentity<User,IdentityRole<Guid>>(
+builder.Services.AddIdentity<User,IdentityRole>(
     opts =>
     {
         opts.SignIn.RequireConfirmedAccount = false; //development
 
         opts.Password.RequireDigit = true;
-        opts.Password.RequireUppercase = true;
+        opts.Password.RequireUppercase = false;
         opts.Password.RequireLowercase = true;
         opts.Password.RequireNonAlphanumeric = true;
         opts.Password.RequiredLength = 8;
 
         opts.User.RequireUniqueEmail = true;
+        opts.User.AllowedUserNameCharacters = "Aa•πBbCc∆ÊDdEe ÍFfGgHhIiJjKkLl£≥MmNn—ÒOo”ÛPpQqRrSsåúTtUuvWwxYyZzèüØø0123456789-._@+/!#$%^&*~`?|/=";
 
         opts.Lockout.MaxFailedAccessAttempts = 3;
         opts.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);

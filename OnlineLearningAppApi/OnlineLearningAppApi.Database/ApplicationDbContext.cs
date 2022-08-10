@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace OnlineLearningAppApi.Database
 {
-    public class ApplicationDbContext : IdentityDbContext<User,IdentityRole<Guid>,Guid>
+    public class ApplicationDbContext : IdentityDbContext<User>
     {
         public ApplicationDbContext()
         {
@@ -35,40 +35,38 @@ namespace OnlineLearningAppApi.Database
 
             var admin = new User()
             {
-                Id = Guid.NewGuid(),
-                SecurityStamp = Guid.NewGuid().ToString(),
-                UserName = "Antek",
-                NormalizedUserName = "ANTEK",
-                Surname = "Kowalski",
+                UserName = "admin@test.pl",
+                NormalizedUserName = "ADMIN@TEST.PL",
+                FirstName = "Antek",
+                LastName = "Kowalski",
                 Email = "admin@test.pl",
                 NormalizedEmail = "ADMIN@TEST.PL",
                 LockoutEnabled = true,
                 EmailConfirmed = true,
-                ConcurrencyStamp = Guid.NewGuid().ToString(),
                 PasswordHash = hasher.HashPassword(null, "Pa$$w0rd"),
                 SiteRules = true,
             };
             builder.Entity<User>().HasData(admin);
-            var adminRole = new IdentityRole<Guid>()
+            var adminRole = new IdentityRole()
             {
-                Id = Guid.NewGuid(),
                 Name = AppRoles.Admin,
+                NormalizedName = AppRoles.Admin.ToUpper(),
                 ConcurrencyStamp = Guid.NewGuid().ToString(),
             };
-            var userRole = new IdentityRole<Guid>()
+            var userRole = new IdentityRole()
             {
-                Id = Guid.NewGuid(),
                 Name = AppRoles.User,
+                NormalizedName = AppRoles.User.ToUpper(),
                 ConcurrencyStamp = Guid.NewGuid().ToString(),
             };
-            builder.Entity<IdentityRole<Guid>>().HasData(
+            builder.Entity<IdentityRole>().HasData(
                 adminRole,
                 userRole
             );
 
-            builder.Entity<IdentityUserRole<Guid>>().HasData(
-               new IdentityUserRole<Guid>() { RoleId = adminRole.Id, UserId = admin.Id },
-               new IdentityUserRole<Guid>() { RoleId = userRole.Id, UserId = admin.Id }
+            builder.Entity<IdentityUserRole<string>>().HasData(
+               new IdentityUserRole<string>() { RoleId = adminRole.Id, UserId = admin.Id },
+               new IdentityUserRole<string>() { RoleId = userRole.Id, UserId = admin.Id }
             );
         }
     }

@@ -29,7 +29,7 @@ namespace OnlineLearningAppApi.Controllers
             var requestTokenData = _mapper.Map<LoginResource, RequestTokenData>(loginResource);
             var result = await _authService.AuthenticationAsync(requestTokenData);
             if (!result.Success && result.IsException)
-                return StatusCode(500,result.Message);
+                return StatusCode(500, result.Message);
 
             if (!result.Success)
                 return Unauthorized(result.Message);
@@ -50,6 +50,21 @@ namespace OnlineLearningAppApi.Controllers
                 return Unauthorized(result.Message);
 
             return Ok(result.Resource);
+        }
+
+        [HttpPost("Register")]
+        [AllowAnonymous]
+        public async Task<IActionResult> Register([FromBody] RegistrationResource registrationResource)
+        {
+            var user = _mapper.Map<RegistrationResource, User>(registrationResource);
+            var result = await _authService.Registration(user, registrationResource.Password);
+            if (!result.Success && result.IsException)
+                return StatusCode(500, result.Message);
+
+            if (!result.Success)
+                return BadRequest(result.Message);
+
+            return Ok();
         }
     }
 }

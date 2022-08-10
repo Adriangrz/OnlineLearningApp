@@ -15,5 +15,6 @@ namespace OnlineLearningAppApi.Services.Interfaces
         Task<BaseResponse<ResponseTokenData>> RefreshToken(RequestTokenData model);
         DateTime GetTokenExpirationDate(string token);
         ResponseTokenData GenerateJWT(User userInfo, List<string> userRoles, string refreshToken);
+        Task<BaseResponse<User>> Registration(User userData, string password);
     }
 }

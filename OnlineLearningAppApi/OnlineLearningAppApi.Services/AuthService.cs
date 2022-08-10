@@ -29,6 +29,27 @@ namespace OnlineLearningAppApi.Services
             _userManager = userManager;
             _unitOfWork = unitOfWork;
         }
+        public async Task<BaseResponse<User>> Registration(User userData, string password)
+        {
+            try
+            {
+                if (await _userManager.FindByEmailAsync(userData.Email) is not null)
+                    return new BaseResponse<User>(false, "Użytkownik już istnieje.");
+
+                var result = await _userManager.CreateAsync(userData, password);
+                if (!result.Succeeded)
+                    return new BaseResponse<User>(false, "Nie udało się utworzyć użytkownika.");
+
+                await _userManager.AddToRoleAsync(userData, AppRoles.User);
+
+                return new BaseResponse<User>(true, string.Empty, false, userData);
+            }
+            catch (Exception ex)
+            {
+                return new BaseResponse<User>(false, "Wystąpił błąd podczas przetwarzania uwierzytelniania", true);
+            }
+        }
+
         public async Task<BaseResponse<ResponseTokenData>> AuthenticationAsync(RequestTokenData loginCredentials)
         {
             try
@@ -101,7 +122,7 @@ namespace OnlineLearningAppApi.Services
             }
         }
 
-        private Token CreateRefreshToken(string clientId, Guid userId)
+        private Token CreateRefreshToken(string clientId, string userId)
         {
             return new Token()
             {

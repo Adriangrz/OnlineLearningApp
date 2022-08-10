@@ -10,6 +10,8 @@ namespace OnlineLearningAppApi.Mapping
         {
             CreateMap<LoginResource, RequestTokenData>();
             CreateMap<RefreshTokenResource, RequestTokenData>();
+            CreateMap<RegistrationResource, User>()
+                .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.Email));
         }
     }
 }

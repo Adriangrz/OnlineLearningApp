@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OnlineLearningAppApi.Database;
 
@@ -11,9 +12,10 @@ using OnlineLearningAppApi.Database;
 namespace OnlineLearningAppApi.Database.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220804194147_IdentityAndTokenAuth")]
+    partial class IdentityAndTokenAuth
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,15 +53,15 @@ namespace OnlineLearningAppApi.Database.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "794d7973-a1ab-407e-a9e5-c5fd89818e6d",
-                            ConcurrencyStamp = "a685ac8c-7dbb-4ce0-b40a-4eab907074ae",
+                            Id = "ad22f956-1969-4f11-a989-cca903257c68",
+                            ConcurrencyStamp = "b6f2859f-ac07-4ccd-af98-f945da11da2f",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "27d1f0fe-d2eb-4dd2-b5cf-9a05896c9d9b",
-                            ConcurrencyStamp = "f5394ae2-02e0-4188-8697-7b964b410a8f",
+                            Id = "3c96d978-37ba-43ae-845d-7584f37e6ad7",
+                            ConcurrencyStamp = "bb77c2a5-5b15-469b-82e4-c9f4b5fa8520",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -154,13 +156,13 @@ namespace OnlineLearningAppApi.Database.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "930dec17-2d6e-4740-bb0d-41f23c427396",
-                            RoleId = "794d7973-a1ab-407e-a9e5-c5fd89818e6d"
+                            UserId = "45792f46-ca3a-4cc7-a4a5-f110f7837e9d",
+                            RoleId = "ad22f956-1969-4f11-a989-cca903257c68"
                         },
                         new
                         {
-                            UserId = "930dec17-2d6e-4740-bb0d-41f23c427396",
-                            RoleId = "27d1f0fe-d2eb-4dd2-b5cf-9a05896c9d9b"
+                            UserId = "45792f46-ca3a-4cc7-a4a5-f110f7837e9d",
+                            RoleId = "3c96d978-37ba-43ae-845d-7584f37e6ad7"
                         });
                 });
 
@@ -295,22 +297,22 @@ namespace OnlineLearningAppApi.Database.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "930dec17-2d6e-4740-bb0d-41f23c427396",
+                            Id = "45792f46-ca3a-4cc7-a4a5-f110f7837e9d",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "fd5487a1-5975-43d1-a921-165b5e6ce9fb",
+                            ConcurrencyStamp = "b8004a8d-5b5c-4052-ad98-aecf635fb984",
                             Email = "admin@test.pl",
                             EmailConfirmed = true,
                             FirstName = "Antek",
                             LastName = "Kowalski",
                             LockoutEnabled = true,
                             NormalizedEmail = "ADMIN@TEST.PL",
-                            NormalizedUserName = "ADMIN@TEST.PL",
-                            PasswordHash = "AQAAAAEAACcQAAAAENkT9FZ0aM5ZD8h5rzR3zxqZkmmzUcBTyj/1OVcbzg2UU0CVt5cEauFiUYobVZrW3Q==",
+                            NormalizedUserName = "ANTEK",
+                            PasswordHash = "AQAAAAEAACcQAAAAEIB52UcSUF1BYWrGENeWvk9pZ4FA51c7FQg3p+OHa+8bUylUXLZo3pKmoWAsepJ9Dw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "f922b84e-de5e-4d4d-896f-07132231588e",
+                            SecurityStamp = "62457915-fd1a-4bee-89d8-67f2a8c49f38",
                             SiteRules = true,
                             TwoFactorEnabled = false,
-                            UserName = "admin@test.pl"
+                            UserName = "Antek Kowalski"
                         });
                 });
 

@@ -7,9 +7,10 @@ using System.Threading.Tasks;
 
 namespace OnlineLearningAppApi.Models
 {
-    public class User : IdentityUser<Guid>
+    public class User : IdentityUser
     {
-        public string Surname { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
         public bool SiteRules { get; set; }
         public ICollection<Token> Tokens { get; set; }
     }
