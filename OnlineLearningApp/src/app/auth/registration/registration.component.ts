@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { ResponseToRegistrationRequest } from '../interfaces/response-to-registration-request.interface';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-registration',
@@ -8,8 +11,8 @@ import { FormBuilder, Validators } from '@angular/forms';
 })
 export class RegistrationComponent {
   registrationForm = this.fb.group({
-    firstName: ['', Validators.required],
-    lastName: ['', Validators.required],
+    firstName: ['', [Validators.required, Validators.pattern(/^\p{L}+$/u)]],
+    lastName: ['', [Validators.required, Validators.pattern(/^\p{L}+$/u)]],
     email: ['', [Validators.required, Validators.email]],
     password: [
       '',
@@ -21,6 +24,8 @@ export class RegistrationComponent {
     ],
     siteRules: [false, Validators.requiredTrue],
   });
+  responseToRegistrationRequest?: ResponseToRegistrationRequest;
+  isBeingProcessed: boolean = false;
 
   get firstName() {
     return this.registrationForm.get('firstName')!;
@@ -61,9 +66,27 @@ export class RegistrationComponent {
     );
   }
 
-  constructor(private fb: FormBuilder) {}
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private router: Router
+  ) {}
 
   onSubmit() {
+    this.isBeingProcessed = true;
+    this.authService
+      .register({
+        ...this.registrationForm.value,
+      })
+      .subscribe((data: ResponseToRegistrationRequest) => {
+        this.responseToRegistrationRequest = data;
+        if (this.responseToRegistrationRequest.isSuccess) {
+          this.router.navigate(['/logowanie']);
+          this.isBeingProcessed = false;
+          return;
+        }
+        this.isBeingProcessed = false;
+      });
     console.log(this.registrationForm.value);
   }
 }

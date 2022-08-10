@@ -3,6 +3,28 @@
   (ngSubmit)="onSubmit()"
   class="registration-form"
 >
+  <div
+    *ngIf="
+      responseToRegistrationRequest &&
+      !responseToRegistrationRequest.isSuccess &&
+      responseToRegistrationRequest.responseStatus >= 500
+    "
+    class="alert alert-danger"
+    role="alert"
+  >
+    Wystąpił błąd podczas przetwarzania uwierzytelniania.
+  </div>
+  <div
+    *ngIf="
+      responseToRegistrationRequest &&
+      !responseToRegistrationRequest.isSuccess &&
+      responseToRegistrationRequest.responseStatus < 500
+    "
+    class="alert alert-warning"
+    role="alert"
+  >
+    {{ this.responseToRegistrationRequest.responseErrorMessage }}
+  </div>
   <div class="form-floating mb-3">
     <input
       type="text"
@@ -20,6 +42,12 @@
       class="invalid-feedback"
     >
       Imię jest wymagane
+    </div>
+    <div
+      class="invalid-feedback"
+      *ngIf="!firstNameIsValid && firstName.errors?.['pattern']"
+    >
+      Użyj co najmniej ośmiu znaków, w tym jednocześnie liter, cyfr i symboli
     </div>
   </div>
   <div class="form-floating mb-3">
@@ -106,7 +134,7 @@
   <button
     type="submit"
     class="registration-form__btn-submit btn btn-primary w-100 mb-2"
-    [disabled]="registrationForm.invalid"
+    [disabled]="registrationForm.invalid || isBeingProcessed"
   >
     Zarejestruj
   </button>

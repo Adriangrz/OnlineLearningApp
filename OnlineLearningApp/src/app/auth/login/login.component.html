@@ -1,9 +1,9 @@
 <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
   <div
     *ngIf="
-      loginRequestDataReturned &&
-      !loginRequestDataReturned.isSuccess &&
-      loginRequestDataReturned.responseStatus !== 401
+      responseToLoginRequest &&
+      !responseToLoginRequest.isSuccess &&
+      responseToLoginRequest.responseStatus >= 500
     "
     class="alert alert-danger"
     role="alert"
@@ -12,14 +12,14 @@
   </div>
   <div
     *ngIf="
-      loginRequestDataReturned &&
-      !loginRequestDataReturned.isSuccess &&
-      loginRequestDataReturned.responseStatus === 401
+      responseToLoginRequest &&
+      !responseToLoginRequest.isSuccess &&
+      responseToLoginRequest.responseStatus < 500
     "
     class="alert alert-warning"
     role="alert"
   >
-    {{ this.loginRequestDataReturned.responseErrorMessage }}
+    {{ this.responseToLoginRequest.responseErrorMessage }}
   </div>
   <div class="form-floating mb-3">
     <input

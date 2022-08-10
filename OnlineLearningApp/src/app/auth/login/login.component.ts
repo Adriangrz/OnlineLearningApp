@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { LoginRequestDataReturned } from '../interfaces/login-request-data-returned.interface';
+import { ResponseToLoginRequest } from '../interfaces/response-to-login-request.interface';
 import { AuthService } from '../services/auth.service';
 
 @Component({
@@ -14,7 +14,7 @@ export class LoginComponent {
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required, Validators.minLength(8)]],
   });
-  loginRequestDataReturned?: LoginRequestDataReturned;
+  responseToLoginRequest?: ResponseToLoginRequest;
   isBeingProcessed: boolean = false;
 
   get email() {
@@ -44,10 +44,12 @@ export class LoginComponent {
   onSubmit() {
     this.isBeingProcessed = true;
     this.authService
-      .login(this.loginForm.value.email, this.loginForm.value.password)
-      .subscribe((data: LoginRequestDataReturned) => {
-        this.loginRequestDataReturned = data;
-        if (this.loginRequestDataReturned.isSuccess) {
+      .login({
+        ...this.loginForm.value,
+      })
+      .subscribe((data: ResponseToLoginRequest) => {
+        this.responseToLoginRequest = data;
+        if (this.responseToLoginRequest.isSuccess) {
           this.router.navigate(['/']);
           this.isBeingProcessed = false;
           return;

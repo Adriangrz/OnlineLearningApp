@@ -1,4 +1,4 @@
-export interface LoginRequestDataReturned {
+export interface ResponseToLoginRequest {
   isSuccess: boolean;
   responseStatus: number;
   responseErrorMessage?: string;
