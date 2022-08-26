@@ -9,6 +9,7 @@ import { AuthModule } from './auth/auth.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { HomeComponent } from './home/home.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [AppComponent, HeaderComponent, HomeComponent],
@@ -18,6 +19,7 @@ import { HomeComponent } from './home/home.component';
     ReactiveFormsModule,
     HttpClientModule,
     AuthModule,
+    FontAwesomeModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

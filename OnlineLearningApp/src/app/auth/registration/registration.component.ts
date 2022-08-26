@@ -87,6 +87,5 @@ export class RegistrationComponent {
         }
         this.isBeingProcessed = false;
       });
-    console.log(this.registrationForm.value);
   }
 }

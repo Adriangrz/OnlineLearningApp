@@ -19,10 +19,9 @@
               class="nav-link"
               [routerLinkActive]="['active']"
               [routerLinkActiveOptions]="{ exact: true }"
-              aria-current="page"
               routerLink="./"
             >
-              Strona główna
+              <fa-icon [icon]="faHome"></fa-icon> Główna
             </a>
           </li>
           <ul class="navbar-nav ms-lg-auto">
@@ -41,7 +40,6 @@
                   class="nav-link"
                   [routerLinkActive]="['active']"
                   [routerLinkActiveOptions]="{ exact: true }"
-                  aria-current="page"
                   routerLink="./logowanie"
                   >Logowanie</a
                 >
@@ -51,7 +49,6 @@
                   class="nav-link"
                   [routerLinkActive]="['active']"
                   [routerLinkActiveOptions]="{ exact: true }"
-                  aria-current="page"
                   routerLink="./rejestracja"
                   >Rejestracja</a
                 >

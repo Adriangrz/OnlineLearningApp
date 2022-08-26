@@ -1,7 +1,11 @@
-@import "~bootstrap/scss/_functions.scss";
-@import "~bootstrap/scss/_variables.scss";
-@import "~bootstrap/scss/mixins/_breakpoints.scss";
+@import "../../../commons";
 
+:host {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
 .login-form {
   width: 240px;
