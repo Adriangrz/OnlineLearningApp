@@ -1,0 +1,42 @@
+<form
+  class="d-flex flex-md-row flex-column"
+  [formGroup]="teamNameForm"
+  (ngSubmit)="editTeamName()"
+>
+  <div class="flex-grow-1">
+    <label for="newTeamNameInput" class="visually-hidden"
+      >Nowa nazwa zespołu</label
+    >
+    <input
+      type="text"
+      class="form-control"
+      [ngClass]="{
+        'is-invalid': nameIsInvalid
+      }"
+      id="newTeamNameInput"
+      placeholder="Nowa nazwa zespołu"
+      formControlName="name"
+    />
+    <div
+      class="invalid-feedback"
+      *ngIf="nameIsInvalid && name.errors?.['required']"
+    >
+      Nazwa jest wymagana
+    </div>
+  </div>
+  <div class="ps-1 mt-md-0 mt-1">
+    <div class="btn-group" role="group">
+      <button type="submit" class="btn btn-primary" aria-label="Save new name">
+        Zmień
+      </button>
+      <button
+        type="button"
+        class="btn btn-secondary"
+        aria-label="Cancel name editing"
+        (click)="this.stopEditingTeamName.emit()"
+      >
+        Anuluj
+      </button>
+    </div>
+  </div>
+</form>

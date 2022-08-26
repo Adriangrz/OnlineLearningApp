@@ -1,0 +1,148 @@
+<div
+  class="modal fade"
+  id="teamManagement-modal"
+  tabindex="-1"
+  aria-labelledby="teamManagement-modal"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="teamManagement-modal">
+          Zarządzaj zespołem
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <ng-container *ngIf="!isTeamNameBeingEdited; else editTeamName">
+          <div class="d-flex flex-column">
+            <div class="d-flex justify-content-between align-items-center">
+              <h6 class="m-0">Nazwa</h6>
+              <button
+                class="h6 fw-normal p-0 m-0 modal-dialog__edit-team-name-btn border border-0 bg-white text-nowrap"
+                type="button"
+                (click)="isTeamNameBeingEdited = true"
+              >
+                <fa-icon [icon]="faPen" size="sm"></fa-icon> Edytuj
+              </button>
+            </div>
+            <p class="p-0 m-0 text-break">
+              Ptg podstawy tworzenia gier komputerowych 2021/2022
+            </p>
+          </div>
+        </ng-container>
+        <ng-template #editTeamName>
+          <h6 class="m-0">Nazwa</h6>
+          <app-edit-team-name
+            (stopEditingTeamName)="stopEditingTeamName()"
+          ></app-edit-team-name>
+        </ng-template>
+        <div class="mt-1">
+          <h6 class="text-center">Właściciel</h6>
+          <div class="user d-flex align-items-center justify-content-center">
+            <img
+              src="https://placeimg.com/48/48/people"
+              class="user__image rounded-circle"
+              alt="User thumbnail"
+            />
+            <p class="m-0 mx-2 text-center text-truncate">Antek Wolski</p>
+            <div class="dropdown more-settings">
+              <button
+                class="border border-0 more-settings__btn"
+                type="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <fa-icon [icon]="faEllipsis"></fa-icon>
+              </button>
+              <ul class="dropdown-menu">
+                <li>
+                  <button
+                    type="button"
+                    class="more-settings__item dropdown-item d-flex align-items-center"
+                    data-bs-target="#userDetails-modal"
+                    data-bs-toggle="modal"
+                  >
+                    <fa-icon [icon]="faCircleInfo"></fa-icon>
+                    <p class="text-start p-0 m-0 ms-1">Szczegóły</p>
+                  </button>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="mt-1">
+          <ng-container *ngIf="!isUserBeingAdded; else addUser">
+            <div class="mb-2 d-flex justify-content-between align-items-center">
+              <h6 class="m-0">Członkowie</h6>
+              <button
+                class="h6 fw-normal p-0 m-0 modal-dialog__edit-team-name-btn border border-0 bg-white text-nowrap"
+                type="button"
+                (click)="isUserBeingAdded = true"
+              >
+                <fa-icon [icon]="faPlus" size="sm"></fa-icon> Dodaj
+              </button>
+            </div>
+          </ng-container>
+          <ng-template #addUser>
+            <h6 class="m-0">Członkowie</h6>
+            <app-add-team-member
+              (stopAddingTeamMember)="stopAddingTeamMember()"
+            ></app-add-team-member>
+          </ng-template>
+          <div class="user d-flex align-items-center justify-content-center">
+            <img
+              src="https://placeimg.com/48/48/people"
+              class="user__image rounded-circle"
+              alt="User thumbnail"
+            />
+            <p class="m-0 mx-2 text-center text-truncate">Jan Nowak</p>
+            <div class="dropdown more-settings">
+              <button
+                class="border border-0 more-settings__btn"
+                type="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <fa-icon [icon]="faEllipsis"></fa-icon>
+              </button>
+              <ul class="dropdown-menu">
+                <li>
+                  <button
+                    type="button"
+                    class="more-settings__item dropdown-item d-flex align-items-center"
+                    data-bs-target="#teamMemberDetails-modal"
+                    data-bs-toggle="modal"
+                  >
+                    <fa-icon [icon]="faCircleInfo"></fa-icon>
+                    <p class="text-start p-0 m-0 ms-1">Szczegóły</p>
+                  </button>
+                </li>
+                <li><hr class="dropdown-divider" /></li>
+                <li>
+                  <button
+                    type="button"
+                    class="more-settings__item dropdown-item d-flex align-items-center"
+                  >
+                    <fa-icon [icon]="faTrash"></fa-icon>
+                    <p class="text-start p-0 m-0 ms-1">Usuń</p>
+                  </button>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer d-flex justify-content-center">
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+          Wróć
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,14 @@
+@import "../../../commons";
+
+.team__image{
+    width: 75px;
+    height: 75px;
+}
+
+.team__link{
+    text-decoration: none;
+    color: black;
+    &:hover{
+        color: $primary;
+    }
+}

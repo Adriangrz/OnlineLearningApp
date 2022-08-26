@@ -1,0 +1,109 @@
+<div
+  class="mb-2 d-flex flex-column flex-sm-row justify-content-between align-items-center"
+>
+  <h3 class="m-0">Zespoły</h3>
+  <button
+    class="btn btn-primary mt-2 mt-sm-0"
+    type="button"
+    data-bs-toggle="modal"
+    data-bs-target="#addTeam-modal"
+  >
+    <fa-icon [icon]="faPlus"></fa-icon> Utwórz nowy zespół
+  </button>
+</div>
+<div class="accordion" id="accordion">
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="currentTeams-headingOne">
+      <button
+        class="accordion-button"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#currentTeams-collapseOne"
+        aria-expanded="true"
+        aria-controls="currentTeams-collapseOne"
+      >
+        Bieżące zespoły
+      </button>
+    </h2>
+    <div
+      id="currentTeams-collapseOne"
+      class="accordion-collapse collapse show"
+      aria-labelledby="currentTeams-headingOne"
+    >
+      <div class="px-2 px-lg-4 accordion-body">
+        <ul class="list-group list-group-flush">
+          <li
+            class="team list-group-item p-0 pb-1 pt-1 d-flex justify-content-between align-items-center"
+          >
+            <img
+              class="team__image img-thumbnail"
+              src="https://placeimg.com/75/75/tech"
+              alt="Team thumbnail"
+            />
+            <a routerLink="/" class="team__link stretched-link overflow-hidden">
+              <h6 class="p-0 m-0 text-truncate">
+                Nazwa zespołussssssssssssssssssssssssssss
+              </h6>
+            </a>
+            <div class="dropdown more-settings">
+              <button
+                class="border border-0 more-settings__btn"
+                type="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <fa-icon [icon]="faEllipsis"></fa-icon>
+              </button>
+              <ul class="dropdown-menu">
+                <li>
+                  <div
+                    class="more-settings__item dropdown-item d-flex align-items-center"
+                  >
+                    <fa-icon [icon]="faBoxArchive"></fa-icon>
+                    <p class="text-start p-0 m-0 ms-1">Zarchiwizuj</p>
+                  </div>
+                </li>
+                <li><hr class="dropdown-divider" /></li>
+                <li>
+                  <button
+                    type="button"
+                    class="more-settings__item dropdown-item d-flex align-items-center"
+                    data-bs-toggle="modal"
+                    data-bs-target="#teamManagement-modal"
+                  >
+                    <fa-icon [icon]="faGear"></fa-icon>
+                    <p class="text-start p-0 m-0 ms-1">Zarządzaj zespołem</p>
+                  </button>
+                </li>
+              </ul>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="archivedTeams-headingTwo">
+      <button
+        class="accordion-button collapsed"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#archivedTeams-collapseTwo"
+        aria-expanded="false"
+        aria-controls="archivedTeams-collapseTwo"
+      >
+        Zarchiwizowane
+      </button>
+    </h2>
+    <div
+      id="archivedTeams-collapseTwo"
+      class="accordion-collapse collapse"
+      aria-labelledby="archivedTeams-headingTwo"
+    >
+      <div class="accordion-body"></div>
+    </div>
+  </div>
+</div>
+<app-manage-team></app-manage-team>
+<app-add-team></app-add-team>
+<app-team-member-details></app-team-member-details>

@@ -1,0 +1,93 @@
+<div
+  class="modal fade"
+  id="addTeam-modal"
+  tabindex="-1"
+  aria-labelledby="addTeam-modal"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addTeam-modal">Utwórz zespół</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <form [formGroup]="teamForm" (ngSubmit)="addTeam()">
+        <div class="modal-body">
+          <div class="form-floating mb-3">
+            <input
+              type="text"
+              class="form-control"
+              id="teamNameFloatingInput"
+              placeholder="name@example.com"
+              formControlName="name"
+              [ngClass]="{
+                'is-invalid': nameIsInvalid
+              }"
+            />
+            <label for="teamNameFloatingInput">Nazwa zespołu</label>
+            <div
+              class="invalid-feedback"
+              *ngIf="nameIsInvalid && name.errors?.['required']"
+            >
+              Nazwa jest wymagana
+            </div>
+          </div>
+          <div>
+            <label for="teamImage" class="form-label"
+              >Wybierz awatar zespołu</label
+            >
+            <input
+              class="form-control"
+              [ngClass]="{
+                'is-invalid': imageIsInvalid
+              }"
+              type="file"
+              id="teamImage"
+              (change)="onTeamImageChange($event)"
+              (blur)="this.image.markAsTouched()"
+            />
+            <div
+              class="invalid-feedback"
+              *ngIf="imageIsInvalid && image.errors?.['required']"
+            >
+              Wybranie pliku jest wymagane i musi to byc obraz
+            </div>
+            <div
+              class="invalid-feedback"
+              *ngIf="imageIsInvalid && image.errors?.['image']"
+            >
+              Plik musi byc obrazem
+            </div>
+            <div
+              class="invalid-feedback"
+              *ngIf="imageIsInvalid && image.errors?.['tooBig']"
+            >
+              Rozmiar pliku obrazu musi być mniejszy niż 2 MB
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer d-flex justify-content-center">
+          <button
+            [disabled]="teamForm.invalid"
+            type="submit"
+            class="btn btn-primary"
+          >
+            Utwórz
+          </button>
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Anuluj
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

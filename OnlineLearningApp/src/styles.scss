@@ -3,3 +3,28 @@
 body {
   background-color: $background;
 }
+
+.more-settings__btn{
+  background-color: white;
+  &:hover{
+      fa-icon{
+          color: $primary;
+      }
+  }
+  &:focus{
+      fa-icon{
+          color: black;
+      }
+      background-color: $secondary;
+  }
+}
+
+.more-settings__item{
+  &:hover{
+      cursor: pointer;
+  }
+}
+
+.more-settings{
+  z-index: 3;
+}
