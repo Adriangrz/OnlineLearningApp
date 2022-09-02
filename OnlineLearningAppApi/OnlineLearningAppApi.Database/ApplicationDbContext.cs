@@ -1,12 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using OnlineLearningAppApi.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using OnlineLearningAppApi.Database.Entities;
 
 namespace OnlineLearningAppApi.Database
 {
@@ -21,6 +16,7 @@ namespace OnlineLearningAppApi.Database
         }
 
         public DbSet<Token> Tokens { get; set; }
+        public DbSet<Team> Teams { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -49,14 +45,14 @@ namespace OnlineLearningAppApi.Database
             builder.Entity<User>().HasData(admin);
             var adminRole = new IdentityRole()
             {
-                Name = AppRoles.Admin,
-                NormalizedName = AppRoles.Admin.ToUpper(),
+                Name = "Admin",
+                NormalizedName = "Admin".ToUpper(),
                 ConcurrencyStamp = Guid.NewGuid().ToString(),
             };
             var userRole = new IdentityRole()
             {
-                Name = AppRoles.User,
-                NormalizedName = AppRoles.User.ToUpper(),
+                Name = "User",
+                NormalizedName = "User".ToUpper(),
                 ConcurrencyStamp = Guid.NewGuid().ToString(),
             };
             builder.Entity<IdentityRole>().HasData(

@@ -4,8 +4,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using NLog.Web;
 using OnlineLearningAppApi.Database;
-using OnlineLearningAppApi.Models;
+using OnlineLearningAppApi.Database.Entities;
+using OnlineLearningAppApi.Middleware;
 using OnlineLearningAppApi.Repositories;
 using OnlineLearningAppApi.Repositories.Interfaces;
 using OnlineLearningAppApi.Services;
@@ -15,10 +17,12 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Host.UseNLog();
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("CorsPolicy",
-        builder => builder.AllowAnyOrigin()
+        b => b.WithOrigins(builder.Configuration["AllowedOrigins"])
         .AllowAnyMethod()
         .AllowAnyHeader());
 });
@@ -26,7 +30,7 @@ builder.Services.AddCors(options =>
 builder.Services.AddControllers().AddFluentValidation(opt =>
 {
     opt.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly());
-    opt.LocalizationEnabled = false;
+    opt.LocalizationEnabled = true;
 });
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -111,6 +115,8 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped<UnitOfWork>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<ITeamService, TeamService>();
+builder.Services.AddScoped<ErrorHandlingMiddleware>();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
@@ -122,6 +128,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+app.UseMiddleware<ErrorHandlingMiddleware>();
 app.UseHttpsRedirection();
 
 app.UseCors("CorsPolicy");

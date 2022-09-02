@@ -1,11 +1,11 @@
 ﻿using FluentValidation;
-using OnlineLearningAppApi.Models.ApiModels;
+using OnlineLearningAppApi.Models;
 
 namespace OnlineLearningAppApi.Validators
 {
-    public class RegistrationValidator : AbstractValidator<RegistrationResource>
+    public class RegistrationDtoValidator : AbstractValidator<RegistrationDto>
     {
-        public RegistrationValidator()
+        public RegistrationDtoValidator()
         {
             RuleFor(x => x.FirstName).NotEmpty().Matches(@"^\p{L}+$");
             RuleFor(x => x.LastName).NotEmpty().Matches(@"^\p{L}+$");

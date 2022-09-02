@@ -1,125 +1,110 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using OnlineLearningAppApi.Database.Entities;
 using OnlineLearningAppApi.Models;
-using OnlineLearningAppApi.Models.ApiModels;
 using OnlineLearningAppApi.Repositories;
-using OnlineLearningAppApi.Services.Communication;
+using OnlineLearningAppApi.Services.Exceptions;
 using OnlineLearningAppApi.Services.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Configuration;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace OnlineLearningAppApi.Services
 {
     public class AuthService : IAuthService
     {
+        private readonly IMapper _mapper;
         private readonly IConfiguration _configuration;
         private readonly UserManager<User> _userManager;
         private readonly UnitOfWork _unitOfWork;
 
-        public AuthService(UserManager<User> userManager, IConfiguration configuration, UnitOfWork unitOfWork)
+        public AuthService(UserManager<User> userManager, IConfiguration configuration, UnitOfWork unitOfWork, IMapper mapper)
         {
             _configuration = configuration;
             _userManager = userManager;
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
-        public async Task<BaseResponse<User>> Registration(User userData, string password)
+        public async Task RegistrationAsync(RegistrationDto registrationDto)
         {
-            try
-            {
-                if (await _userManager.FindByEmailAsync(userData.Email) is not null)
-                    return new BaseResponse<User>(false, "Użytkownik już istnieje.");
+            var userData = _mapper.Map<User>(registrationDto);
 
-                var result = await _userManager.CreateAsync(userData, password);
-                if (!result.Succeeded)
-                    return new BaseResponse<User>(false, "Nie udało się utworzyć użytkownika.");
+            if (await _userManager.FindByEmailAsync(userData.Email) is not null)
+                throw new BadRequestException("Użytkownik już istnieje");
 
-                await _userManager.AddToRoleAsync(userData, AppRoles.User);
+            var result = await _userManager.CreateAsync(userData, registrationDto.Password);
+            if (!result.Succeeded)
+                throw new Exception();
 
-                return new BaseResponse<User>(true, string.Empty, false, userData);
-            }
-            catch (Exception ex)
-            {
-                return new BaseResponse<User>(false, "Wystąpił błąd podczas przetwarzania uwierzytelniania", true);
-            }
+            result = await _userManager.AddToRoleAsync(userData, "User");
+            if (!result.Succeeded)
+                throw new Exception();
         }
 
-        public async Task<BaseResponse<ResponseTokenData>> AuthenticationAsync(RequestTokenData loginCredentials)
+        public async Task<ResponseTokenData> AuthenticationAsync(LoginDto loginDto)
         {
-            try
+            var loginCredentials = _mapper.Map<RequestTokenData>(loginDto);
+
+            var user = await _userManager.FindByEmailAsync(loginCredentials.Email);
+
+            if (user is null)
+                throw new UnauthorizedException("Nieprawidłowa nazwa użytkownika lub hasło");
+
+            if (await _userManager.IsLockedOutAsync(user))
+                throw new UnauthorizedException("Użytkownik jest zablokowany");
+
+            if (!await _userManager.CheckPasswordAsync(user, loginCredentials.Password))
             {
-                var user = await _userManager.FindByEmailAsync(loginCredentials.Email);
-
-                if (user is null)
-                    return new BaseResponse<ResponseTokenData>(false, "Nieprawidłowe dane logowania.");
-
-                if (await _userManager.IsLockedOutAsync(user))
-                    return new BaseResponse<ResponseTokenData>(false, "Użytkownik jest zablokowany.");
-
-                if (!await _userManager.CheckPasswordAsync(user, loginCredentials.Password))
-                {
-                    await _userManager.AccessFailedAsync(user);
-                    return new BaseResponse<ResponseTokenData>(false, "Nieprawidłowe dane logowania.");
-                }
-
-                var userRoles = await _userManager.GetRolesAsync(user);
-
-                if (userRoles is null)
-                    return new BaseResponse<ResponseTokenData>(false, "Użytkownik nie ma przypisanej roli.");
-
-                await _userManager.ResetAccessFailedCountAsync(user);
-
-                var rt = CreateRefreshToken(loginCredentials.ClientId, user.Id);
-
-                await _unitOfWork.Repository<Token>().Insert(rt);
-                _unitOfWork.SaveChanges();
-
-                var t = GenerateJWT(user, userRoles.ToList(), rt.Value);
-
-                return new BaseResponse<ResponseTokenData>(true, string.Empty, false, t);
+                await _userManager.AccessFailedAsync(user);
+                throw new UnauthorizedException("Nieprawidłowa nazwa użytkownika lub hasło");
             }
-            catch (Exception ex)
-            {
-                return new BaseResponse<ResponseTokenData>(false, "Wystąpił błąd podczas przetwarzania uwierzytelniania", true);
-            }
+
+            var userRoles = await _userManager.GetRolesAsync(user);
+
+            if (userRoles is null)
+                throw new UnauthorizedException("Użytkownik nie ma przypisanej roli");
+
+            await _userManager.ResetAccessFailedCountAsync(user);
+
+            var rt = CreateRefreshToken(loginCredentials.ClientId, user.Id);
+
+            await _unitOfWork.Repository<Token>().Insert(rt);
+            _unitOfWork.SaveChanges();
+
+            var t = GenerateJWT(user, userRoles.ToList(), rt.Value);
+
+            return t;
+
         }
 
-        public async Task<BaseResponse<ResponseTokenData>> RefreshToken(RequestTokenData model)
+        public async Task<ResponseTokenData> RefreshTokenAsync(RefreshTokenDto refreshTokenDto)
         {
-            try
-            {
-                var rt = await _unitOfWork.Repository<Token>().GetBy(t => t.ClientId == model.ClientId && t.Value == model.RefreshToken);
+            var model = _mapper.Map<RequestTokenData>(refreshTokenDto);
 
-                if (rt is null)
-                    return new BaseResponse<ResponseTokenData>(false, "Brak tokena odświeżania.");
+            var rt = await _unitOfWork.Repository<Token>().GetBy(t => t.ClientId == model.ClientId && t.Value == model.RefreshToken);
 
-                var user = await _userManager.FindByIdAsync(rt.UserId.ToString());
-                if (user is null)
-                    return new BaseResponse<ResponseTokenData>(false, "Użytkownik nie istnieje.");
+            if (rt is null)
+                throw new UnauthorizedException("Brak tokena odświeżania");
 
-                var rtNew = CreateRefreshToken(rt.ClientId, rt.UserId);
+            var user = await _userManager.FindByIdAsync(rt.UserId.ToString());
+            if (user is null)
+                throw new UnauthorizedException("Użytkownik nie istnieje");
 
-                _unitOfWork.Repository<Token>().Delete(rt);
+            var rtNew = CreateRefreshToken(rt.ClientId, rt.UserId);
 
-                await _unitOfWork.Repository<Token>().Insert(rtNew);
+            _unitOfWork.Repository<Token>().Delete(rt);
 
-                _unitOfWork.SaveChanges();
+            await _unitOfWork.Repository<Token>().Insert(rtNew);
 
-                var userRoles = await _userManager.GetRolesAsync(user);
-                var response = GenerateJWT(user, userRoles.ToList(), rtNew.Value);
+            _unitOfWork.SaveChanges();
 
-                return new BaseResponse<ResponseTokenData>(true, string.Empty, false, response);
-            }
-            catch (Exception ex)
-            {
-                return new BaseResponse<ResponseTokenData>(false, "Wystąpił błąd podczas przetwarzania uwierzytelniania", true);
-            }
+            var userRoles = await _userManager.GetRolesAsync(user);
+            var response = GenerateJWT(user, userRoles.ToList(), rtNew.Value);
+
+            return response;
+
         }
 
         private Token CreateRefreshToken(string clientId, string userId)

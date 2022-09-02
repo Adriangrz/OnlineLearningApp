@@ -1,20 +1,14 @@
-﻿using OnlineLearningAppApi.Models;
-using OnlineLearningAppApi.Models.ApiModels;
-using OnlineLearningAppApi.Services.Communication;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using OnlineLearningAppApi.Database.Entities;
+using OnlineLearningAppApi.Models;
 
 namespace OnlineLearningAppApi.Services.Interfaces
 {
     public interface IAuthService
     {
-        Task<BaseResponse<ResponseTokenData>> AuthenticationAsync(RequestTokenData loginCredentials);
-        Task<BaseResponse<ResponseTokenData>> RefreshToken(RequestTokenData model);
+        Task<ResponseTokenData> AuthenticationAsync(LoginDto loginDto);
+        Task<ResponseTokenData> RefreshTokenAsync(RefreshTokenDto refreshTokenDto);
         DateTime GetTokenExpirationDate(string token);
         ResponseTokenData GenerateJWT(User userInfo, List<string> userRoles, string refreshToken);
-        Task<BaseResponse<User>> Registration(User userData, string password);
+        Task RegistrationAsync(RegistrationDto registrationDto);
     }
 }

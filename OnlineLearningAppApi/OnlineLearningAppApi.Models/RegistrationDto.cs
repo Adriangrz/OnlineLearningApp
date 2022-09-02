@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace OnlineLearningAppApi.Models.ApiModels
+﻿namespace OnlineLearningAppApi.Models
 {
-    public class RegistrationResource
+    public class RegistrationDto
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }

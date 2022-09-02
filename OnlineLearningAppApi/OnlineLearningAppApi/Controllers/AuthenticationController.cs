@@ -1,10 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using OnlineLearningAppApi.Database.Entities;
 using OnlineLearningAppApi.Models;
-using OnlineLearningAppApi.Models.ApiModels;
-using OnlineLearningAppApi.Services;
 using OnlineLearningAppApi.Services.Interfaces;
 
 namespace OnlineLearningAppApi.Controllers
@@ -14,55 +12,36 @@ namespace OnlineLearningAppApi.Controllers
     public class AuthenticationController : ControllerBase
     {
         private readonly IAuthService _authService;
-        private readonly IMapper _mapper;
-        public AuthenticationController(IAuthService authService, IMapper mapper)
+
+        public AuthenticationController(IAuthService authService)
         {
             _authService = authService;
-            _mapper = mapper;
         }
 
         // POST api/<AuthenticateController>/Login
         [HttpPost("Login")]
         [AllowAnonymous]
-        public async Task<IActionResult> Login([FromBody] LoginResource loginResource)
+        public async Task<ActionResult<ResponseTokenData>> Login([FromBody] LoginDto loginDto)
         {
-            var requestTokenData = _mapper.Map<LoginResource, RequestTokenData>(loginResource);
-            var result = await _authService.AuthenticationAsync(requestTokenData);
-            if (!result.Success && result.IsException)
-                return StatusCode(500, result.Message);
+            var responseTokenData = await _authService.AuthenticationAsync(loginDto);
 
-            if (!result.Success)
-                return Unauthorized(result.Message);
-
-            return Ok(result.Resource);
+            return Ok(responseTokenData);
         }
 
         [HttpPost("RefreshToken")]
         [AllowAnonymous]
-        public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenResource refreshTokenResource)
+        public async Task<ActionResult<ResponseTokenData>> RefreshToken([FromBody] RefreshTokenDto refreshTokenDto)
         {
-            var requestTokenData = _mapper.Map<RefreshTokenResource, RequestTokenData>(refreshTokenResource);
-            var result = await _authService.RefreshToken(requestTokenData);
-            if (!result.Success && result.IsException)
-                return StatusCode(500, result.Message);
+            var responseTokenData = await _authService.RefreshTokenAsync(refreshTokenDto);
 
-            if (!result.Success)
-                return Unauthorized(result.Message);
-
-            return Ok(result.Resource);
+            return Ok(responseTokenData);
         }
 
         [HttpPost("Register")]
         [AllowAnonymous]
-        public async Task<IActionResult> Register([FromBody] RegistrationResource registrationResource)
+        public async Task<ActionResult> Register([FromBody] RegistrationDto registrationDto)
         {
-            var user = _mapper.Map<RegistrationResource, User>(registrationResource);
-            var result = await _authService.Registration(user, registrationResource.Password);
-            if (!result.Success && result.IsException)
-                return StatusCode(500, result.Message);
-
-            if (!result.Success)
-                return BadRequest(result.Message);
+            await _authService.RegistrationAsync(registrationDto);
 
             return Ok();
         }

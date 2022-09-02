@@ -1,16 +1,11 @@
 ﻿using FluentValidation;
-using OnlineLearningAppApi.Models.ApiModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using OnlineLearningAppApi.Models;
 
 namespace OnlineLearningAppApi.Services.Validators
 {
-    public class LoginValidator : AbstractValidator<LoginResource>
+    public class LoginDtoValidator : AbstractValidator<LoginDto>
     {
-        public LoginValidator()
+        public LoginDtoValidator()
         {
             RuleFor(x => x.Email).NotEmpty().EmailAddress();
             RuleFor(x => x.Password).NotEmpty().MinimumLength(8);

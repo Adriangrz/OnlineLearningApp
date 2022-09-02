@@ -2,9 +2,9 @@
 
 namespace OnlineLearningAppApi.Mapping
 {
-    public class ModelToResourceProfile : Profile
+    public class ModelToDtoProfile : Profile
     {
-        public ModelToResourceProfile()
+        public ModelToDtoProfile()
         {
         }
     }
