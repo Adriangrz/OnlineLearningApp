@@ -1,10 +1,11 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using OnlineLearningAppApi.Database;
 using OnlineLearningAppApi.Database.Entities;
 using OnlineLearningAppApi.Models;
-using OnlineLearningAppApi.Repositories;
 using OnlineLearningAppApi.Services.Exceptions;
 using OnlineLearningAppApi.Services.Interfaces;
 using System.IdentityModel.Tokens.Jwt;
@@ -18,14 +19,14 @@ namespace OnlineLearningAppApi.Services
         private readonly IMapper _mapper;
         private readonly IConfiguration _configuration;
         private readonly UserManager<User> _userManager;
-        private readonly UnitOfWork _unitOfWork;
+        private readonly ApplicationDbContext _dbContext;
 
-        public AuthService(UserManager<User> userManager, IConfiguration configuration, UnitOfWork unitOfWork, IMapper mapper)
+        public AuthService(UserManager<User> userManager, IConfiguration configuration, IMapper mapper, ApplicationDbContext dbContext)
         {
             _configuration = configuration;
             _userManager = userManager;
-            _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _dbContext = dbContext;
         }
         public async Task RegistrationAsync(RegistrationDto registrationDto)
         {
@@ -70,8 +71,8 @@ namespace OnlineLearningAppApi.Services
 
             var rt = CreateRefreshToken(loginCredentials.ClientId, user.Id);
 
-            await _unitOfWork.Repository<Token>().Insert(rt);
-            _unitOfWork.SaveChanges();
+            await _dbContext.Tokens.AddAsync(rt);
+            await _dbContext.SaveChangesAsync();
 
             var t = GenerateJWT(user, userRoles.ToList(), rt.Value);
 
@@ -83,7 +84,7 @@ namespace OnlineLearningAppApi.Services
         {
             var model = _mapper.Map<RequestTokenData>(refreshTokenDto);
 
-            var rt = await _unitOfWork.Repository<Token>().GetBy(t => t.ClientId == model.ClientId && t.Value == model.RefreshToken);
+            var rt = await _dbContext.Tokens.FirstOrDefaultAsync(t => t.ClientId == model.ClientId && t.Value == model.RefreshToken);
 
             if (rt is null)
                 throw new UnauthorizedException("Brak tokena odświeżania");
@@ -94,11 +95,11 @@ namespace OnlineLearningAppApi.Services
 
             var rtNew = CreateRefreshToken(rt.ClientId, rt.UserId);
 
-            _unitOfWork.Repository<Token>().Delete(rt);
+            _dbContext.Tokens.Remove(rt);
 
-            await _unitOfWork.Repository<Token>().Insert(rtNew);
+            await _dbContext.Tokens.AddAsync(rtNew);
 
-            _unitOfWork.SaveChanges();
+            await _dbContext.SaveChangesAsync();
 
             var userRoles = await _userManager.GetRolesAsync(user);
             var response = GenerateJWT(user, userRoles.ToList(), rtNew.Value);

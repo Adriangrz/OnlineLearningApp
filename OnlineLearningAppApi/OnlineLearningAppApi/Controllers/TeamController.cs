@@ -9,11 +9,9 @@ namespace OnlineLearningAppApi.Controllers
     public class TeamController : ControllerBase
     {
         private readonly ITeamService _teamService;
-        private readonly IMapper _mapper;
         public TeamController(ITeamService teamService, IMapper mapper)
         {
             _teamService = teamService;
-            _mapper = mapper;
         }
     }
 }

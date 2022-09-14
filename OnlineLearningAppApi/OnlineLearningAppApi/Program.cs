@@ -1,5 +1,6 @@
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -8,9 +9,8 @@ using NLog.Web;
 using OnlineLearningAppApi.Database;
 using OnlineLearningAppApi.Database.Entities;
 using OnlineLearningAppApi.Middleware;
-using OnlineLearningAppApi.Repositories;
-using OnlineLearningAppApi.Repositories.Interfaces;
 using OnlineLearningAppApi.Services;
+using OnlineLearningAppApi.Services.Authorization;
 using OnlineLearningAppApi.Services.Interfaces;
 using System.Reflection;
 using System.Text;
@@ -112,10 +112,10 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-builder.Services.AddScoped<UnitOfWork>();
+builder.Services.AddScoped<IAuthorizationHandler, ResourceOperationRequirementHandler>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ITeamService, TeamService>();
+builder.Services.AddScoped<IUserContextService, UserContextService>();
 builder.Services.AddScoped<ErrorHandlingMiddleware>();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

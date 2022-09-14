@@ -21,27 +21,27 @@ namespace OnlineLearningAppApi.Controllers
         // POST api/<AuthenticateController>/Login
         [HttpPost("Login")]
         [AllowAnonymous]
-        public async Task<ActionResult<ResponseTokenData>> Login([FromBody] LoginDto loginDto)
+        public async Task<ActionResult<ResponseTokenData>> Login([FromBody] LoginDto dto)
         {
-            var responseTokenData = await _authService.AuthenticationAsync(loginDto);
+            var responseTokenData = await _authService.AuthenticationAsync(dto);
 
             return Ok(responseTokenData);
         }
 
         [HttpPost("RefreshToken")]
         [AllowAnonymous]
-        public async Task<ActionResult<ResponseTokenData>> RefreshToken([FromBody] RefreshTokenDto refreshTokenDto)
+        public async Task<ActionResult<ResponseTokenData>> RefreshToken([FromBody] RefreshTokenDto dto)
         {
-            var responseTokenData = await _authService.RefreshTokenAsync(refreshTokenDto);
+            var responseTokenData = await _authService.RefreshTokenAsync(dto);
 
             return Ok(responseTokenData);
         }
 
         [HttpPost("Register")]
         [AllowAnonymous]
-        public async Task<ActionResult> Register([FromBody] RegistrationDto registrationDto)
+        public async Task<ActionResult> Register([FromBody] RegistrationDto dto)
         {
-            await _authService.RegistrationAsync(registrationDto);
+            await _authService.RegistrationAsync(dto);
 
             return Ok();
         }
