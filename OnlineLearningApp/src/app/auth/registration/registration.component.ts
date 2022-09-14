@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ResponseToRegistrationRequest } from '../interfaces/response-to-registration-request.interface';
 import { AuthService } from '../services/auth.service';
 
 @Component({
@@ -24,8 +23,8 @@ export class RegistrationComponent {
     ],
     siteRules: [false, Validators.requiredTrue],
   });
-  responseToRegistrationRequest?: ResponseToRegistrationRequest;
   isBeingProcessed: boolean = false;
+  error: string | undefined;
 
   get firstName() {
     return this.registrationForm.get('firstName')!;
@@ -78,14 +77,15 @@ export class RegistrationComponent {
       .register({
         ...this.registrationForm.value,
       })
-      .subscribe((data: ResponseToRegistrationRequest) => {
-        this.responseToRegistrationRequest = data;
-        if (this.responseToRegistrationRequest.isSuccess) {
+      .subscribe({
+        next: () => {
           this.router.navigate(['/logowanie']);
           this.isBeingProcessed = false;
-          return;
-        }
-        this.isBeingProcessed = false;
+        },
+        error: (err) => {
+          this.error = err;
+          this.isBeingProcessed = false;
+        },
       });
   }
 }

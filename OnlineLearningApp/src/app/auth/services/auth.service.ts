@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { ResponseToken } from '../interfaces/response-token.interface';
-import { catchError, map, of, tap } from 'rxjs';
+import { catchError, map, of, tap, throwError } from 'rxjs';
 import { LoginData } from '../interfaces/login-data.interface';
 import { RegistrationData } from '../interfaces/registration-data.interface';
 
@@ -15,26 +15,19 @@ export class AuthService {
   private clientId: string = 'OnlineLearningApp';
   constructor(private http: HttpClient) {}
 
+  private handleError(error: HttpErrorResponse) {
+    if (error.status === 0 || error.status >= 500) {
+      return throwError(() => 'Coś poszło nie tak');
+    }
+    return throwError(() => error.error);
+  }
+
   register(registrationData: RegistrationData) {
     return this.http
-      .post('/api/Authentication/Register', {
+      .post<RegistrationData>('/api/Authentication/Register', {
         ...registrationData,
       })
-      .pipe(
-        map(() => {
-          return {
-            isSuccess: true,
-            responseStatus: 200,
-          };
-        }),
-        catchError((errorData: HttpErrorResponse) => {
-          return of({
-            isSuccess: false,
-            responseStatus: errorData.status,
-            responseErrorMessage: errorData.error,
-          });
-        })
-      );
+      .pipe(catchError(this.handleError));
   }
 
   login(loginData: LoginData) {
@@ -47,19 +40,7 @@ export class AuthService {
         tap((responseToken) =>
           this.doLoginUser(loginData.email, responseToken)
         ),
-        map(() => {
-          return {
-            isSuccess: true,
-            responseStatus: 200,
-          };
-        }),
-        catchError((errorData: HttpErrorResponse) => {
-          return of({
-            isSuccess: false,
-            responseStatus: errorData.status,
-            responseErrorMessage: errorData.error,
-          });
-        })
+        catchError(this.handleError)
       );
   }
 

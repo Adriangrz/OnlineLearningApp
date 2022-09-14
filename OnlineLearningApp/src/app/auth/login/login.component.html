@@ -1,25 +1,6 @@
 <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
-  <div
-    *ngIf="
-      responseToLoginRequest &&
-      !responseToLoginRequest.isSuccess &&
-      responseToLoginRequest.responseStatus >= 500
-    "
-    class="alert alert-danger"
-    role="alert"
-  >
-    Wystąpił błąd podczas przetwarzania uwierzytelniania.
-  </div>
-  <div
-    *ngIf="
-      responseToLoginRequest &&
-      !responseToLoginRequest.isSuccess &&
-      responseToLoginRequest.responseStatus < 500
-    "
-    class="alert alert-warning"
-    role="alert"
-  >
-    {{ this.responseToLoginRequest.responseErrorMessage }}
+  <div *ngIf="error" class="alert alert-danger" role="alert">
+    {{ error }}
   </div>
   <div class="form-floating mb-3">
     <input
