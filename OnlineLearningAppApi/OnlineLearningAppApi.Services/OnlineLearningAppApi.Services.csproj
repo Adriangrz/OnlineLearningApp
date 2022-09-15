@@ -9,13 +9,14 @@
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="11.0.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="6.0.9" />
     <PackageReference Include="Microsoft.AspNetCore.Cryptography.KeyDerivation" Version="6.0.8" />
+    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.22.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\OnlineLearningAppApi.Models\OnlineLearningAppApi.Models.csproj" />
-    <ProjectReference Include="..\OnlineLearningAppApi.Repositories\OnlineLearningAppApi.Repositories.csproj" />
   </ItemGroup>
 
 </Project>

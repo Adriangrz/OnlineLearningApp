@@ -26,7 +26,12 @@ namespace OnlineLearningAppApi.Database.Configuration
                 .WithMany(u => u.CreatedTeams)
                 .HasForeignKey(t => t.AdminId).OnDelete(DeleteBehavior.ClientCascade);
 
+            builder.HasOne<TeamImage>(t => t.TeamImage)
+                .WithOne(ti => ti.Team)
+                .HasForeignKey<TeamImage>(ti => ti.TeamId);
+
             builder.Property(t => t.IsArchived).HasDefaultValue(false);
+            builder.Property(t => t.ImagePath).IsRequired(false);
         }
     }
 }

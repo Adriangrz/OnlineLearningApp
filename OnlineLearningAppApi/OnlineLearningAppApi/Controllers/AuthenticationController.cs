@@ -18,9 +18,7 @@ namespace OnlineLearningAppApi.Controllers
             _authService = authService;
         }
 
-        // POST api/<AuthenticateController>/Login
         [HttpPost("Login")]
-        [AllowAnonymous]
         public async Task<ActionResult<ResponseTokenData>> Login([FromBody] LoginDto dto)
         {
             var responseTokenData = await _authService.AuthenticationAsync(dto);
@@ -29,7 +27,7 @@ namespace OnlineLearningAppApi.Controllers
         }
 
         [HttpPost("RefreshToken")]
-        [AllowAnonymous]
+        [Authorize]
         public async Task<ActionResult<ResponseTokenData>> RefreshToken([FromBody] RefreshTokenDto dto)
         {
             var responseTokenData = await _authService.RefreshTokenAsync(dto);
@@ -38,7 +36,6 @@ namespace OnlineLearningAppApi.Controllers
         }
 
         [HttpPost("Register")]
-        [AllowAnonymous]
         public async Task<ActionResult> Register([FromBody] RegistrationDto dto)
         {
             await _authService.RegistrationAsync(dto);

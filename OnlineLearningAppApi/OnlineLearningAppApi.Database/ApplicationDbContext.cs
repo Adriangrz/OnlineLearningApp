@@ -17,6 +17,8 @@ namespace OnlineLearningAppApi.Database
 
         public DbSet<Token> Tokens { get; set; }
         public DbSet<Team> Teams { get; set; }
+        public DbSet<TeamImage> TeamsImages { get; set; }
+        public DbSet<UserImage> UserImages { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
