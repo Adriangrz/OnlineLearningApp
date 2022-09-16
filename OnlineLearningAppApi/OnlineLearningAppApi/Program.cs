@@ -115,6 +115,7 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddScoped<IAuthorizationHandler, ResourceOperationRequirementHandler>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ITeamService, TeamService>();
+builder.Services.AddScoped<ITeamImageService, TeamImageService>();
 builder.Services.AddScoped<IUserContextService, UserContextService>();
 builder.Services.AddScoped<ErrorHandlingMiddleware>();
 
@@ -131,6 +132,7 @@ if (app.Environment.IsDevelopment())
 app.UseMiddleware<ErrorHandlingMiddleware>();
 app.UseHttpsRedirection();
 
+app.UseResponseCaching();
 app.UseCors("CorsPolicy");
 
 app.UseAuthentication();

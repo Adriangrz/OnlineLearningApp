@@ -14,6 +14,7 @@ namespace OnlineLearningAppApi.Mapping
                 .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.Email));
             CreateMap<CreateTeamDto, Team>();
             CreateMap<Team, TeamDto>();
+            CreateMap<TeamImage, TeamImageDto>();
         }
     }
 }

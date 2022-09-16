@@ -51,18 +51,19 @@ namespace OnlineLearningAppApi.Database.Migrations
                 nullable: true);
 
             migrationBuilder.CreateTable(
-                name: "TeamImage",
+                name: "TeamsImages",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Image = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
+                    Content = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
+                    ContentType = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     TeamId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TeamImage", x => x.Id);
+                    table.PrimaryKey("PK_TeamsImages", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_TeamImage_Teams_TeamId",
+                        name: "FK_TeamsImages_Teams_TeamId",
                         column: x => x.TeamId,
                         principalTable: "Teams",
                         principalColumn: "Id",
@@ -70,7 +71,7 @@ namespace OnlineLearningAppApi.Database.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserImage",
+                name: "UserImages",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -79,9 +80,9 @@ namespace OnlineLearningAppApi.Database.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserImage", x => x.Id);
+                    table.PrimaryKey("PK_UserImages", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_UserImage_AspNetUsers_UserId",
+                        name: "FK_UserImages_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
@@ -91,37 +92,37 @@ namespace OnlineLearningAppApi.Database.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "2103f81c-eba2-42cf-8e43-7a0462221b3e", "e754c461-3a1e-4a95-85d9-6b6dedacb787", "User", "USER" });
+                values: new object[] { "5323e08c-9d65-420c-8dc9-74157d6ba5bf", "aa523d39-eb85-401e-a3d9-1402b0c4cfa2", "User", "USER" });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "bb87eb81-67ac-499c-9191-22595fcc1d17", "8cfef5f4-21fc-4492-9524-4321da6f0838", "Admin", "ADMIN" });
+                values: new object[] { "c2844634-bd48-4093-abbf-22cd08d19635", "a6afa29b-ebca-4ed8-bbfa-3e78071a4bb6", "Admin", "ADMIN" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "ImagePath", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "SiteRules", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "60e06d9c-af33-42a3-82b1-513578255f70", 0, "d75f7fe8-3558-4ade-9b6c-fca3a966dc7c", "admin@test.pl", true, "Antek", null, "Kowalski", true, null, "ADMIN@TEST.PL", "ADMIN@TEST.PL", "AQAAAAEAACcQAAAAEKIbhAknPR2UpHAx5xXfjKNQEI2dAcVw7XooafTZgcflcXw9pLhMAyRzhqq2wpsGnw==", null, false, "1d7ab4ad-c52c-4bee-b2bc-7e103298461f", true, false, "admin@test.pl" });
+                values: new object[] { "dbe8547f-9f93-4c57-a396-b7d6cdc55069", 0, "40b49be8-14de-45c5-b4d7-46aaa577ba3a", "admin@test.pl", true, "Antek", null, "Kowalski", true, null, "ADMIN@TEST.PL", "ADMIN@TEST.PL", "AQAAAAEAACcQAAAAEIFpLTPTyZdQ7g8ZW7aUjKKgTfYYZQpZlaQscCHs+8L85sAhSg+L4vQ245B/e4yneA==", null, false, "1df0e673-26d7-4ff5-83fc-6cb02e6881a0", true, false, "admin@test.pl" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",
                 columns: new[] { "RoleId", "UserId" },
-                values: new object[] { "2103f81c-eba2-42cf-8e43-7a0462221b3e", "60e06d9c-af33-42a3-82b1-513578255f70" });
+                values: new object[] { "5323e08c-9d65-420c-8dc9-74157d6ba5bf", "dbe8547f-9f93-4c57-a396-b7d6cdc55069" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",
                 columns: new[] { "RoleId", "UserId" },
-                values: new object[] { "bb87eb81-67ac-499c-9191-22595fcc1d17", "60e06d9c-af33-42a3-82b1-513578255f70" });
+                values: new object[] { "c2844634-bd48-4093-abbf-22cd08d19635", "dbe8547f-9f93-4c57-a396-b7d6cdc55069" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_TeamImage_TeamId",
-                table: "TeamImage",
+                name: "IX_TeamsImages_TeamId",
+                table: "TeamsImages",
                 column: "TeamId",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserImage_UserId",
-                table: "UserImage",
+                name: "IX_UserImages_UserId",
+                table: "UserImages",
                 column: "UserId",
                 unique: true);
         }
@@ -129,35 +130,35 @@ namespace OnlineLearningAppApi.Database.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "TeamImage");
+                name: "TeamsImages");
 
             migrationBuilder.DropTable(
-                name: "UserImage");
+                name: "UserImages");
 
             migrationBuilder.DeleteData(
                 table: "AspNetUserRoles",
                 keyColumns: new[] { "RoleId", "UserId" },
-                keyValues: new object[] { "2103f81c-eba2-42cf-8e43-7a0462221b3e", "60e06d9c-af33-42a3-82b1-513578255f70" });
+                keyValues: new object[] { "5323e08c-9d65-420c-8dc9-74157d6ba5bf", "dbe8547f-9f93-4c57-a396-b7d6cdc55069" });
 
             migrationBuilder.DeleteData(
                 table: "AspNetUserRoles",
                 keyColumns: new[] { "RoleId", "UserId" },
-                keyValues: new object[] { "bb87eb81-67ac-499c-9191-22595fcc1d17", "60e06d9c-af33-42a3-82b1-513578255f70" });
+                keyValues: new object[] { "c2844634-bd48-4093-abbf-22cd08d19635", "dbe8547f-9f93-4c57-a396-b7d6cdc55069" });
 
             migrationBuilder.DeleteData(
                 table: "AspNetRoles",
                 keyColumn: "Id",
-                keyValue: "2103f81c-eba2-42cf-8e43-7a0462221b3e");
+                keyValue: "5323e08c-9d65-420c-8dc9-74157d6ba5bf");
 
             migrationBuilder.DeleteData(
                 table: "AspNetRoles",
                 keyColumn: "Id",
-                keyValue: "bb87eb81-67ac-499c-9191-22595fcc1d17");
+                keyValue: "c2844634-bd48-4093-abbf-22cd08d19635");
 
             migrationBuilder.DeleteData(
                 table: "AspNetUsers",
                 keyColumn: "Id",
-                keyValue: "60e06d9c-af33-42a3-82b1-513578255f70");
+                keyValue: "dbe8547f-9f93-4c57-a396-b7d6cdc55069");
 
             migrationBuilder.DropColumn(
                 name: "ImagePath",

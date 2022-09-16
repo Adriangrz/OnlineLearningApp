@@ -12,7 +12,7 @@ using OnlineLearningAppApi.Database;
 namespace OnlineLearningAppApi.Database.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220915103620_AddTeamImageAndUserImage")]
+    [Migration("20220916153606_AddTeamImageAndUserImage")]
     partial class AddTeamImageAndUserImage
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -53,15 +53,15 @@ namespace OnlineLearningAppApi.Database.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "bb87eb81-67ac-499c-9191-22595fcc1d17",
-                            ConcurrencyStamp = "8cfef5f4-21fc-4492-9524-4321da6f0838",
+                            Id = "c2844634-bd48-4093-abbf-22cd08d19635",
+                            ConcurrencyStamp = "a6afa29b-ebca-4ed8-bbfa-3e78071a4bb6",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "2103f81c-eba2-42cf-8e43-7a0462221b3e",
-                            ConcurrencyStamp = "e754c461-3a1e-4a95-85d9-6b6dedacb787",
+                            Id = "5323e08c-9d65-420c-8dc9-74157d6ba5bf",
+                            ConcurrencyStamp = "aa523d39-eb85-401e-a3d9-1402b0c4cfa2",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -156,13 +156,13 @@ namespace OnlineLearningAppApi.Database.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "60e06d9c-af33-42a3-82b1-513578255f70",
-                            RoleId = "bb87eb81-67ac-499c-9191-22595fcc1d17"
+                            UserId = "dbe8547f-9f93-4c57-a396-b7d6cdc55069",
+                            RoleId = "c2844634-bd48-4093-abbf-22cd08d19635"
                         },
                         new
                         {
-                            UserId = "60e06d9c-af33-42a3-82b1-513578255f70",
-                            RoleId = "2103f81c-eba2-42cf-8e43-7a0462221b3e"
+                            UserId = "dbe8547f-9f93-4c57-a396-b7d6cdc55069",
+                            RoleId = "5323e08c-9d65-420c-8dc9-74157d6ba5bf"
                         });
                 });
 
@@ -220,9 +220,13 @@ namespace OnlineLearningAppApi.Database.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<byte[]>("Image")
+                    b.Property<byte[]>("Content")
                         .IsRequired()
                         .HasColumnType("varbinary(max)");
+
+                    b.Property<string>("ContentType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("TeamId")
                         .HasColumnType("uniqueidentifier");
@@ -232,7 +236,7 @@ namespace OnlineLearningAppApi.Database.Migrations
                     b.HasIndex("TeamId")
                         .IsUnique();
 
-                    b.ToTable("TeamImage");
+                    b.ToTable("TeamsImages");
                 });
 
             modelBuilder.Entity("OnlineLearningAppApi.Database.Entities.Token", b =>
@@ -350,9 +354,9 @@ namespace OnlineLearningAppApi.Database.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "60e06d9c-af33-42a3-82b1-513578255f70",
+                            Id = "dbe8547f-9f93-4c57-a396-b7d6cdc55069",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "d75f7fe8-3558-4ade-9b6c-fca3a966dc7c",
+                            ConcurrencyStamp = "40b49be8-14de-45c5-b4d7-46aaa577ba3a",
                             Email = "admin@test.pl",
                             EmailConfirmed = true,
                             FirstName = "Antek",
@@ -360,9 +364,9 @@ namespace OnlineLearningAppApi.Database.Migrations
                             LockoutEnabled = true,
                             NormalizedEmail = "ADMIN@TEST.PL",
                             NormalizedUserName = "ADMIN@TEST.PL",
-                            PasswordHash = "AQAAAAEAACcQAAAAEKIbhAknPR2UpHAx5xXfjKNQEI2dAcVw7XooafTZgcflcXw9pLhMAyRzhqq2wpsGnw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEIFpLTPTyZdQ7g8ZW7aUjKKgTfYYZQpZlaQscCHs+8L85sAhSg+L4vQ245B/e4yneA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "1d7ab4ad-c52c-4bee-b2bc-7e103298461f",
+                            SecurityStamp = "1df0e673-26d7-4ff5-83fc-6cb02e6881a0",
                             SiteRules = true,
                             TwoFactorEnabled = false,
                             UserName = "admin@test.pl"
@@ -388,7 +392,7 @@ namespace OnlineLearningAppApi.Database.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("UserImage");
+                    b.ToTable("UserImages");
                 });
 
             modelBuilder.Entity("UserTeams", b =>
