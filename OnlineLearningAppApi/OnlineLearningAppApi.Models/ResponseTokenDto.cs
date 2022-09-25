@@ -1,6 +1,6 @@
 ﻿namespace OnlineLearningAppApi.Models
 {
-    public class ResponseTokenData
+    public class ResponseTokenDto
     {
         public string Token { get; set; }
         public DateTime Expiration { get; set; }

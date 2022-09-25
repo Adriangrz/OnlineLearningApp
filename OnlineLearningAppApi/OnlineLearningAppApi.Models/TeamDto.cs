@@ -6,6 +6,7 @@
         public string? ImagePath { get; set; }
         public string Name { get; set; }
         public string AdminId { get; set; }
+        public string Email { get; set; }
         public bool IsArchived { get; set; }
     }
 }

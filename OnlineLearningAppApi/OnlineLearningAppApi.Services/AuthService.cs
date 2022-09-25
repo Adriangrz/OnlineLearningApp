@@ -44,9 +44,9 @@ namespace OnlineLearningAppApi.Services
                 throw new Exception();
         }
 
-        public async Task<ResponseTokenData> AuthenticationAsync(LoginDto loginDto)
+        public async Task<ResponseTokenDto> AuthenticationAsync(LoginDto loginDto)
         {
-            var loginCredentials = _mapper.Map<RequestTokenData>(loginDto);
+            var loginCredentials = _mapper.Map<RequestTokenDto>(loginDto);
 
             var user = await _userManager.FindByEmailAsync(loginCredentials.Email);
 
@@ -80,9 +80,9 @@ namespace OnlineLearningAppApi.Services
 
         }
 
-        public async Task<ResponseTokenData> RefreshTokenAsync(RefreshTokenDto refreshTokenDto)
+        public async Task<ResponseTokenDto> RefreshTokenAsync(RefreshTokenDto refreshTokenDto)
         {
-            var model = _mapper.Map<RequestTokenData>(refreshTokenDto);
+            var model = _mapper.Map<RequestTokenDto>(refreshTokenDto);
 
             var rt = await _dbContext.Tokens.FirstOrDefaultAsync(t => t.ClientId == model.ClientId && t.Value == model.RefreshToken);
 
@@ -125,7 +125,7 @@ namespace OnlineLearningAppApi.Services
             return new JwtSecurityTokenHandler().ReadToken(token).ValidTo;
         }
 
-        public ResponseTokenData GenerateJWT(User userInfo, List<string> userRoles, string refreshToken)
+        public ResponseTokenDto GenerateJWT(User userInfo, List<string> userRoles, string refreshToken)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
 
@@ -155,7 +155,7 @@ namespace OnlineLearningAppApi.Services
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
 
-            return new ResponseTokenData()
+            return new ResponseTokenDto()
             {
                 Token = tokenHandler.WriteToken(token),
                 Expiration = GetTokenExpirationDate(tokenHandler.WriteToken(token)),

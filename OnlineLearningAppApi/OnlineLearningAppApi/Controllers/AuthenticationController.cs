@@ -19,7 +19,7 @@ namespace OnlineLearningAppApi.Controllers
         }
 
         [HttpPost("Login")]
-        public async Task<ActionResult<ResponseTokenData>> Login([FromBody] LoginDto dto)
+        public async Task<ActionResult<ResponseTokenDto>> Login([FromBody] LoginDto dto)
         {
             var responseTokenData = await _authService.AuthenticationAsync(dto);
 
@@ -27,8 +27,7 @@ namespace OnlineLearningAppApi.Controllers
         }
 
         [HttpPost("RefreshToken")]
-        [Authorize]
-        public async Task<ActionResult<ResponseTokenData>> RefreshToken([FromBody] RefreshTokenDto dto)
+        public async Task<ActionResult<ResponseTokenDto>> RefreshToken([FromBody] RefreshTokenDto dto)
         {
             var responseTokenData = await _authService.RefreshTokenAsync(dto);
 

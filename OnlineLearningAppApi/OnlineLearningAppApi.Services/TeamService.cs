@@ -27,6 +27,19 @@ namespace OnlineLearningAppApi.Services
             _authorizationService = authorizationService;
             _userContextService = userContextService;
         }
+
+        public async Task<Team> GetByIdAsync(Guid id)
+        {
+            var team = await _dbContext
+               .Teams.Include(t => t.Admin)
+               .FirstOrDefaultAsync(r => r.Id == id);
+
+            if (team is null)
+                throw new NotFoundException("Zespół nie istnieje");
+
+            return team;
+        }
+
         public async Task<TeamDto> CreateAsync(CreateTeamDto dto)
         {
             var team = _mapper.Map<Team>(dto);
@@ -34,40 +47,31 @@ namespace OnlineLearningAppApi.Services
             await _dbContext.Teams.AddAsync(team);
             await _dbContext.SaveChangesAsync();
 
+            team = await GetByIdAsync(team.Id);
+
             var teamDto = _mapper.Map<TeamDto>(team);
             return teamDto;
         }
 
-        public async Task<PagedResult<TeamDto>> GetAllAsync(TeamQuery query)
+        public async Task<List<TeamDto>> GetAllAsync(TeamQuery teamQuery)
         {
             var userId = _userContextService.GetUserId;
 
             var baseQuery = _dbContext
                 .Teams
-                .Where(t => t.AdminId == userId || t.Users.Any(u => u.Id == userId));
+                .Include(t => t.Admin)
+                .Where(t => (t.AdminId == userId || t.Users.Any(u => u.Id == userId)) && t.IsArchived == teamQuery.Archived);
 
             var teams = await baseQuery
-                .Skip(query.PageSize * (query.PageNumber - 1))
-                .Take(query.PageSize)
                 .ToListAsync();
-
-            var totalItemsCount = await baseQuery.CountAsync();
 
             var teamsDtos = _mapper.Map<List<TeamDto>>(teams);
 
-            var result = new PagedResult<TeamDto>(teamsDtos, totalItemsCount, query.PageSize, query.PageNumber);
-
-            return result;
+            return teamsDtos;
         }
         public async Task<TeamDto> UpdateAsync(Guid id, UpdateTeamDto dto)
         {
-            var team = await _dbContext
-                .Teams
-                .FirstOrDefaultAsync(r => r.Id == id);
-
-            if (team is null)
-                throw new NotFoundException("Zespół nie istnieje");
-
+            var team = await GetByIdAsync(id);
 
             var authorizationResult = _authorizationService.AuthorizeAsync(_userContextService.User, team.AdminId,
                 new ResourceOperationRequirement(ResourceOperation.Update)).Result;
@@ -83,6 +87,30 @@ namespace OnlineLearningAppApi.Services
             await _dbContext.SaveChangesAsync();
 
             var teamDto = _mapper.Map<TeamDto>(team);
+            return teamDto;
+        }
+
+        public async Task<TeamDto> UpdateTeamNameAsync(Guid id, UpdateTeamNameDto dto)
+        {
+            var team = await GetByIdAsync(id);
+
+            team.Name = dto.Name;
+
+            var updateTeamDto = _mapper.Map<UpdateTeamDto>(team);
+
+            var teamDto = await UpdateAsync(id,updateTeamDto);
+            return teamDto;
+        }
+
+        public async Task<TeamDto> UpdateTeamIsArchivedAsync(Guid id, UpdateTeamIsArchivedDto dto)
+        {
+            var team = await GetByIdAsync(id);
+
+            team.IsArchived = dto.IsArchived;
+
+            var updateTeamDto = _mapper.Map<UpdateTeamDto>(team);
+
+            var teamDto = await UpdateAsync(id, updateTeamDto);
             return teamDto;
         }
     }

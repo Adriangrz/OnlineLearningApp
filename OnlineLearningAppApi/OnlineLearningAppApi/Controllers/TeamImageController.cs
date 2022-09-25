@@ -8,7 +8,6 @@ namespace OnlineLearningAppApi.Controllers
 {
     [Route("api/Team/{teamId}/[controller]")]
     [ApiController]
-    [Authorize]
     public class TeamImageController : ControllerBase
     {
         private readonly ITeamImageService _teamImageService;
@@ -27,6 +26,7 @@ namespace OnlineLearningAppApi.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult> Upload([FromForm] IFormFile file, [FromRoute] Guid teamId)
         {
             await _teamImageService.UploadAsync(teamId, file);

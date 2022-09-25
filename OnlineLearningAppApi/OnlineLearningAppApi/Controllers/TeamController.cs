@@ -24,14 +24,30 @@ namespace OnlineLearningAppApi.Controllers
             return Ok(team);
         }
         [HttpGet]
-        public async Task<ActionResult<PagedResult<TeamDto>>> GetAll([FromQuery] TeamQuery query)
+        public async Task<ActionResult<List<TeamDto>>> GetAll([FromQuery] TeamQuery teamQuery)
         {
-            var result = await _teamService.GetAllAsync(query);
+            var result = await _teamService.GetAllAsync(teamQuery);
 
             return Ok(result);
         }
+        [HttpPut("{id}/IsArchived")]
+        public async Task<ActionResult<TeamDto>> UpdateTeamIsArchived([FromBody] UpdateTeamIsArchivedDto dto, [FromRoute] Guid id)
+        {
+
+            var team = await _teamService.UpdateTeamIsArchivedAsync(id, dto);
+
+            return Ok(team);
+        }
+        [HttpPut("{id}/Name")]
+        public async Task<ActionResult<TeamDto>> UpdateTeamName([FromBody] UpdateTeamNameDto dto, [FromRoute] Guid id)
+        {
+
+            var team = await _teamService.UpdateTeamNameAsync(id, dto);
+
+            return Ok(team);
+        }
         [HttpPut("{id}")]
-        public async Task<ActionResult<TeamDto>> UpdateAsync([FromBody] UpdateTeamDto dto, [FromRoute] Guid id)
+        public async Task<ActionResult<TeamDto>> Update([FromBody] UpdateTeamDto dto, [FromRoute] Guid id)
         {
 
             var team = await _teamService.UpdateAsync(id, dto);

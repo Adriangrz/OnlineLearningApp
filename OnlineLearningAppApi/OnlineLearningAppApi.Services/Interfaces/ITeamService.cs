@@ -5,8 +5,11 @@ namespace OnlineLearningAppApi.Services.Interfaces
 {
     public interface ITeamService
     {
+        Task<Team> GetByIdAsync(Guid id);
         Task<TeamDto> CreateAsync(CreateTeamDto dto);
-        Task<PagedResult<TeamDto>> GetAllAsync(TeamQuery query);
+        Task<List<TeamDto>> GetAllAsync(TeamQuery teamQuery);
         Task<TeamDto> UpdateAsync(Guid id, UpdateTeamDto dto);
+        Task<TeamDto> UpdateTeamIsArchivedAsync(Guid id, UpdateTeamIsArchivedDto dto);
+        Task<TeamDto> UpdateTeamNameAsync(Guid id, UpdateTeamNameDto dto);
     }
 }

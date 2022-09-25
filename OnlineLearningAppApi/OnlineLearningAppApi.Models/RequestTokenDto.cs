@@ -1,6 +1,6 @@
 ﻿namespace OnlineLearningAppApi.Models
 {
-    public class RequestTokenData
+    public class RequestTokenDto
     {
         public string Email { get; set; }
         public string Password { get; set; }

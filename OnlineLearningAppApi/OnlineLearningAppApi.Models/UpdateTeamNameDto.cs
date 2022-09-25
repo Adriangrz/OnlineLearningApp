@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace OnlineLearningAppApi.Models
 {
-    public class TeamQuery
+    public class UpdateTeamNameDto
     {
-        public bool Archived { get; set; } = false;
+        public string Name { get; set; }
     }
 }

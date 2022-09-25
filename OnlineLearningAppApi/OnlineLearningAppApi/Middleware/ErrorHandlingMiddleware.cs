@@ -19,6 +19,7 @@ namespace OnlineLearningAppApi.Middleware
             catch (ForbidException forbidException)
             {
                 context.Response.StatusCode = 403;
+                await context.Response.WriteAsync("Brak odpowiednich uprawnień");
             }
             catch (UnauthorizedException unauthorizedException)
             {

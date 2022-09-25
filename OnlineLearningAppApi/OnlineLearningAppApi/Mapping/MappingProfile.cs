@@ -8,13 +8,16 @@ namespace OnlineLearningAppApi.Mapping
     {
         public MappingProfile()
         {
-            CreateMap<LoginDto, RequestTokenData>();
-            CreateMap<RefreshTokenDto, RequestTokenData>();
+            CreateMap<LoginDto, RequestTokenDto>();
+            CreateMap<RefreshTokenDto, RequestTokenDto>();
             CreateMap<RegistrationDto, User>()
                 .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.Email));
             CreateMap<CreateTeamDto, Team>();
-            CreateMap<Team, TeamDto>();
+            CreateMap<Team, UpdateTeamDto>();
+            CreateMap<Team, TeamDto>().ForMember(dest=>dest.Email, opt=>opt.MapFrom(src=>src.Admin.Email));
             CreateMap<TeamImage, TeamImageDto>();
+            CreateMap<User, UserDto>();
+            CreateMap<User, UserDetailsDto>();
         }
     }
 }

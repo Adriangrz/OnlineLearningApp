@@ -24,12 +24,14 @@ namespace OnlineLearningAppApi.Services
         private readonly ApplicationDbContext _dbContext;
         private readonly IAuthorizationService _authorizationService;
         private readonly IUserContextService _userContextService;
-        public TeamImageService(IMapper mapper, ApplicationDbContext dbContext, IAuthorizationService authorizationService, IUserContextService userContextService)
+        private readonly ITeamService _teamService;
+        public TeamImageService(IMapper mapper, ApplicationDbContext dbContext, IAuthorizationService authorizationService, IUserContextService userContextService, ITeamService teamService)
         {
             _mapper = mapper;
             _dbContext = dbContext;
             _authorizationService = authorizationService;
             _userContextService = userContextService;
+            _teamService = teamService;
         }
         public async Task UploadAsync(Guid teamId, IFormFile file)
         {
@@ -75,21 +77,7 @@ namespace OnlineLearningAppApi.Services
 
         public async Task<TeamImageDto> GetImageAsync(Guid teamId)
         {
-            var team = await _dbContext
-                .Teams
-                .FirstOrDefaultAsync(r => r.Id == teamId);
-
-            if (team is null)
-                throw new NotFoundException("Zespół nie istnieje");
-
-
-            var authorizationResult = _authorizationService.AuthorizeAsync(_userContextService.User, team.AdminId,
-                new ResourceOperationRequirement(ResourceOperation.Update)).Result;
-
-            if (!authorizationResult.Succeeded)
-            {
-                throw new ForbidException();
-            }
+            var team = await _teamService.GetByIdAsync(teamId);
 
             var image = await _dbContext
                .TeamsImages
