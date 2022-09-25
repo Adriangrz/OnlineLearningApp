@@ -1,4 +1,5 @@
 <div
+  #teamMemberDetailsModal
   class="modal fade"
   id="teamMemberDetails-modal"
   tabindex="-1"
@@ -20,10 +21,28 @@
       </div>
       <div class="modal-body">
         <div
+          *ngIf="error"
+          class="alert alert-danger alert-dismissible fade show mb-1"
+          role="alert"
+        >
+          {{ error }}
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="alert"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div
+          *ngIf="user"
           class="d-flex flex-column align-items-center justify-content-center"
         >
           <img
-            src="https://placeimg.com/48/48/people"
+            src="{{
+              user.imagePath
+                ? user.imagePath
+                : 'assets/user/user-default-image.svg'
+            }}"
             class="user__image rounded-circle mb-3"
             alt="User thumbnail"
           />
@@ -31,19 +50,19 @@
             class="d-flex flex-column align-items-center justify-content-center mb-3"
           >
             <h6>Imię</h6>
-            <p class="m-0">Antek</p>
+            <p class="m-0">{{ user.firstName }}</p>
           </div>
           <div
             class="d-flex flex-column align-items-center justify-content-center mb-3"
           >
             <h6>Nazwisko</h6>
-            <p class="m-0">Wolski</p>
+            <p class="m-0">{{ user.lastName }}</p>
           </div>
           <div
             class="d-flex flex-column align-items-center justify-content-center mb-3"
           >
             <h6>Email</h6>
-            <p class="m-0">aw@gmail.com</p>
+            <p class="m-0">{{ user.email }}</p>
           </div>
         </div>
       </div>

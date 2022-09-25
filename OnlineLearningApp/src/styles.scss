@@ -5,6 +5,8 @@ body {
 }
 
 .more-settings__btn{
+  z-index: 1;
+  position: relative;
   background-color: white;
   &:hover{
       fa-icon{
@@ -23,8 +25,4 @@ body {
   &:hover{
       cursor: pointer;
   }
-}
-
-.more-settings{
-  z-index: 3;
 }

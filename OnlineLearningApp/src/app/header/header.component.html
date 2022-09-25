@@ -24,6 +24,16 @@
               <fa-icon [icon]="faHome"></fa-icon> Główna
             </a>
           </li>
+          <li *ngIf="this.authService.isLoggedIn()" class="nav-item">
+            <a
+              class="nav-link"
+              [routerLinkActive]="['active']"
+              [routerLinkActiveOptions]="{ exact: true }"
+              routerLink="./zespoły"
+            >
+              <fa-icon [icon]="faPeopleGroup"></fa-icon> Zespoły
+            </a>
+          </li>
           <ul class="navbar-nav ms-lg-auto">
             <ng-container *ngIf="this.authService.isLoggedIn(); else logIn">
               <button

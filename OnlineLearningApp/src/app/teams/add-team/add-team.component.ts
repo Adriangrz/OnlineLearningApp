@@ -1,5 +1,15 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  EventEmitter,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { Team } from '../interfaces/team.interface';
+import { TeamService } from '../services/team.service';
 
 @Component({
   selector: 'app-add-team',
@@ -7,30 +17,40 @@ import { FormBuilder, Validators } from '@angular/forms';
   styleUrls: ['./add-team.component.scss'],
 })
 export class AddTeamComponent {
+  @Output() addedTeam = new EventEmitter<Team>();
+  @ViewChild('addTeamModal') addTeamModal!: ElementRef;
+
   teamForm = this.fb.group({
     name: ['', [Validators.required]],
-    image: [null, [Validators.required]],
+    /*     image: [null, [Validators.required]], */
   });
 
-  constructor(private fb: FormBuilder, private cd: ChangeDetectorRef) {}
+  isBeingProcessed: boolean = false;
+  error: string | undefined;
 
-  get image() {
+  constructor(
+    private fb: FormBuilder,
+    private cd: ChangeDetectorRef,
+    private teamService: TeamService
+  ) {}
+
+  /*   get image() {
     return this.teamForm.get('image')!;
-  }
+  } */
 
   get name() {
     return this.teamForm.get('name')!;
   }
 
-  get imageIsInvalid() {
+  /*   get imageIsInvalid() {
     return this.image.invalid && (this.image.dirty || this.image.touched);
-  }
+  } */
 
   get nameIsInvalid() {
     return this.name.invalid && (this.name.dirty || this.name.touched);
   }
 
-  onTeamImageChange(event: any) {
+  /* onTeamImageChange(event: any) {
     if (!(event.target.files && event.target.files.length)) {
       this.image.setErrors({
         required: true,
@@ -61,8 +81,19 @@ export class AddTeamComponent {
     });
     this.cd.markForCheck();
   }
-
+ */
   addTeam() {
-    console.log(this.teamForm.value);
+    this.isBeingProcessed = true;
+    this.teamService.addTeam({ ...this.teamForm.value }).subscribe({
+      next: (data) => {
+        this.addedTeam.emit(data);
+        this.addTeamModal.nativeElement.click();
+        this.isBeingProcessed = false;
+      },
+      error: (err) => {
+        this.error = err;
+        this.isBeingProcessed = false;
+      },
+    });
   }
 }

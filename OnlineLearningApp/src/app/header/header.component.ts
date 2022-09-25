@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { faHome } from '@fortawesome/free-solid-svg-icons';
+import { faHome, faPeopleGroup } from '@fortawesome/free-solid-svg-icons';
 import { AuthService } from '../auth/services/auth.service';
 
 @Component({
@@ -10,6 +10,7 @@ import { AuthService } from '../auth/services/auth.service';
 })
 export class HeaderComponent {
   faHome = faHome;
+  faPeopleGroup = faPeopleGroup;
   constructor(public authService: AuthService, private http: HttpClient) {}
 
   onLogOut() {

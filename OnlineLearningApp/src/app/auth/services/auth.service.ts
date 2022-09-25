@@ -11,15 +11,19 @@ import { RegistrationData } from '../interfaces/registration-data.interface';
 export class AuthService {
   private readonly JWT_TOKEN = 'JWT_TOKEN';
   private readonly REFRESH_TOKEN = 'REFRESH_TOKEN';
-  private loggedInUser: string | null = null;
+  private readonly Logged_In_User = 'Logged_In_User';
   private clientId: string = 'OnlineLearningApp';
   constructor(private http: HttpClient) {}
 
   private handleError(error: HttpErrorResponse) {
-    if (error.status === 0 || error.status >= 500) {
+    if (error.status === 0 || error.status >= 500 || !error.error) {
       return throwError(() => 'Coś poszło nie tak');
     }
     return throwError(() => error.error);
+  }
+
+  get getLoggedInUser() {
+    return localStorage.getItem(this.Logged_In_User);
   }
 
   register(registrationData: RegistrationData) {
@@ -70,7 +74,7 @@ export class AuthService {
   }
 
   private doLoginUser(email: string, responseToken: ResponseToken) {
-    this.loggedInUser = email;
+    localStorage.setItem(this.Logged_In_User, email);
     this.storeTokens(responseToken);
   }
 
@@ -84,7 +88,7 @@ export class AuthService {
   }
 
   private doLogoutUser() {
-    this.loggedInUser = null;
+    localStorage.removeItem(this.Logged_In_User);
     this.removeToken();
   }
 

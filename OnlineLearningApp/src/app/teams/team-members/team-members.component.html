@@ -1,0 +1,147 @@
+<div class="mt-1">
+  <div class="mb-2 d-flex justify-content-between align-items-center">
+    <h6 class="m-0">Członkowie</h6>
+    <div
+      *ngIf="error"
+      class="alert alert-danger alert-dismissible fade show mb-1"
+      role="alert"
+    >
+      {{ error }}
+      <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="alert"
+        aria-label="Close"
+      ></button>
+    </div>
+    <button
+      *ngIf="!isUserBeingAdded && adminEmail === loggedInUser"
+      class="h6 fw-normal p-0 m-0 modal-dialog__edit-team-name-btn border border-0 bg-white text-nowrap"
+      type="button"
+      (click)="isUserBeingAdded = true"
+    >
+      <fa-icon [icon]="faPlus" size="sm"></fa-icon> Dodaj
+    </button>
+  </div>
+  <div *ngIf="isUserBeingAdded && adminEmail === loggedInUser">
+    <form
+      class="mb-2 d-flex flex-md-row flex-column"
+      [formGroup]="teamMemberForm"
+      (ngSubmit)="addTeamMember()"
+    >
+      <div class="flex-grow-1">
+        <label for="addUserInput" class="visually-hidden"
+          >Wpisz e-mail nowego członka</label
+        >
+        <input
+          type="text"
+          class="form-control"
+          [ngClass]="{
+            'is-invalid': emailIsInvalid
+          }"
+          id="addUserInput"
+          placeholder="Wpisz e-mail nowego członka"
+          formControlName="email"
+        />
+        <div
+          *ngIf="emailIsInvalid && email.errors?.['required']"
+          class="invalid-feedback"
+        >
+          E-mail jest wymagany
+        </div>
+        <div
+          *ngIf="emailIsInvalid && email.errors?.['email']"
+          class="invalid-feedback"
+        >
+          Niepoprawny adres e-mail
+        </div>
+      </div>
+      <div class="ps-1 mt-md-0 mt-1">
+        <div class="btn-group" role="group">
+          <button
+            [disabled]="teamMemberForm.invalid || isBeingProcessed"
+            type="submit"
+            class="btn btn-primary"
+            aria-label="Save new name"
+          >
+            Dodaj
+          </button>
+          <button
+            type="button"
+            class="btn btn-secondary"
+            aria-label="Cancel name editing"
+            (click)="isUserBeingAdded = false"
+          >
+            Anuluj
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+  <ul class="list-group list-group-flush">
+    <li
+      *ngFor="let user of users"
+      class="user list-group-item d-flex align-items-center justify-content-center"
+    >
+      <img
+        src="{{
+          user.imagePath ? user.imagePath : 'assets/user/user-default-image.svg'
+        }}"
+        class="user__image rounded-circle"
+        alt="User thumbnail"
+      />
+      <p class="m-0 mx-2 text-center text-truncate">
+        {{ user.firstName }} {{ user.lastName }}
+      </p>
+      <div class="dropdown more-settings">
+        <button
+          class="border border-0 more-settings__btn"
+          type="button"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          <fa-icon [icon]="faEllipsis"></fa-icon>
+        </button>
+        <ul *ngIf="adminEmail === loggedInUser" class="dropdown-menu">
+          <li>
+            <button
+              (click)="selectedUserId.emit(user.id)"
+              type="button"
+              class="more-settings__item dropdown-item d-flex align-items-center"
+              data-bs-target="#teamMemberDetails-modal"
+              data-bs-toggle="modal"
+            >
+              <fa-icon [icon]="faCircleInfo"></fa-icon>
+              <p class="text-start p-0 m-0 ms-1">Szczegóły</p>
+            </button>
+          </li>
+          <li><hr class="dropdown-divider" /></li>
+          <li>
+            <button
+              (click)="deleteUserFromTeam(user.id)"
+              type="button"
+              class="more-settings__item dropdown-item d-flex align-items-center"
+            >
+              <fa-icon [icon]="faTrash"></fa-icon>
+              <p class="text-start p-0 m-0 ms-1">Usuń</p>
+            </button>
+          </li>
+        </ul>
+        <ul *ngIf="adminEmail !== loggedInUser" class="dropdown-menu">
+          <li>
+            <button
+              (click)="selectedUserId.emit(user.id)"
+              type="button"
+              class="more-settings__item dropdown-item d-flex align-items-center"
+              data-bs-target="#teamMemberDetails-modal"
+              data-bs-toggle="modal"
+            >
+              <fa-icon [icon]="faCircleInfo"></fa-icon>
+              <p class="text-start p-0 m-0 ms-1">Szczegóły</p>
+            </button>
+          </li>
+        </ul>
+      </div>
+    </li>
+  </ul>
+</div>

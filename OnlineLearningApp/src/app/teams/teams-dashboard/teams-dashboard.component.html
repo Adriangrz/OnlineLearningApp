@@ -1,4 +1,17 @@
 <div
+  *ngIf="error"
+  class="alert alert-danger alert-dismissible fade show"
+  role="alert"
+>
+  {{ error }}
+  <button
+    type="button"
+    class="btn-close"
+    data-bs-dismiss="alert"
+    aria-label="Close"
+  ></button>
+</div>
+<div
   class="mb-2 d-flex flex-column flex-sm-row justify-content-between align-items-center"
 >
   <h3 class="m-0">Zespoły</h3>
@@ -33,16 +46,21 @@
       <div class="px-2 px-lg-4 accordion-body">
         <ul class="list-group list-group-flush">
           <li
+            *ngFor="let team of teams"
             class="team list-group-item p-0 pb-1 pt-1 d-flex justify-content-between align-items-center"
           >
             <img
               class="team__image img-thumbnail"
-              src="https://placeimg.com/75/75/tech"
+              src="{{
+                team.imagePath
+                  ? team.imagePath
+                  : 'assets/team/team-default-image.svg'
+              }}"
               alt="Team thumbnail"
             />
             <a routerLink="/" class="team__link stretched-link overflow-hidden">
               <h6 class="p-0 m-0 text-truncate">
-                Nazwa zespołussssssssssssssssssssssssssss
+                {{ team.name }}
               </h6>
             </a>
             <div class="dropdown more-settings">
@@ -54,18 +72,37 @@
               >
                 <fa-icon [icon]="faEllipsis"></fa-icon>
               </button>
-              <ul class="dropdown-menu">
+              <ul *ngIf="team.email !== loggedInUser" class="dropdown-menu">
                 <li>
-                  <div
+                  <button
+                    (click)="selectedTeam = team"
+                    type="button"
                     class="more-settings__item dropdown-item d-flex align-items-center"
+                    data-bs-toggle="modal"
+                    data-bs-target="#teamManagement-modal"
+                  >
+                    <fa-icon [icon]="faCircleInfo"></fa-icon>
+                    <p class="text-start p-0 m-0 ms-1">Wyświetl informacje</p>
+                  </button>
+                </li>
+              </ul>
+              <ul *ngIf="team.email === loggedInUser" class="dropdown-menu">
+                <li>
+                  <button
+                    type="button"
+                    class="more-settings__item dropdown-item d-flex align-items-center"
+                    (click)="archive(team.id)"
                   >
                     <fa-icon [icon]="faBoxArchive"></fa-icon>
                     <p class="text-start p-0 m-0 ms-1">Zarchiwizuj</p>
-                  </div>
+                  </button>
                 </li>
-                <li><hr class="dropdown-divider" /></li>
+                <li>
+                  <hr class="dropdown-divider" />
+                </li>
                 <li>
                   <button
+                    (click)="selectedTeam = team"
                     type="button"
                     class="more-settings__item dropdown-item d-flex align-items-center"
                     data-bs-toggle="modal"
@@ -85,6 +122,7 @@
   <div class="accordion-item">
     <h2 class="accordion-header" id="archivedTeams-headingTwo">
       <button
+        (click)="getTeams(true)"
         class="accordion-button collapsed"
         type="button"
         data-bs-toggle="collapse"
@@ -100,10 +138,56 @@
       class="accordion-collapse collapse"
       aria-labelledby="archivedTeams-headingTwo"
     >
-      <div class="accordion-body"></div>
+      <div class="px-2 px-lg-4 accordion-body">
+        <ul class="list-group list-group-flush">
+          <li
+            *ngFor="let team of archivedTeams"
+            class="team list-group-item p-0 pb-1 pt-1 d-flex justify-content-between align-items-center"
+          >
+            <img
+              class="team__image img-thumbnail"
+              src="{{
+                team.imagePath
+                  ? team.imagePath
+                  : 'assets/team/team-default-image.svg'
+              }}"
+              alt="Team thumbnail"
+            />
+            <a routerLink="/" class="team__link stretched-link overflow-hidden">
+              <h6 class="p-0 m-0 text-truncate">
+                {{ team.name }}
+              </h6>
+            </a>
+            <div
+              *ngIf="team.email === loggedInUser"
+              class="dropdown more-settings"
+            >
+              <button
+                class="border border-0 more-settings__btn"
+                type="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <fa-icon [icon]="faEllipsis"></fa-icon>
+              </button>
+              <ul class="dropdown-menu">
+                <li>
+                  <button
+                    type="button"
+                    class="more-settings__item dropdown-item d-flex align-items-center"
+                    (click)="restore(team.id)"
+                  >
+                    <fa-icon [icon]="faTrashArrowUp"></fa-icon>
+                    <p class="text-start p-0 m-0 ms-1">Przywróć</p>
+                  </button>
+                </li>
+              </ul>
+            </div>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 </div>
-<app-manage-team></app-manage-team>
-<app-add-team></app-add-team>
-<app-team-member-details></app-team-member-details>
+<app-manage-team [team]="selectedTeam"></app-manage-team>
+<app-add-team (addedTeam)="addedTeam($event)"></app-add-team>

@@ -1,4 +1,18 @@
 <div class="welcome-content">
   <h1 class="text-center">Witaj na stronie do tworzenia testów</h1>
-  <p class="text-center">Utwórz konto lub zaloguj się aby zacząć przygodę</p>
+  <p *ngIf="!this.authService.isLoggedIn()" class="text-center">
+    Utwórz konto lub zaloguj się aby móc tworzyć i zarządzać zespołami
+  </p>
+  <div class="d-flex justify-content-center">
+    <a
+      *ngIf="this.authService.isLoggedIn()"
+      class="btn btn-primary mt-2"
+      role="button"
+      [routerLinkActive]="['active']"
+      [routerLinkActiveOptions]="{ exact: true }"
+      routerLink="./zespoły"
+    >
+      Przejdz do strony z zespołami
+    </a>
+  </div>
 </div>

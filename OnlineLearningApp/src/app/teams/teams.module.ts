@@ -8,8 +8,9 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { AddTeamComponent } from './add-team/add-team.component';
 import { ManageTeamComponent } from './manage-team/manage-team.component';
 import { TeamMemberDetailsComponent } from './team-member-details/team-member-details.component';
-import { EditTeamNameComponent } from './edit-team-name/edit-team-name.component';
-import { AddTeamMemberComponent } from './add-team-member/add-team-member.component';
+import { TeamNameComponent } from './team-name/team-name.component';
+import { TeamMembersComponent } from './team-members/team-members.component';
+import { AuthModule } from '../auth/auth.module';
 
 @NgModule({
   declarations: [
@@ -17,14 +18,15 @@ import { AddTeamMemberComponent } from './add-team-member/add-team-member.compon
     AddTeamComponent,
     ManageTeamComponent,
     TeamMemberDetailsComponent,
-    EditTeamNameComponent,
-    AddTeamMemberComponent,
+    TeamNameComponent,
+    TeamMembersComponent,
   ],
   imports: [
     CommonModule,
     TeamsRoutingModule,
     FontAwesomeModule,
     ReactiveFormsModule,
+    AuthModule,
   ],
 })
 export class TeamsModule {}

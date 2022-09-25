@@ -1,4 +1,5 @@
 <div
+  #addTeamModal
   class="modal fade"
   id="addTeam-modal"
   tabindex="-1"
@@ -18,6 +19,9 @@
       </div>
       <form [formGroup]="teamForm" (ngSubmit)="addTeam()">
         <div class="modal-body">
+          <div *ngIf="error" class="alert alert-danger" role="alert">
+            {{ error }}
+          </div>
           <div class="form-floating mb-3">
             <input
               type="text"
@@ -37,7 +41,7 @@
               Nazwa jest wymagana
             </div>
           </div>
-          <div>
+          <!-- <div>
             <label for="teamImage" class="form-label"
               >Wybierz awatar zespołu</label
             >
@@ -55,7 +59,7 @@
               class="invalid-feedback"
               *ngIf="imageIsInvalid && image.errors?.['required']"
             >
-              Wybranie pliku jest wymagane i musi to byc obraz
+              Wybranie pliku jest wymagane i musi to być obraz
             </div>
             <div
               class="invalid-feedback"
@@ -69,11 +73,11 @@
             >
               Rozmiar pliku obrazu musi być mniejszy niż 2 MB
             </div>
-          </div>
+          </div> -->
         </div>
         <div class="modal-footer d-flex justify-content-center">
           <button
-            [disabled]="teamForm.invalid"
+            [disabled]="teamForm.invalid || isBeingProcessed"
             type="submit"
             class="btn btn-primary"
           >
