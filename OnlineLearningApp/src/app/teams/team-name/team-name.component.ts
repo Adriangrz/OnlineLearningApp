@@ -67,6 +67,7 @@ export class TeamNameComponent implements OnInit, OnChanges {
       .updateTeamName(this.teamId, this.teamNameForm.value.name)
       .subscribe({
         next: (team: Team) => {
+          this.error = undefined;
           this.newTeamName.emit(team.name);
           this.isTeamNameBeingEdited = false;
           this.isBeingProcessed = false;

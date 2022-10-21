@@ -69,6 +69,7 @@ export class TeamMembersComponent implements OnInit, OnChanges {
     if (!this.teamId) return;
     this.teamService.getTeamMembers(this.teamId).subscribe({
       next: (data) => {
+        this.error = undefined;
         this.users = data;
       },
       error: (err) => {
@@ -91,6 +92,7 @@ export class TeamMembersComponent implements OnInit, OnChanges {
       .addUserToTeam(this.teamId, { ...this.teamMemberForm.value })
       .subscribe({
         next: (data) => {
+          this.error = undefined;
           this.users.push(data);
           this.isUserBeingAdded = false;
           this.isBeingProcessed = false;
@@ -105,6 +107,7 @@ export class TeamMembersComponent implements OnInit, OnChanges {
   deleteUserFromTeam(userId: string) {
     this.teamService.deleteUserFromTeam(this.teamId, userId).subscribe({
       next: () => {
+        this.error = undefined;
         this.users = this.users.filter((u) => u.id !== userId);
       },
       error: (err) => {

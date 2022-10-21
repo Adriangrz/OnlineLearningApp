@@ -25,6 +25,7 @@ export class TeamMemberDetailsComponent implements OnChanges {
   getUserById() {
     this.userService.getUserById(this.userId).subscribe({
       next: (data) => {
+        this.error = undefined;
         this.user = data;
       },
       error: (err) => {

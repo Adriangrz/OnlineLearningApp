@@ -56,6 +56,7 @@ export class ManageTeamComponent implements OnChanges {
     if (!this.team) return;
     this.userService.getUserById(this.team.adminId).subscribe({
       next: (data) => {
+        this.error = undefined;
         this.admin = data;
       },
       error: (err) => {

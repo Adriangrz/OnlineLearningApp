@@ -86,6 +86,7 @@ export class AddTeamComponent {
     this.isBeingProcessed = true;
     this.teamService.addTeam({ ...this.teamForm.value }).subscribe({
       next: (data) => {
+        this.error = undefined;
         this.addedTeam.emit(data);
         this.addTeamModal.nativeElement.click();
         this.isBeingProcessed = false;
