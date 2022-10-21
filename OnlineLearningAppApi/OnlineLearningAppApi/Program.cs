@@ -131,10 +131,12 @@ builder.Services.AddAuthentication(options =>
 });
 
 builder.Services.AddScoped<IAuthorizationHandler, ResourceOperationRequirementHandler>();
+builder.Services.AddScoped<IAuthorizationHandler, TeamAuthorizationHandler>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ITeamService, TeamService>();
 builder.Services.AddScoped<ITeamImageService, TeamImageService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IQuizService, QuizService>();
 builder.Services.AddScoped<IUserContextService, UserContextService>();
 builder.Services.AddScoped<ErrorHandlingMiddleware>();
 
