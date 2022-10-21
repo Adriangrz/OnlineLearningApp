@@ -133,8 +133,8 @@ namespace OnlineLearningAppApi.Services
 
             var claims = new List<Claim>()
             {
+                 new Claim(ClaimTypes.NameIdentifier, userInfo.Id.ToString()),
                  new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                 new Claim(JwtRegisteredClaimNames.Sub, userInfo.Id.ToString()),
                  new Claim(JwtRegisteredClaimNames.Email, userInfo.Email),
             };
 

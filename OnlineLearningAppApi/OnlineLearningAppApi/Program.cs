@@ -8,6 +8,7 @@ using Microsoft.OpenApi.Models;
 using NLog.Web;
 using OnlineLearningAppApi.Database;
 using OnlineLearningAppApi.Database.Entities;
+using OnlineLearningAppApi.Hubs;
 using OnlineLearningAppApi.Middleware;
 using OnlineLearningAppApi.Services;
 using OnlineLearningAppApi.Services.Authorization;
@@ -24,11 +25,10 @@ builder.Services.AddCors(options =>
     options.AddPolicy("CorsPolicy",
         b => b.WithOrigins(builder.Configuration["AllowedOrigins"])
         .AllowAnyMethod()
-        .AllowAnyHeader());
+        .AllowAnyHeader()
+        .AllowCredentials());
 });
-
 builder.Services.AddSignalR();
-
 // Add services to the container.
 builder.Services.AddControllers().AddFluentValidation(opt =>
 {
@@ -113,6 +113,21 @@ builder.Services.AddAuthentication(options =>
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(builder.Configuration["Jwt:SecretKey"])),
         ClockSkew = TimeSpan.Zero
     };
+    options.Events = new JwtBearerEvents
+    {
+        OnMessageReceived = context =>
+        {
+            var accessToken = context.Request.Query["access_token"];
+
+            var path = context.HttpContext.Request.Path;
+            if (!string.IsNullOrEmpty(accessToken) &&
+                (path.StartsWithSegments("/hubs")))
+            {
+                context.Token = accessToken;
+            }
+            return Task.CompletedTask;
+        }
+    };
 });
 
 builder.Services.AddScoped<IAuthorizationHandler, ResourceOperationRequirementHandler>();
@@ -138,6 +153,7 @@ app.UseHttpsRedirection();
 
 app.UseResponseCaching();
 app.UseCors("CorsPolicy");
+app.MapHub<TeamHub>("/hubs/teamHub");
 
 app.UseAuthentication();
 app.UseAuthorization();

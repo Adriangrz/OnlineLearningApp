@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -13,7 +13,6 @@
     <PackageReference Include="FluentValidation" Version="10.4.0" />
     <PackageReference Include="FluentValidation.AspNetCore" Version="10.4.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.3" />
-    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="6.0.9" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.8">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -24,6 +23,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\OnlineLearningAppApi.Database\OnlineLearningAppApi.Database.csproj" />
+    <ProjectReference Include="..\OnlineLearningAppApi.Hubs\OnlineLearningAppApi.Hubs.csproj" />
     <ProjectReference Include="..\OnlineLearningAppApi.Services\OnlineLearningAppApi.Services.csproj" />
   </ItemGroup>
 

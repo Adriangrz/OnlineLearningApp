@@ -17,9 +17,16 @@ namespace OnlineLearningAppApi.Controllers
             _teamService = teamService;
         }
         [HttpPost]
-        public async Task<ActionResult> CreateTeam([FromBody] CreateTeamDto dto)
+        public async Task<ActionResult<TeamDto>> CreateTeam([FromBody] CreateTeamDto dto)
         {
             var team = await _teamService.CreateAsync(dto);
+
+            return Ok(team);
+        }
+        [HttpGet("{id}")]
+        public async Task<ActionResult<TeamDto>> GetById([FromRoute] Guid id)
+        {
+            var team = await _teamService.GetByIdAsync(id);
 
             return Ok(team);
         }
