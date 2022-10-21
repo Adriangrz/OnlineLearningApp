@@ -26,7 +26,6 @@ import { AuthModule } from '../auth/auth.module';
     TeamsRoutingModule,
     FontAwesomeModule,
     ReactiveFormsModule,
-    AuthModule,
   ],
 })
 export class TeamsModule {}
