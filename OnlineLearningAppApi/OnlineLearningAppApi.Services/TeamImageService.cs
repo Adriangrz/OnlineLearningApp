@@ -77,7 +77,7 @@ namespace OnlineLearningAppApi.Services
 
         public async Task<TeamImageDto> GetImageAsync(Guid teamId)
         {
-            var team = await _teamService.GetByIdAsync(teamId);
+            var team = await GetTeamByIdAsync(teamId);
 
             var image = await _dbContext
                .TeamsImages
@@ -88,6 +88,20 @@ namespace OnlineLearningAppApi.Services
 
             var teamImageDto = _mapper.Map<TeamImageDto>(image);
             return teamImageDto;
+        }
+
+        private async Task<Team> GetTeamByIdAsync(Guid id)
+        {
+            var team = await _dbContext
+               .Teams
+               .Include(t => t.Users)
+               .Include(t => t.Admin)
+               .FirstOrDefaultAsync(r => r.Id == id);
+
+            if (team is null)
+                throw new NotFoundException("Zespół nie istnieje");
+
+            return team;
         }
     }
 }
