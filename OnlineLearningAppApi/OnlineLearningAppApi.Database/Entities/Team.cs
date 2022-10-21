@@ -9,6 +9,7 @@
         public User Admin { get; set; }
         public bool IsArchived { get; set; }
         public ICollection<User> Users { get; set; }
+        public ICollection<Quiz> Quizzes { get; set; }
         public TeamImage TeamImage { get; set; }
     }
 }

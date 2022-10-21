@@ -19,6 +19,11 @@ namespace OnlineLearningAppApi.Database
         public DbSet<Team> Teams { get; set; }
         public DbSet<TeamImage> TeamsImages { get; set; }
         public DbSet<UserImage> UserImages { get; set; }
+        public DbSet<Quiz> Quizzes { get; set; }
+        public DbSet<Question> Questions { get; set; }
+        public DbSet<Answer> Answers { get; set; }
+        public DbSet<QuestionImage> QuestionImages { get; set; }
+        public DbSet<UserQuiz> UserQuizzes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

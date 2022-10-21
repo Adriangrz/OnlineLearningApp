@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OnlineLearningAppApi.Database;
 
@@ -11,9 +12,10 @@ using OnlineLearningAppApi.Database;
 namespace OnlineLearningAppApi.Database.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221006134731_AddAnswerAndQuizAndQuestionAndQuestionImageTablesWitRelationships")]
+    partial class AddAnswerAndQuizAndQuestionAndQuestionImageTablesWitRelationships
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,15 +53,15 @@ namespace OnlineLearningAppApi.Database.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "964904a3-a2a4-4f95-9dea-7e399cc5dcdf",
-                            ConcurrencyStamp = "fb870e4f-9b68-469d-8dd6-dae890d93d41",
+                            Id = "fc9382aa-e8b0-4ec1-b87e-c4da81d6b453",
+                            ConcurrencyStamp = "2970ed2c-3ff2-4eda-b44c-e2b2c459a49e",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "b5961660-af20-42c6-bbfb-7a933fd97cb1",
-                            ConcurrencyStamp = "3561e125-331e-468a-8e8c-6af754d15fd3",
+                            Id = "f94d5729-bbb7-4b04-a90c-398c0d085106",
+                            ConcurrencyStamp = "1336cfe2-bce3-4474-ba7a-d9e84202602e",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -154,13 +156,13 @@ namespace OnlineLearningAppApi.Database.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "5949ff29-6828-43c5-9f12-3fda9a227531",
-                            RoleId = "964904a3-a2a4-4f95-9dea-7e399cc5dcdf"
+                            UserId = "64736f53-ac93-43cd-9f20-9ecd33d86986",
+                            RoleId = "fc9382aa-e8b0-4ec1-b87e-c4da81d6b453"
                         },
                         new
                         {
-                            UserId = "5949ff29-6828-43c5-9f12-3fda9a227531",
-                            RoleId = "b5961660-af20-42c6-bbfb-7a933fd97cb1"
+                            UserId = "64736f53-ac93-43cd-9f20-9ecd33d86986",
+                            RoleId = "f94d5729-bbb7-4b04-a90c-398c0d085106"
                         });
                 });
 
@@ -222,9 +224,6 @@ namespace OnlineLearningAppApi.Database.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Code")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CodeLanguage")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ImagePaths")
@@ -466,9 +465,9 @@ namespace OnlineLearningAppApi.Database.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "5949ff29-6828-43c5-9f12-3fda9a227531",
+                            Id = "64736f53-ac93-43cd-9f20-9ecd33d86986",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "a1933872-17f6-483e-afea-25472ecb0bab",
+                            ConcurrencyStamp = "6cbb7189-d359-419e-bae1-79b3df9e9200",
                             Email = "admin@test.pl",
                             EmailConfirmed = true,
                             FirstName = "Antek",
@@ -476,9 +475,9 @@ namespace OnlineLearningAppApi.Database.Migrations
                             LockoutEnabled = true,
                             NormalizedEmail = "ADMIN@TEST.PL",
                             NormalizedUserName = "ADMIN@TEST.PL",
-                            PasswordHash = "AQAAAAEAACcQAAAAENSRw8EIeNytGMOsrGIlHadJd81L8S0VeTaSGLsozlEpSmDhnETZMgFCHsGmzLBbNQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEAKxwZzUmvBBgBHF9arQZBt2GkNUoE/zvRNk57VFv1EJ4LpZ1VXatDKjYXQh/N83Lg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "758f2a5f-373a-4d95-bc4e-297cf1f901a5",
+                            SecurityStamp = "b643a351-f0f0-4882-9b70-f30f4d8507f6",
                             SiteRules = true,
                             TwoFactorEnabled = false,
                             UserName = "admin@test.pl"
