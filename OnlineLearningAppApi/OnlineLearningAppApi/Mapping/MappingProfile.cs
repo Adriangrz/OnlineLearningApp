@@ -18,6 +18,10 @@ namespace OnlineLearningAppApi.Mapping
             CreateMap<TeamImage, TeamImageDto>();
             CreateMap<User, UserDto>();
             CreateMap<User, UserDetailsDto>();
+            CreateMap<CreateQuizDto, Quiz>();
+            CreateMap<Quiz, QuizDto>();
+            CreateMap<CreateQuestionDto, Question>();
+            CreateMap<Question, QuestionDto>();
         }
     }
 }
