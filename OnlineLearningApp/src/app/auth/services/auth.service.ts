@@ -10,6 +10,7 @@ import { RegistrationData } from '../interfaces/registration-data.interface';
 })
 export class AuthService {
   private readonly JWT_TOKEN = 'JWT_TOKEN';
+  private readonly JWT_EXPIRATION_TIME = 'JWT_EXPIRATION_TIME';
   private readonly REFRESH_TOKEN = 'REFRESH_TOKEN';
   private readonly Logged_In_User = 'Logged_In_User';
   private clientId: string = 'OnlineLearningApp';
@@ -73,12 +74,20 @@ export class AuthService {
     return localStorage.getItem(this.REFRESH_TOKEN);
   }
 
+  getTokenExpirationTime() {
+    return localStorage.getItem(this.JWT_EXPIRATION_TIME);
+  }
+
   private doLoginUser(email: string, responseToken: ResponseToken) {
     localStorage.setItem(this.Logged_In_User, email);
     this.storeTokens(responseToken);
   }
 
   private storeTokens(responseToken: ResponseToken) {
+    localStorage.setItem(
+      this.JWT_EXPIRATION_TIME,
+      responseToken.expiration.toString()
+    );
     localStorage.setItem(this.JWT_TOKEN, responseToken.token);
     localStorage.setItem(this.REFRESH_TOKEN, responseToken.refreshToken);
   }
