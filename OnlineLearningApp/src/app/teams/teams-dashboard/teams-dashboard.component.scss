@@ -1,14 +1,15 @@
 @import "../../../commons";
 
-.team__image{
-    width: 75px;
-    height: 75px;
-}
-
 .team__link{
     text-decoration: none;
     color: black;
     &:hover{
         color: $primary;
     }
+}
+
+.team__name{
+    height: 48px;
+    line-height: 48px;
+    white-space: nowrap;
 }

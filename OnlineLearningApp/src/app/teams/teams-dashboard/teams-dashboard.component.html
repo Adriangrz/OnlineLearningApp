@@ -58,8 +58,11 @@
               }}"
               alt="Team thumbnail"
             />
-            <a routerLink="/" class="team__link stretched-link overflow-hidden">
-              <h6 class="p-0 m-0 text-truncate">
+            <a
+              routerLink="/zespoły/{{ team.id }}"
+              class="team__link stretched-link overflow-hidden"
+            >
+              <h6 class="team__name p-0 m-0 text-truncate">
                 {{ team.name }}
               </h6>
             </a>
@@ -154,7 +157,7 @@
               alt="Team thumbnail"
             />
             <a routerLink="/" class="team__link stretched-link overflow-hidden">
-              <h6 class="p-0 m-0 text-truncate">
+              <h6 class="team__name p-0 m-0 text-truncate">
                 {{ team.name }}
               </h6>
             </a>

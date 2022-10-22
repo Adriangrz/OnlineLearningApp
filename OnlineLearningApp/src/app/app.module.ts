@@ -11,6 +11,7 @@ import { HeaderComponent } from './header/header.component';
 import { HomeComponent } from './home/home.component';
 import { TeamsModule } from './teams/teams.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { QuizzesModule } from './quizzes/quizzes.module';
 
 @NgModule({
   declarations: [AppComponent, HeaderComponent, HomeComponent],
@@ -21,6 +22,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     HttpClientModule,
     AuthModule,
     TeamsModule,
+    QuizzesModule,
     FontAwesomeModule,
   ],
   providers: [],

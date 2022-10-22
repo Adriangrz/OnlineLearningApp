@@ -14,11 +14,16 @@ export class TeamService {
   constructor(private http: HttpClient) {}
 
   private handleError(error: HttpErrorResponse) {
-    console.log(error);
     if (error.status === 0 || error.status >= 500 || !error.error) {
       return throwError(() => 'Coś poszło nie tak');
     }
     return throwError(() => error.error);
+  }
+
+  getTeamById(id: string) {
+    return this.http
+      .get<Team>(`/api/Team/${id}`)
+      .pipe(catchError(this.handleError));
   }
 
   getTeams(archived: boolean) {
