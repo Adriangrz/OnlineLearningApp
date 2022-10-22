@@ -1,0 +1,6 @@
+.add-code-btn[aria-expanded=false] .text-expanded {
+    display: none;
+}
+.add-code-btn[aria-expanded=true] .text-collapsed {
+    display: none;
+}

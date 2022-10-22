@@ -1,0 +1,19 @@
+@import "../../../commons";
+
+:host{
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.quiz-form {
+    width: 240px;
+}
+  
+@include media-breakpoint-up(sm) {
+    .quiz-form {
+        width: 450px;
+    }
+}

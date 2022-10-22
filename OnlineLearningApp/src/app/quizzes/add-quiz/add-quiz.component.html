@@ -1,0 +1,107 @@
+<form [formGroup]="quizForm" (ngSubmit)="onSubmit()" class="quiz-form my-4">
+  <div *ngIf="error" class="alert alert-danger" role="alert">
+    {{ error }}
+  </div>
+  <div class="form-floating mb-3">
+    <input
+      type="text"
+      class="form-control"
+      [ngClass]="{
+        'is-invalid': nameIsInvalid
+      }"
+      id="floatingNameInput"
+      formControlName="name"
+    />
+    <label for="floatingNameInput">Nazwa</label>
+    <div
+      *ngIf="nameIsInvalid && name.errors?.['required']"
+      class="invalid-feedback"
+    >
+      Nazwa jest wymagana
+    </div>
+  </div>
+  <div class="form-floating mb-3">
+    <input
+      type="datetime-local"
+      class="form-control px-4"
+      [ngClass]="{
+        'is-invalid': endDateIsInvalid
+      }"
+      id="floatingEndDateInput"
+      formControlName="endDate"
+    />
+    <label for="floatingEndDateInput">Data zakończenia</label>
+    <div
+      class="invalid-feedback"
+      *ngIf="endDateIsInvalid && endDate.errors?.['required']"
+    >
+      Data zakończenia jest wymagana
+    </div>
+    <div
+      class="invalid-feedback"
+      *ngIf="endDateIsInvalid && endDate.errors?.['dateGreaterThanNow']"
+    >
+      Data zakończenia musi być większa niż data utworzenia
+    </div>
+  </div>
+  <div
+    class="w-100 d-flex flex-column align-items-center justify-content-center my-2"
+  >
+    <button
+      type="button"
+      class="btn btn-primary my-1"
+      data-bs-toggle="modal"
+      data-bs-target="#addQuestion-modal"
+    >
+      Dodaj pytanie
+    </button>
+    <app-add-quiz-question
+      (addedQuestion)="addedQuestion($event)"
+    ></app-add-quiz-question>
+    <app-edit-quiz-question
+      [questionToEdit]="questionToEdit"
+      (editedQuestion)="editedQuestion($event)"
+    ></app-edit-quiz-question>
+    <ul class="w-100 list-group list-group-flush">
+      <li
+        *ngFor="let question of questions; index as i"
+        class="list-group-item"
+      >
+        <h5 class="text-center">Pytanie nr {{ i + 1 }}</h5>
+        <p class="text-center">{{ question.text }}</p>
+        <div class="d-flex align-items-center justify-content-center">
+          <button
+            type="button"
+            class="btn btn-primary me-1"
+            (click)="editQuestion(question, i)"
+            data-bs-toggle="modal"
+            data-bs-target="#editQuestion-modal"
+          >
+            Edytuj
+          </button>
+          <button
+            type="button"
+            class="btn btn-secondary ms-1"
+            (click)="deleteQuestion(i)"
+          >
+            Usuń
+          </button>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div class="d-flex flex-column justify-content-center align-items-center">
+    <button
+      type="submit"
+      class="login-form__btn-submit btn btn-primary w-100 mb-2"
+      [disabled]="
+        quizForm.invalid || questions.length === 0 || isBeingProcessed
+      "
+    >
+      Utwórz
+    </button>
+    <button type="button" class="btn btn-secondary" (click)="goBack()">
+      Anuluj
+    </button>
+  </div>
+</form>

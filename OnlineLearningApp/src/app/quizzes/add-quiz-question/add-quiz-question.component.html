@@ -1,0 +1,155 @@
+<div
+  #addQuestionModal
+  class="modal fade"
+  id="addQuestion-modal"
+  data-bs-backdrop="static"
+  data-bs-keyboard="false"
+  tabindex="-1"
+  aria-labelledby="addQuestion-modal"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addQuestion-modal">Utwórz pytanie</h5>
+      </div>
+      <form [formGroup]="questionForm" (ngSubmit)="addQuestion()">
+        <div class="modal-body">
+          <div class="form-floating mb-1">
+            <textarea
+              formControlName="text"
+              class="form-control"
+              placeholder="Wpisz tekst pytania"
+              id="floatingTextarea"
+              style="height: 100px"
+            ></textarea>
+            <label for="floatingTextarea">Wpisz tekst pytania</label>
+          </div>
+          <div
+            *ngIf="isCodeAdd || answerType.value === answerTypeEnum.Code"
+            class="form-floating mb-2"
+          >
+            <select
+              class="form-select"
+              id="codeLanguageFloatingSelect"
+              formControlName="codeLanguage"
+              aria-label="Wybierz język kodu"
+            >
+              <option
+                *ngFor="let language of codeLanguageEnum | keyvalue"
+                [ngValue]="language.key"
+              >
+                {{ language.value }}
+              </option>
+            </select>
+            <label for="codeLanguageFloatingSelect">Wybierz język kodu</label>
+          </div>
+          <div class="d-flex justify-content-center align-items-center mb-1">
+            <button
+              *ngIf="!isCodeAdd"
+              class="btn btn-primary add-code-btn"
+              type="button"
+              (click)="addCode()"
+            >
+              Dodaj kod
+            </button>
+            <button
+              *ngIf="isCodeAdd"
+              class="btn btn-primary add-code-btn"
+              type="button"
+              (click)="deleteCode()"
+            >
+              Usuń kod
+            </button>
+          </div>
+          <div *ngIf="isCodeAdd" class="mb-1">
+            <app-code-editor
+              [code]="questionCode"
+              [codeLanguage]="codeLanguage.value"
+            ></app-code-editor>
+          </div>
+          <div class="form-floating mb-2">
+            <select
+              class="form-select"
+              id="answerTypeFloatingSelect"
+              formControlName="answerType"
+              aria-label="Wybierz typ odpowiedzi"
+            >
+              <option
+                *ngFor="let type of answerTypeEnum | keyvalue"
+                [ngValue]="type.value"
+              >
+                {{ type.value }}
+              </option>
+            </select>
+            <label for="answerTypeFloatingSelect">Wybierz typ odpowiedzi</label>
+          </div>
+          <div *ngIf="answerType.value === answerTypeEnum.MultipleChoiceAnswer">
+            <div class="d-flex justify-content-center align-items-center mb-1">
+              <button
+                type="button"
+                class="btn btn-primary"
+                (click)="addAnswerOption()"
+              >
+                Dodaj opcję do wyboru
+              </button>
+            </div>
+            <div formArrayName="multipleChoiceOptions">
+              <div
+                class="mb-1"
+                *ngFor="
+                  let answerOption of multipleChoiceOptions.controls;
+                  let i = index
+                "
+              >
+                <div class="row mb-1">
+                  <label
+                    for="answerOptionFormControlInput"
+                    class="col-sm-1 col-form-label text-center"
+                    >{{ i + 1 }}.</label
+                  >
+                  <div class="col-sm-11">
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="answerOptionFormControlInput"
+                      placeholder="Podaj opcje"
+                      formControlName="{{ i }}"
+                    />
+                  </div>
+                </div>
+                <div class="d-flex justify-content-center align-item-center">
+                  <button
+                    type="button"
+                    class="btn btn-primary"
+                    (click)="deleteAnswerOption(i)"
+                  >
+                    Usuń
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer d-flex justify-content-center">
+          <button
+            [disabled]="questionForm.invalid"
+            type="submit"
+            class="btn btn-primary"
+            data-bs-dismiss="modal"
+          >
+            Utwórz
+          </button>
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+            (click)="cancel()"
+          >
+            Anuluj
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
