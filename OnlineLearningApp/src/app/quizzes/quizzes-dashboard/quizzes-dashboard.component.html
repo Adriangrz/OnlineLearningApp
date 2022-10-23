@@ -56,6 +56,7 @@
                   <button
                     type="button"
                     class="more-settings__item dropdown-item d-flex align-items-center"
+                    (click)="selectQuizId = quiz.id"
                     data-bs-toggle="modal"
                     data-bs-target="#quizInfo-modal"
                   >
@@ -79,43 +80,4 @@
     </button>
   </div>
 </div>
-<div
-  class="modal fade"
-  id="quizInfo-modal"
-  tabindex="-1"
-  aria-labelledby="quizInfo-modal"
-  aria-hidden="true"
->
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="quizInfo-modal">Informacje o teście</h5>
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-        ></button>
-      </div>
-      <div class="modal-body">
-        <div class="d-flex flex-column">
-          <h6 class="text-center">Nazwa</h6>
-          <p class="text-center">test z programowania</p>
-          <h6 class="text-center">Utworzono</h6>
-          <p class="text-center">03.10.2022 12:00</p>
-          <h6 class="text-center">Data zakończenia</h6>
-          <p class="text-center">03.10.2022 12:00</p>
-          <h6 class="text-center">Czy wykonano</h6>
-          <p class="text-center">Tak</p>
-        </div>
-      </div>
-      <div
-        class="modal-footer d-flex justify-content-center align-items-center"
-      >
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-          Close
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
+<app-quiz-details [quizId]="selectQuizId" [teamId]="teamId"></app-quiz-details>

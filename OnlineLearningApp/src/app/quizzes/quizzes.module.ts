@@ -9,6 +9,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { AddQuizQuestionComponent } from './add-quiz-question/add-quiz-question.component';
 import { EditQuizQuestionComponent } from './edit-quiz-question/edit-quiz-question.component';
 import { CodeEditorComponent } from './code-editor/code-editor.component';
+import { QuizDetailsComponent } from './quiz-details/quiz-details.component';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { CodeEditorComponent } from './code-editor/code-editor.component';
     AddQuizQuestionComponent,
     EditQuizQuestionComponent,
     CodeEditorComponent,
+    QuizDetailsComponent,
   ],
   imports: [
     CommonModule,

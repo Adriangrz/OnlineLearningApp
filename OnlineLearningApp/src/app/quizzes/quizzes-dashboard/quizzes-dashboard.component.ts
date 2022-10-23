@@ -31,6 +31,8 @@ export class QuizzesDashboardComponent implements OnInit, AfterViewChecked {
   siteContentElement: HTMLElement | null = null;
   mainContentElement: HTMLElement | null = null;
   currentScrollHeight: number = 0;
+  selectQuizId: string | undefined;
+  teamId: string | undefined;
 
   faChevronLeft = faChevronLeft;
   faEllipsis = faEllipsis;
@@ -62,6 +64,7 @@ export class QuizzesDashboardComponent implements OnInit, AfterViewChecked {
   }
 
   ngOnInit(): void {
+    this.teamId = this.route.snapshot.paramMap.get('id')!;
     this.scrollToBottom();
     this.addStyles();
     this.getTeamById();
@@ -69,17 +72,15 @@ export class QuizzesDashboardComponent implements OnInit, AfterViewChecked {
   }
 
   getQuizzes() {
-    this.quizService
-      .getQuizzes(this.route.snapshot.paramMap.get('id')!)
-      .subscribe({
-        next: (data) => {
-          this.error = undefined;
-          this.quizzes = data;
-        },
-        error: (err) => {
-          this.error = err;
-        },
-      });
+    this.quizService.getQuizzes(this.teamId!).subscribe({
+      next: (data) => {
+        this.error = undefined;
+        this.quizzes = data;
+      },
+      error: (err) => {
+        this.error = err;
+      },
+    });
   }
 
   addStyles() {

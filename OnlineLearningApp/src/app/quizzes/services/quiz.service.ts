@@ -2,6 +2,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, throwError } from 'rxjs';
 import { AddQuiz } from '../interfaces/add-quiz.interface';
+import { QuizDetails } from '../interfaces/quiz-details.interface';
 import { Quiz } from '../interfaces/quiz.interface';
 
 @Injectable({
@@ -26,6 +27,12 @@ export class QuizService {
   getQuizzes(teamId: string) {
     return this.http
       .get<Quiz[]>(`/api/Team/${teamId}/Quiz`)
+      .pipe(catchError(this.handleError));
+  }
+
+  getQuiz(quizId: string, teamId: string) {
+    return this.http
+      .get<QuizDetails>(`/api/Team/${teamId}/Quiz/${quizId}`)
       .pipe(catchError(this.handleError));
   }
 }

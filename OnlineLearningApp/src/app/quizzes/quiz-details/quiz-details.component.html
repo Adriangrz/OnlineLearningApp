@@ -1,0 +1,49 @@
+<div
+  class="modal fade"
+  id="quizInfo-modal"
+  tabindex="-1"
+  aria-labelledby="quizInfo-modal"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="quizInfo-modal">Informacje o teście</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div *ngIf="error" class="alert alert-danger" role="alert">
+          {{ error }}
+        </div>
+        <div class="d-flex flex-column" *ngIf="quiz">
+          <h6 class="text-center">Nazwa</h6>
+          <p class="text-center">{{ quiz.name }}</p>
+          <h6 class="text-center">Utworzono</h6>
+          <p class="text-center">
+            {{ quiz.createdDate | date: "dd.MM.yyyy, HH:mm:ss" }}
+          </p>
+          <h6 class="text-center">Data zakończenia</h6>
+          <p class="text-center">
+            {{ quiz.endDate | date: "dd.MM.yyyy, HH:mm:ss" }}
+          </p>
+          <div *ngIf="quiz.isDone !== null">
+            <h6 class="text-center">Czy wykonano</h6>
+            <p class="text-center">{{ quiz.isDone ? "Tak" : "Nie" }}</p>
+          </div>
+        </div>
+      </div>
+      <div
+        class="modal-footer d-flex justify-content-center align-items-center"
+      >
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Zamknij
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
