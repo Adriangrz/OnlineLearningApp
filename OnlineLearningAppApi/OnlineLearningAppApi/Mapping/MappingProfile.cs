@@ -20,6 +20,7 @@ namespace OnlineLearningAppApi.Mapping
             CreateMap<User, UserDetailsDto>();
             CreateMap<CreateQuizDto, Quiz>();
             CreateMap<Quiz, QuizDto>();
+            CreateMap<Quiz, QuizDetailsDto>();
             CreateMap<CreateQuestionDto, Question>();
             CreateMap<Question, QuestionDto>();
         }

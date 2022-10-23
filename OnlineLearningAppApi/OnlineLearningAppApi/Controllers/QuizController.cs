@@ -34,5 +34,13 @@ namespace OnlineLearningAppApi.Controllers
 
             return Ok(result);
         }
+
+        [HttpGet("{quizId}")]
+        public async Task<ActionResult<QuizDetailsDto>> GetById([FromRoute] Guid teamId, [FromRoute] Guid quizId)
+        {
+            var quiz = await _quizService.GetByIdAsync(teamId,quizId);
+
+            return Ok(quiz);
+        }
     }
 }

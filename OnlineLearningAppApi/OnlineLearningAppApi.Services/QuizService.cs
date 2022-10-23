@@ -65,6 +65,39 @@ namespace OnlineLearningAppApi.Services
             return quizDto;
         }
 
+        public async Task<QuizDetailsDto> GetByIdAsync(Guid teamId, Guid quizId)
+        {
+            var team = await _dbContext
+                .Teams
+                .Include(t => t.Users)
+                .FirstOrDefaultAsync(r => r.Id == teamId);
+
+            if (team is null)
+                throw new NotFoundException("Zespół nie istnieje");
+
+            var authorizationResult = _authorizationService.AuthorizeAsync(_userContextService.User, team,
+                new ResourceOperationRequirement(ResourceOperation.Read)).Result;
+
+            if (!authorizationResult.Succeeded)
+            {
+                throw new ForbidException();
+            }
+
+            var quiz = await _dbContext.Quizzes.FirstOrDefaultAsync(q => q.Id == quizId);
+
+            if (quiz is null)
+                throw new NotFoundException("Test nie istnieje");
+
+            var quizDetailsDto = _mapper.Map<QuizDetailsDto>(quiz);
+
+            var userQuiz = await _dbContext.UserQuizzes.FirstOrDefaultAsync(uq => uq.UserId == _userContextService.GetUserId && uq.QuizId == quizId);
+            
+            if (userQuiz is not null)
+                quizDetailsDto.IsDone = userQuiz.IsDone;
+            
+            return quizDetailsDto;
+        }
+
         public async Task<List<QuizDto>> GetAllAsync(Guid teamId)
         {
             var team = await _dbContext

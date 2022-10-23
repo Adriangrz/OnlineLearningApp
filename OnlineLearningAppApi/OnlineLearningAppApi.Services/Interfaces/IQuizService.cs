@@ -11,5 +11,6 @@ namespace OnlineLearningAppApi.Services.Interfaces
     {
         Task<QuizDto> CreateAsync(CreateQuizDto dto, Guid teamId);
         Task<List<QuizDto>> GetAllAsync(Guid teamId);
+        Task<QuizDetailsDto> GetByIdAsync(Guid teamId, Guid quizId);
     }
 }
