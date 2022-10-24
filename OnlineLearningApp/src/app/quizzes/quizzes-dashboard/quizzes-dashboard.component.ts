@@ -103,4 +103,9 @@ export class QuizzesDashboardComponent implements OnInit, AfterViewChecked {
         },
       });
   }
+
+  quizDateGreaterThanNow(quizEndDate: Date): boolean {
+    if (new Date(quizEndDate).getTime() > new Date().getTime()) return true;
+    return false;
+  }
 }

@@ -21,7 +21,6 @@ export class QuizDetailsComponent implements OnChanges {
     if (!this.quizId || !this.teamId) return;
     this.quizService.getQuiz(this.quizId, this.teamId).subscribe({
       next: (data) => {
-        console.log(data);
         this.quiz = data;
         this.error = undefined;
       },

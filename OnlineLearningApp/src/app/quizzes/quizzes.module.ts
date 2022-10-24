@@ -10,6 +10,7 @@ import { AddQuizQuestionComponent } from './add-quiz-question/add-quiz-question.
 import { EditQuizQuestionComponent } from './edit-quiz-question/edit-quiz-question.component';
 import { CodeEditorComponent } from './code-editor/code-editor.component';
 import { QuizDetailsComponent } from './quiz-details/quiz-details.component';
+import { QuizComponent } from './quiz/quiz.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { QuizDetailsComponent } from './quiz-details/quiz-details.component';
     EditQuizQuestionComponent,
     CodeEditorComponent,
     QuizDetailsComponent,
+    QuizComponent,
   ],
   imports: [
     CommonModule,

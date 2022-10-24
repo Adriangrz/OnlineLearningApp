@@ -68,7 +68,14 @@
             </div>
           </div>
           <div class="mt-1 d-flex justify-content-center align-items-center">
-            <button type="button" class="btn btn-primary">Wykonaj</button>
+            <button
+              *ngIf="quizDateGreaterThanNow(quiz.endDate)"
+              routerLink="./test/{{ quiz.id }}"
+              type="button"
+              class="btn btn-primary"
+            >
+              Wykonaj
+            </button>
           </div>
         </div>
       </div>

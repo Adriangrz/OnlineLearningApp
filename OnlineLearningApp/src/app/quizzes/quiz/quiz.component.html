@@ -1,0 +1,20 @@
+<div
+  *ngIf="quiz"
+  class="d-flex flex-column justify-content-center align-items-center"
+>
+  <h1>{{ quiz.name }}</h1>
+  <h6>Data zamknięcia testu:</h6>
+  <p>{{ quiz.endDate | date: "dd.MM.yyyy, HH:mm" }}</p>
+  <div class="d-flex flex-row">
+    <button
+      *ngIf="quizDateGreaterThanNow(quiz.endDate)"
+      type="button"
+      class="btn btn-primary me-1"
+    >
+      <fa-icon [icon]="faGraduatingCap"></fa-icon> Uruchom test
+    </button>
+    <button (click)="goBack()" type="button" class="btn btn-secondary ms-1">
+      <fa-icon [icon]="faBackward"></fa-icon> Wróć
+    </button>
+  </div>
+</div>
