@@ -72,7 +72,9 @@ export class AddQuizQuestionComponent {
         this.codeEditorComponent.getValue()
       );
     this.answerType.setValue(
-      Object.values(this.answerTypeEnum).indexOf(this.answerType.value)
+      Object.keys(this.answerTypeEnum)[
+        Object.values(this.answerTypeEnum).indexOf(this.answerType.value)
+      ]
     );
     this.addedQuestion.emit(this.questionForm.value);
     if (this.isCodeAdd) this.questionCode = '';

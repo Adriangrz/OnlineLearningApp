@@ -11,6 +11,7 @@ import { EditQuizQuestionComponent } from './edit-quiz-question/edit-quiz-questi
 import { CodeEditorComponent } from './code-editor/code-editor.component';
 import { QuizDetailsComponent } from './quiz-details/quiz-details.component';
 import { QuizComponent } from './quiz/quiz.component';
+import { QuestionComponent } from './question/question.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { QuizComponent } from './quiz/quiz.component';
     CodeEditorComponent,
     QuizDetailsComponent,
     QuizComponent,
+    QuestionComponent,
   ],
   imports: [
     CommonModule,

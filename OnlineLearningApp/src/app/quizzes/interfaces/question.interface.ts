@@ -4,7 +4,7 @@ export interface Question {
   code: string;
   codeLanguage: string;
   multipleChoiceOptions: string[];
-  answerType: number;
+  answerType: string;
   hasImages: boolean;
   quizId: string;
 }

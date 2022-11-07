@@ -1,0 +1,112 @@
+<div *ngIf="error" class="alert alert-danger" role="alert">
+  {{ error }}
+</div>
+<div
+  *ngIf="question"
+  class="question-content d-flex flex-grow-1 flex-column justify-content-center"
+>
+  <h3 class="text-center">{{ question.text }}</h3>
+  <div
+    class="d-flex justify-content-center align-items-center mt-2 mb-3"
+    *ngIf="question.code"
+  >
+    <app-code-editor
+      class="code-editor"
+      [isReadOnly]="true"
+      [code]="question.code"
+      [codeLanguage]="question.codeLanguage"
+    ></app-code-editor>
+  </div>
+  <ng-container [ngSwitch]="question.answerType">
+    <div class="w-100" *ngSwitchCase="'Text'">
+      <form [formGroup]="textAnswerForm" class="w-100">
+        <div class="w-100 mb-3">
+          <label for="answerTextarea" class="form-label w-100 text-center"
+            >Wpisz swoją odpowiedź:</label
+          >
+          <textarea
+            class="form-control answer-text mx-auto"
+            id="answerTextarea"
+            rows="4"
+            formControlName="text"
+          ></textarea>
+        </div>
+      </form>
+    </div>
+    <div
+      class="d-flex flex-column justify-content-center align-items-center"
+      *ngSwitchCase="'Code'"
+    >
+      <h6>Wpisz kod jako odpowiedź:</h6>
+      <app-code-editor
+        #userCode
+        class="code-editor"
+        [codeLanguage]="question.codeLanguage"
+      ></app-code-editor>
+      <div class="mb-1">
+        <label for="codeArgumentsTextarea" class="form-label"
+          >Dane wejściowe(dane oddziel enterem):</label
+        >
+        <textarea
+          class="form-control"
+          id="codeArgumentsTextarea"
+          rows="3"
+          [formControl]="codeArgumentsFormControl"
+        ></textarea>
+      </div>
+      <button
+        [disabled]="isCodeExecuting"
+        (click)="executeCode()"
+        type="button"
+        class="mt-1 mb-1 btn btn-secondary"
+      >
+        Wykonaj kod
+      </button>
+      <pre class="code-result">{{ codeResult }}</pre>
+    </div>
+    <div class="w-100" *ngSwitchCase="'MultipleChoiceAnswer'">
+      <h6 class="text-center">Wybierz odpowiedzi:</h6>
+      <form
+        class="multiple-choice-answer mx-auto"
+        [formGroup]="multipleChoiceAnswerForm"
+      >
+        <div formArrayName="multipleChoiceOptions">
+          <div
+            class="form-check"
+            *ngFor="let option of question.multipleChoiceOptions; let i = index"
+          >
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="flexCheck{{ i }}"
+              formControlName="{{ i }}"
+            />
+            <label class="form-check-label" for="flexCheck{{ i }}">
+              {{ option }}
+            </label>
+          </div>
+        </div>
+      </form>
+    </div>
+  </ng-container>
+  <div
+    class="mt-3 mb-1 d-flex flex-row justify-content-center align-items-center"
+  >
+    <button
+      *ngIf="currentQuestionNumber < totalQuestionsCount"
+      (click)="nextQuestion()"
+      type="button"
+      class="btn btn-primary"
+    >
+      Następne pytanie
+    </button>
+    <button
+      *ngIf="!(currentQuestionNumber < totalQuestionsCount)"
+      type="button"
+      class="btn btn-primary"
+      (click)="endQuiz()"
+    >
+      Zakończ test
+    </button>
+  </div>
+</div>

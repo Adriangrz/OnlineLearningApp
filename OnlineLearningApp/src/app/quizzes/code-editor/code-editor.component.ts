@@ -28,6 +28,7 @@ const THEME = 'ace/theme/dracula';
 export class CodeEditorComponent implements AfterViewInit, OnChanges {
   @Input() codeLanguage: string | undefined;
   @Input() code: string | null = '';
+  @Input() isReadOnly: boolean = false;
   @ViewChild('codeEditor') codeEditorElmRef!: ElementRef;
   codeEditor!: ace.Ace.Editor;
 
@@ -42,6 +43,7 @@ export class CodeEditorComponent implements AfterViewInit, OnChanges {
     this.codeEditor.setTheme(THEME);
     this.codeEditor.getSession().setMode('ace/mode/javascript');
     this.codeEditor.setShowFoldWidgets(true);
+    this.codeEditor.setReadOnly(this.isReadOnly);
     if (this.code) this.codeEditor.setValue(this.code);
   }
 

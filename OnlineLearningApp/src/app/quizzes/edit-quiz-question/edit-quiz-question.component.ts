@@ -67,9 +67,10 @@ export class EditQuizQuestionComponent implements OnChanges {
       text: this.questionToEdit.text,
       code: this.questionToEdit.code,
       codeLanguage: this.questionToEdit.codeLanguage,
-      answerType: Object.values(this.answerTypeEnum)[
-        this.questionToEdit.answerType
-      ],
+      answerType:
+        this.answerTypeEnum[
+          this.questionToEdit.answerType as keyof typeof this.answerTypeEnum
+        ],
     });
     this.questionToEdit.multipleChoiceOptions.forEach((element) => {
       this.multipleChoiceOptions.push(
@@ -90,7 +91,9 @@ export class EditQuizQuestionComponent implements OnChanges {
         this.codeEditorComponent.getValue()
       );
     this.answerType.setValue(
-      Object.values(this.answerTypeEnum).indexOf(this.answerType.value)
+      Object.keys(this.answerTypeEnum)[
+        Object.values(this.answerTypeEnum).indexOf(this.answerType.value)
+      ]
     );
     this.editedQuestion.emit(this.questionForm.value);
     this.isCodeAdd = false;

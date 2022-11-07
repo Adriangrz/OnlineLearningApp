@@ -3,5 +3,5 @@ export interface AddQuestion {
   code: string;
   codeLanguage: string;
   multipleChoiceOptions: string[];
-  answerType: number;
+  answerType: string;
 }

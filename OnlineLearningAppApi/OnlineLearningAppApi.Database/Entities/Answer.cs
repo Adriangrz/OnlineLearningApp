@@ -10,6 +10,7 @@ namespace OnlineLearningAppApi.Database.Entities
     {
         public Guid Id { get; set; }
         public string Value { get; set; }
+        public string? CodeLanguage { get; set; }
         public string? Code { get; set; }
         public Guid QuestionId { get; set; }
         public Question Question { get; set; }

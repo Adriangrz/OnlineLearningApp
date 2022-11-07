@@ -6,6 +6,9 @@
     "/hubs": {
       "target": "https://localhost:7067",
       "secure": false
+    },
+    "/submissions":{
+      "target": "http://localhost:2358",
+      "secure": false
     }
-
 }

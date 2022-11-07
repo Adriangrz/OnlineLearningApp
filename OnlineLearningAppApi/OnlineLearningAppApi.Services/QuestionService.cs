@@ -10,6 +10,7 @@ using OnlineLearningAppApi.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -64,6 +65,27 @@ namespace OnlineLearningAppApi.Services
 
             var questionsDtos = _mapper.Map<List<QuestionDto>>(questions);
             return questionsDtos;
+        }
+
+        public async Task<PagedResult<QuestionDto>> GetAllAsync(Guid quizId,QuestionQuery query)
+        {
+            var baseQuery = _dbContext
+                .Questions
+                .Where(q => q.QuizId == quizId);
+                
+
+            var questions = await baseQuery
+                .Skip(query.PageSize * (query.PageNumber - 1))
+                .Take(query.PageSize)
+                .ToListAsync();
+
+            var totalItemsCount = await baseQuery.CountAsync();
+
+            var questionsDtos = _mapper.Map<List<QuestionDto>>(questions);
+
+            var result = new PagedResult<QuestionDto>(questionsDtos, totalItemsCount, query.PageSize, query.PageNumber);
+
+            return result;
         }
     }
 }
