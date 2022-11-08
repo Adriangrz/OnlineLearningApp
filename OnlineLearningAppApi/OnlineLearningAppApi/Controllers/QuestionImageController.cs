@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using OnlineLearningAppApi.Services.Interfaces;
+using OnlineLearningAppApi.Core.Interfaces;
 
 namespace OnlineLearningAppApi.Controllers
 {

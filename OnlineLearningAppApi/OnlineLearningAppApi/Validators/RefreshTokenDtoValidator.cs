@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using OnlineLearningAppApi.Models;
+using OnlineLearningAppApi.Core.Mapper.Dtos;
 
 namespace OnlineLearningAppApi.Validators
 {

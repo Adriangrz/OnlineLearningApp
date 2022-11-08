@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using OnlineLearningAppApi.Models;
-using OnlineLearningAppApi.Services.Interfaces;
+using OnlineLearningAppApi.Core.Interfaces;
+using OnlineLearningAppApi.Core.Mapper.Dtos;
 
 namespace OnlineLearningAppApi.Controllers
 {

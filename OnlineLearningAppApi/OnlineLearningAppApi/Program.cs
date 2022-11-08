@@ -2,24 +2,25 @@ using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using NLog.Web;
-using OnlineLearningAppApi.Database;
-using OnlineLearningAppApi.Database.Entities;
-using OnlineLearningAppApi.Hubs;
+using OnlineLearningAppApi.Infrastructure.Hubs;
 using OnlineLearningAppApi.Middleware;
 using OnlineLearningAppApi.Services;
-using OnlineLearningAppApi.Services.Authorization;
-using OnlineLearningAppApi.Services.Interfaces;
 using System.Reflection;
 using System.Text;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddCoreServices();
+builder.Services.AddInfrastructureServices(builder.Configuration);
+
 builder.Host.UseNLog();
+
+builder.Services.AddSignalR();
 
 builder.Services.AddCors(options =>
 {
@@ -29,7 +30,6 @@ builder.Services.AddCors(options =>
         .AllowAnyHeader()
         .AllowCredentials());
 });
-builder.Services.AddSignalR();
 // Add services to the container.
 builder.Services.AddControllers().AddFluentValidation(opt =>
 {
@@ -71,80 +71,6 @@ builder.Services.AddSwaggerGen(c =>
 
 });
 
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-{
-    options.UseSqlServer(builder.Configuration.GetConnectionString("OnlineLearningAppDatabase"));
-
-});
-
-builder.Services.AddIdentity<User,IdentityRole>(
-    opts =>
-    {
-        opts.SignIn.RequireConfirmedAccount = false; //development
-
-        opts.Password.RequireDigit = true;
-        opts.Password.RequireUppercase = false;
-        opts.Password.RequireLowercase = true;
-        opts.Password.RequireNonAlphanumeric = true;
-        opts.Password.RequiredLength = 8;
-
-        opts.User.RequireUniqueEmail = true;
-        opts.User.AllowedUserNameCharacters = "Aa•πBbCc∆ÊDdEe ÍFfGgHhIiJjKkLl£≥MmNn—ÒOo”ÛPpQqRrSsåúTtUuvWwxYyZzèüØø0123456789-._@+/!#$%^&*~`?|/=";
-
-        opts.Lockout.MaxFailedAccessAttempts = 3;
-        opts.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
-    })
-    .AddEntityFrameworkStores<ApplicationDbContext>()
-    .AddDefaultTokenProviders();
-
-builder.Services.AddAuthentication(options =>
-{
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-}).AddJwtBearer(options =>
-{
-    options.SaveToken = true;
-    options.RequireHttpsMetadata = false; //false only in development
-    options.TokenValidationParameters = new TokenValidationParameters()
-    {
-        RequireExpirationTime = true,
-        ValidateIssuer = true,
-        ValidateAudience = true,
-        ValidateLifetime = true,
-        ValidateIssuerSigningKey = true,
-        ValidIssuer = builder.Configuration["Jwt:Issuer"],
-        ValidAudience = builder.Configuration["Jwt:Audience"],
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(builder.Configuration["Jwt:SecretKey"])),
-        ClockSkew = TimeSpan.Zero
-    };
-    options.Events = new JwtBearerEvents
-    {
-        OnMessageReceived = context =>
-        {
-            var accessToken = context.Request.Query["access_token"];
-
-            var path = context.HttpContext.Request.Path;
-            if (!string.IsNullOrEmpty(accessToken) &&
-                (path.StartsWithSegments("/hubs")))
-            {
-                context.Token = accessToken;
-            }
-            return Task.CompletedTask;
-        }
-    };
-});
-
-builder.Services.AddScoped<IAuthorizationHandler, ResourceOperationRequirementHandler>();
-builder.Services.AddScoped<IAuthorizationHandler, TeamAuthorizationHandler>();
-builder.Services.AddScoped<IAuthService, AuthService>();
-builder.Services.AddScoped<ITeamService, TeamService>();
-builder.Services.AddScoped<ITeamImageService, TeamImageService>();
-builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<IQuizService, QuizService>();
-builder.Services.AddScoped<IQuestionImageService, QuestionImageService>();
-builder.Services.AddScoped<IUserContextService, UserContextService>();
-builder.Services.AddScoped<IQuestionService, QuestionService>();
 builder.Services.AddScoped<ErrorHandlingMiddleware>();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

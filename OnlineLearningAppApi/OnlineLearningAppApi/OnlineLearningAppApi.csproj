@@ -8,11 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="11.0.1" />
-    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
+    <PackageReference Include="AutoMapper" Version="12.0.0" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0" />
     <PackageReference Include="FluentValidation" Version="10.4.0" />
     <PackageReference Include="FluentValidation.AspNetCore" Version="10.4.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.8">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -22,9 +21,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\OnlineLearningAppApi.Database\OnlineLearningAppApi.Database.csproj" />
-    <ProjectReference Include="..\OnlineLearningAppApi.Hubs\OnlineLearningAppApi.Hubs.csproj" />
-    <ProjectReference Include="..\OnlineLearningAppApi.Services\OnlineLearningAppApi.Services.csproj" />
+    <ProjectReference Include="..\OnlineLearningAppApi.Core\Core.csproj" />
+    <ProjectReference Include="..\OnlineLearningAppApi.Infrastructure\Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

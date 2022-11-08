@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
-using OnlineLearningAppApi.Services.Interfaces;
+using OnlineLearningAppApi.Core.Interfaces;
 
 namespace OnlineLearningAppApi.Controllers
 {

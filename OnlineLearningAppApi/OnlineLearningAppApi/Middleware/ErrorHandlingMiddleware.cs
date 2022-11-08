@@ -1,4 +1,4 @@
-﻿using OnlineLearningAppApi.Services.Exceptions;
+﻿using OnlineLearningAppApi.Core.Exceptions;
 
 namespace OnlineLearningAppApi.Middleware
 {
