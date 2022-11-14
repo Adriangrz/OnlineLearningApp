@@ -9,9 +9,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{721683A6-415
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "API", "API", "{AE3E98BA-A9BB-4C59-9E9F-7980BCCAC42D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "OnlineLearningAppApi.Infrastructure\Infrastructure.csproj", "{B2EF33DC-FDF3-40BE-BB08-74B6C6C4AF4D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "OnlineLearningAppApi.Infrastructure\Infrastructure.csproj", "{B2EF33DC-FDF3-40BE-BB08-74B6C6C4AF4D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "OnlineLearningAppApi.Core\Core.csproj", "{28CA031B-6736-4A5B-8755-B582544D0BAF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "OnlineLearningAppApi.Core\Core.csproj", "{28CA031B-6736-4A5B-8755-B582544D0BAF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{1FE73B41-90C0-4A87-9A29-80CFBF96DA71}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineLearningAppApi.UnitTests", "OnlineLearningAppApi.UnitTests\OnlineLearningAppApi.UnitTests.csproj", "{5D4AA07F-0194-4D7F-9E55-821B36C89ACA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,6 +35,10 @@ Global
 		{28CA031B-6736-4A5B-8755-B582544D0BAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{28CA031B-6736-4A5B-8755-B582544D0BAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{28CA031B-6736-4A5B-8755-B582544D0BAF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5D4AA07F-0194-4D7F-9E55-821B36C89ACA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D4AA07F-0194-4D7F-9E55-821B36C89ACA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D4AA07F-0194-4D7F-9E55-821B36C89ACA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D4AA07F-0194-4D7F-9E55-821B36C89ACA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -40,6 +48,7 @@ Global
 		{AE3E98BA-A9BB-4C59-9E9F-7980BCCAC42D} = {721683A6-4154-471A-B066-3453F0294F47}
 		{B2EF33DC-FDF3-40BE-BB08-74B6C6C4AF4D} = {721683A6-4154-471A-B066-3453F0294F47}
 		{28CA031B-6736-4A5B-8755-B582544D0BAF} = {721683A6-4154-471A-B066-3453F0294F47}
+		{5D4AA07F-0194-4D7F-9E55-821B36C89ACA} = {1FE73B41-90C0-4A87-9A29-80CFBF96DA71}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9610C794-3DD3-4723-ACDE-9292D5090A72}
