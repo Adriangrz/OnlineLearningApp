@@ -41,7 +41,7 @@ namespace OnlineLearningAppApi.Infrastructure.Services
                 throw new NotFoundException("Zespół nie istnieje");
 
             var authorizationResult = _authorizationService.AuthorizeAsync(_userContextService.User, team.AdminId,
-                new ResourceOperationRequirement(ResourceOperation.Update)).Result;
+                new ResourceOperationRequirement(ResourceOperation.Create)).Result;
 
             if (!authorizationResult.Succeeded)
             {

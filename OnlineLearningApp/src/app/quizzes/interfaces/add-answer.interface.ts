@@ -1,7 +1,5 @@
-export interface Answer {
-  id: string;
+export interface AddAnswer {
   value: string;
   codeLanguage: string | null;
   code: string | null;
-  questionId: string;
 }

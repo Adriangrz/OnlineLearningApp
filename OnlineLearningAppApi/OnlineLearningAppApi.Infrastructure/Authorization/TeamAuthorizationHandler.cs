@@ -15,13 +15,11 @@ namespace OnlineLearningAppApi.Infrastructure.Authorization
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, ResourceOperationRequirement requirement,
             Team<User> team)
         {
-            if (requirement.ResourceOperation == ResourceOperation.Read)
+
+            var userId = context.User.FindFirst(c => c.Type == ClaimTypes.NameIdentifier).Value;
+            if (team.Users.Any(u => u.Id == userId) || team.AdminId == userId)
             {
-                var userId = context.User.FindFirst(c => c.Type == ClaimTypes.NameIdentifier).Value;
-                if (team.Users.Any(u=>u.Id==userId) || team.AdminId == userId)
-                {
-                    context.Succeed(requirement);
-                }
+                context.Succeed(requirement);
             }
 
             return Task.CompletedTask;

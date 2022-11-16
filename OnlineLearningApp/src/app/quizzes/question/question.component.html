@@ -105,6 +105,7 @@
       type="button"
       class="btn btn-primary"
       (click)="endQuiz()"
+      [disabled]="areAnswersBeingProcessed"
     >
       Zakończ test
     </button>

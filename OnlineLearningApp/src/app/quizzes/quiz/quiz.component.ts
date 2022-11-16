@@ -2,6 +2,7 @@ import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { faBackward, faGraduationCap } from '@fortawesome/free-solid-svg-icons';
+import { QuizDetails } from '../interfaces/quiz-details.interface';
 import { Quiz } from '../interfaces/quiz.interface';
 import { QuizService } from '../services/quiz.service';
 
@@ -11,7 +12,7 @@ import { QuizService } from '../services/quiz.service';
   styleUrls: ['./quiz.component.scss'],
 })
 export class QuizComponent implements OnInit {
-  quiz: Quiz | undefined;
+  quiz: QuizDetails | undefined;
   error: string | undefined;
 
   faGraduatingCap = faGraduationCap;

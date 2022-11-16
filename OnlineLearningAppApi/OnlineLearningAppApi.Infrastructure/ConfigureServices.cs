@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Core.Interfaces;
+using Infrastructure.Authorization;
+using Infrastructure.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -87,9 +90,11 @@ public static class ConfigureServices
         });
         services.AddScoped<IAuthorizationHandler, ResourceOperationRequirementHandler>();
         services.AddScoped<IAuthorizationHandler, TeamAuthorizationHandler>();
+        services.AddScoped<IAuthorizationHandler, AnswerAuthorizationHandler>();
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<ITeamService, TeamService>();
         services.AddScoped<ITeamImageService, TeamImageService>();
+        services.AddScoped<IAnswerService, AnswerService>();
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IQuizService, QuizService>();
         services.AddScoped<IQuestionImageService, QuestionImageService>();

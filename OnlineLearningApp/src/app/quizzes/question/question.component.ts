@@ -1,11 +1,14 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormControl } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { forkJoin } from 'rxjs';
 import { CodeEditorComponent } from '../code-editor/code-editor.component';
 import { AnswerType } from '../enums/answer-type.enum';
 import { CodeLanguage } from '../enums/code-language.enum';
+import { AddAnswer } from '../interfaces/add-answer.interface';
 import { Answer } from '../interfaces/answer.interface';
 import { Question } from '../interfaces/question.interface';
+import { AnswerService } from '../services/answer.service';
 import { CodeService } from '../services/code.service';
 import { QuestionService } from '../services/question.service';
 
@@ -27,10 +30,11 @@ export class QuestionComponent implements OnInit {
 
   question: Question | undefined;
   error: string | undefined;
-  answers: Answer[] = [];
+  userAnswers: [Question, AddAnswer][] = [];
   currentQuestionNumber: number = 1;
   totalQuestionsCount: number = 1;
   isCodeExecuting: boolean = false;
+  areAnswersBeingProcessed: boolean = false;
   codeResult: string = '';
   codeArgumentsFormControl = new FormControl('');
 
@@ -43,8 +47,10 @@ export class QuestionComponent implements OnInit {
   constructor(
     private questionService: QuestionService,
     private codeService: CodeService,
+    private answerService: AnswerService,
     private route: ActivatedRoute,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -113,31 +119,37 @@ export class QuestionComponent implements OnInit {
         selectOptions += `${selectOptions != '' ? ',' : ''}${element}`;
       }
     });
-    let answer: Answer = {
+    let answer: AddAnswer = {
       value: selectOptions,
-      questionId: this.question!.id,
       code: null,
       codeLanguage: null,
     };
-    this.answers.push(answer);
+    this.userAnswers.push([this.question!, answer]);
   }
 
   answerAsText() {
-    let answer: Answer = {
+    let answer: AddAnswer = {
       value: this.textAnswerForm.get('text')?.value,
-      questionId: this.question!.id,
       code: null,
       codeLanguage: null,
     };
-    this.answers.push(answer);
+    this.userAnswers.push([this.question!, answer]);
   }
 
-  answerAsCode() {}
+  answerAsCode() {
+    let answer: AddAnswer = {
+      value: this.codeResult,
+      code: this.userCode.getValue(),
+      codeLanguage: this.question!.codeLanguage,
+    };
+    this.userAnswers.push([this.question!!, answer]);
+  }
 
   saveQuestion() {
     if (this.question!.answerType === 'MultipleChoiceAnswer')
       this.answerAsMultipleChoice();
     if (this.question!.answerType === 'Text') this.answerAsText();
+    if (this.question!.answerType === 'Code') this.answerAsCode();
   }
 
   nextQuestion() {
@@ -149,7 +161,25 @@ export class QuestionComponent implements OnInit {
   }
 
   endQuiz() {
+    this.areAnswersBeingProcessed = true;
     this.saveQuestion();
-    console.log(this.answers);
+
+    forkJoin(
+      Array.from(this.userAnswers, (element) =>
+        this.answerService.addAnswer(element[0].id, element[1])
+      )
+    ).subscribe({
+      next: (data) => {
+        this.error = undefined;
+        this.router.navigate([
+          `/zespoły/${this.route.snapshot.paramMap.get('id')!}`,
+        ]);
+        this.areAnswersBeingProcessed = false;
+      },
+      error: (err) => {
+        this.error = err;
+        this.areAnswersBeingProcessed = false;
+      },
+    });
   }
 }

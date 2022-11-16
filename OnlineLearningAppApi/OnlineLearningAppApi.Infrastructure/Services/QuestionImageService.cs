@@ -62,7 +62,7 @@ namespace OnlineLearningAppApi.Infrastructure.Services
 
 
             var authorizationResult = _authorizationService.AuthorizeAsync(_userContextService.User, adminId,
-                new ResourceOperationRequirement(ResourceOperation.Update)).Result;
+                new ResourceOperationRequirement(ResourceOperation.Create)).Result;
 
             if (!authorizationResult.Succeeded)
             {
