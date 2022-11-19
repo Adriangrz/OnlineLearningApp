@@ -11,5 +11,6 @@ namespace Core.Interfaces
     public interface IAnswerService
     {
         Task<AnswerDto> CreateAsync(CreateAnswerDto dto, Guid questionId);
+        Task<List<AnswerDto>> GetAllAsync(string userId, Guid quizIds);
     }
 }

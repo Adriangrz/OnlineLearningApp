@@ -1,4 +1,5 @@
 ﻿using OnlineLearningAppApi.Core.Entities;
+using OnlineLearningAppApi.Core.Mapper.Dtos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,7 @@ namespace Core.Mapper.Dtos
         public string? CodeLanguage { get; set; }
         public string? Code { get; set; }
         public Guid QuestionId { get; set; }
+        public QuestionDto Question { get; set; }
         public string UserId { get; set; }
     }
 }

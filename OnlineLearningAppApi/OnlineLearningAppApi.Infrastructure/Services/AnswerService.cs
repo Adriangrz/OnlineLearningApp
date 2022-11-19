@@ -64,9 +64,20 @@ namespace Infrastructure.Services
             await _dbContext.Answers.AddAsync(answer);
             await _dbContext.SaveChangesAsync();
 
-
+            answer.Question = question;
             var answerDto = _mapper.Map<AnswerDto>(answer);
             return answerDto;
+        }
+        public async Task<List<AnswerDto>> GetAllAsync(string userId, Guid quizId)
+        {
+            var answers = await _dbContext
+                .Answers
+                .Include(a=>a.Question)
+                .Where(a=>a.UserId==userId && a.Question.QuizId == quizId).ToListAsync();
+
+            var answersDtos = _mapper.Map<List<AnswerDto>>(answers);
+
+            return answersDtos;
         }
     }
 }

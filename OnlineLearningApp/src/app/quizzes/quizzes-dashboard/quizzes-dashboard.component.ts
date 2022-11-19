@@ -13,6 +13,7 @@ import {
   faCircleInfo,
   faEllipsis,
   faPenToSquare,
+  faUsers,
 } from '@fortawesome/free-solid-svg-icons';
 import { Team } from 'src/app/teams/interfaces/team.interface';
 import { TeamService } from 'src/app/teams/services/team.service';
@@ -38,6 +39,7 @@ export class QuizzesDashboardComponent implements OnInit, AfterViewChecked {
   faEllipsis = faEllipsis;
   faCircleInfo = faCircleInfo;
   faPenToSquare = faPenToSquare;
+  faUsers = faUsers;
 
   constructor(
     private teamService: TeamService,

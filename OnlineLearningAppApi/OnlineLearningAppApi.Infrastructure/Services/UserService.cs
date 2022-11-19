@@ -9,6 +9,7 @@ using OnlineLearningAppApi.Core.Entities;
 using OnlineLearningAppApi.Core.Exceptions;
 using OnlineLearningAppApi.Core.Interfaces;
 using OnlineLearningAppApi.Core.Mapper.Dtos;
+using OnlineLearningAppApi.Infrastructure.Authorization;
 using OnlineLearningAppApi.Infrastructure.Hubs;
 using OnlineLearningAppApi.Infrastructure.Persistence;
 using System;
@@ -25,13 +26,17 @@ namespace OnlineLearningAppApi.Infrastructure.Services
         private readonly ApplicationDbContext _dbContext;
         private readonly ITeamService _teamService;
         private readonly IHubContext<TeamHub> _teamHubContext;
+        private readonly IAuthorizationService _authorizationService;
+        private readonly IUserContextService _userContextService;
 
-        public UserService(IMapper mapper, ApplicationDbContext dbContext, ITeamService teamService, IHubContext<TeamHub> teamHubContext)
+        public UserService(IMapper mapper, ApplicationDbContext dbContext, ITeamService teamService, IHubContext<TeamHub> teamHubContext, IAuthorizationService authorizationService, IUserContextService userContextService)
         {
             _mapper = mapper;
             _dbContext = dbContext;
             _teamService = teamService;
             _teamHubContext = teamHubContext;
+            _authorizationService = authorizationService;
+            _userContextService = userContextService;
         }
         public async Task<UserDetailsDto> GetByIdAsync(string id)
         {
@@ -60,6 +65,11 @@ namespace OnlineLearningAppApi.Infrastructure.Services
             if (quiz is null)
                 throw new NotFoundException("Test nie istnieje");
 
+            var team = await GetTeamByIdAsync(quiz.TeamId);
+
+            var authorizationResult = _authorizationService.AuthorizeAsync(_userContextService.User, team.AdminId,
+                new ResourceOperationRequirement(ResourceOperation.Update)).Result;
+
             var users = await _dbContext.UserQuizzes.Include(uq=>uq.User).Where(uq=>uq.QuizId==quizId).ToListAsync();
 
             var usersDtos = _mapper.Map<List<QuizUserDto>>(users);
@@ -71,6 +81,14 @@ namespace OnlineLearningAppApi.Infrastructure.Services
             var user = await _dbContext.Users.Include(u=>u.AddedTeams).FirstOrDefaultAsync(u => u.Email == dto.Email);
             if (user is null)
                 throw new NotFoundException("Użytkownik nie istnieje");
+
+            var authorizationResult = _authorizationService.AuthorizeAsync(_userContextService.User, team.AdminId,
+                new ResourceOperationRequirement(ResourceOperation.Update)).Result;
+
+            if (!authorizationResult.Succeeded)
+            {
+                throw new ForbidException();
+            }
 
             user.AddedTeams.Add(team);
             await _dbContext.SaveChangesAsync();

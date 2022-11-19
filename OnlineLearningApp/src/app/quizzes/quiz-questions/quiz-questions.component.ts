@@ -13,11 +13,11 @@ import { CodeService } from '../services/code.service';
 import { QuestionService } from '../services/question.service';
 
 @Component({
-  selector: 'app-question',
-  templateUrl: './question.component.html',
-  styleUrls: ['./question.component.scss'],
+  selector: 'app-quiz-questions',
+  templateUrl: './quiz-questions.component.html',
+  styleUrls: ['./quiz-questions.component.scss'],
 })
-export class QuestionComponent implements OnInit {
+export class QuizQuestionsComponent implements OnInit {
   @ViewChild('userCode') userCode!: CodeEditorComponent;
 
   multipleChoiceAnswerForm = this.fb.group({
