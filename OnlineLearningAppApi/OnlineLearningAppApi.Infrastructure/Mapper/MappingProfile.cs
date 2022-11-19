@@ -25,6 +25,7 @@ namespace OnlineLearningAppApi.Infrastructure.Mapper
             CreateMap<Question<User>, QuestionDto>();
             CreateMap<CreateAnswerDto, Answer<User>>();
             CreateMap<Answer<User>, AnswerDto>();
+            CreateMap<UserQuiz<User>, QuizUserDto>();
         }
     }
 }

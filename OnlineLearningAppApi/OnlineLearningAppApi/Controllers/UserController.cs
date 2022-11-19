@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Core.Mapper.Dtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using OnlineLearningAppApi.Core.Interfaces;
@@ -25,6 +26,15 @@ namespace OnlineLearningAppApi.Controllers
             var usersDtos = await _userService.GetAllTeamMembersAsync(teamId);
 
             return Ok(usersDtos);
+        }
+
+        [Route("api/Quiz/{quizId}/[controller]")]
+        [HttpGet]
+        public async Task<ActionResult<List<QuizUserDto>>> GetAllQuizUsers([FromRoute] Guid quizId)
+        {
+            var quizUsersDtos = await _userService.GetAllQuizMembersAsync(quizId);
+
+            return Ok(quizUsersDtos);
         }
 
         [Route("api/Team/{teamId}/[controller]")]

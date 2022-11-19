@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Core.Interfaces;
+using Core.Mapper.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
@@ -50,6 +52,17 @@ namespace OnlineLearningAppApi.Infrastructure.Services
             var users = await _dbContext.Users.Where(u=>u.AddedTeams.Any(t=>t.Id==teamId)).ToListAsync();
 
             var usersDtos = _mapper.Map<List<UserDto>>(users);
+            return usersDtos;
+        }
+        public async Task<List<QuizUserDto>> GetAllQuizMembersAsync(Guid quizId)
+        {
+            var quiz = await _dbContext.Quizzes.FirstOrDefaultAsync(q=>q.Id == quizId);
+            if (quiz is null)
+                throw new NotFoundException("Test nie istnieje");
+
+            var users = await _dbContext.UserQuizzes.Include(uq=>uq.User).Where(uq=>uq.QuizId==quizId).ToListAsync();
+
+            var usersDtos = _mapper.Map<List<QuizUserDto>>(users);
             return usersDtos;
         }
         public async Task<UserDto> AddUserToTeamAsync(Guid teamId,AddUserToTeamDto dto)

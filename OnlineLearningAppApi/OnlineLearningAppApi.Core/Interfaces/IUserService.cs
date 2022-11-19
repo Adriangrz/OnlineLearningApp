@@ -1,4 +1,6 @@
-﻿using OnlineLearningAppApi.Core.Mapper.Dtos;
+﻿using Core.Interfaces;
+using Core.Mapper.Dtos;
+using OnlineLearningAppApi.Core.Mapper.Dtos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,5 +15,6 @@ namespace OnlineLearningAppApi.Core.Interfaces
         Task<List<UserDto>> GetAllTeamMembersAsync(Guid teamId);
         Task<UserDto> AddUserToTeamAsync(Guid teamId, AddUserToTeamDto dto);
         Task DeleteUserFromTeamAsync(Guid teamId, string userId);
+        Task<List<QuizUserDto>> GetAllQuizMembersAsync(Guid quizId);
     }
 }
