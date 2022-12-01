@@ -15,5 +15,6 @@ namespace OnlineLearningAppApi.Core.Mapper.Dtos
         public Guid TeamId { get; set; }
         public bool isUserAssigned { get; set; }
         public bool? IsDone { get; set; } = null;
+        public int? Grade { get; set; }
     }
 }

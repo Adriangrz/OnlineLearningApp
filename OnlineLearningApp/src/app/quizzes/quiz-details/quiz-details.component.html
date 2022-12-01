@@ -35,6 +35,10 @@
             <h6 class="text-center">Czy wykonano</h6>
             <p class="text-center">{{ quiz.isDone ? "Tak" : "Nie" }}</p>
           </div>
+          <div *ngIf="quiz.grade">
+            <h6 class="text-center">Ocena</h6>
+            <p class="text-center">{{ quiz.grade }}</p>
+          </div>
         </div>
       </div>
       <div

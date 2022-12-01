@@ -95,6 +95,7 @@ namespace OnlineLearningAppApi.Infrastructure.Services
             {
                 quizDetailsDto.IsDone = userQuiz.IsDone;
                 quizDetailsDto.isUserAssigned = true;
+                quizDetailsDto.Grade = userQuiz.Grade;
             }
 
             if(userQuiz is null)
@@ -126,6 +127,17 @@ namespace OnlineLearningAppApi.Infrastructure.Services
             var quzzesDtos = _mapper.Map<List<QuizDto>>(quizzes);
 
             return quzzesDtos;
+        }
+
+        public async Task RateCompletedQuiz(Guid quizId,string userId, GradeDto gradeDto)
+        {
+            var userQuiz = await _dbContext.UserQuizzes.FirstOrDefaultAsync(uq => uq.UserId == userId && uq.QuizId == quizId);
+            if (userQuiz is null)
+                throw new NotFoundException("Użytkownik nie jest przypisany do danego testu");
+
+            userQuiz.Grade = gradeDto.Grade;
+
+            await _dbContext.SaveChangesAsync();
         }
 
     }

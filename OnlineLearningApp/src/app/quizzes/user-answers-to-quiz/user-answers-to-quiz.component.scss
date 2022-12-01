@@ -1,0 +1,48 @@
+@import "../../../commons";
+
+:host {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.code-editor,
+.code-result {
+  height: fit-content;
+  width: 200px;
+}
+
+@include media-breakpoint-up(sm) {
+  .code-editor,
+  .code-result {
+    width: 500px;
+  }
+}
+
+.answer-text {
+  max-width: 500px;
+}
+
+.multiple-choice-answer {
+  max-width: 500px;
+}
+
+.code-result {
+  background-color: black;
+  color: white;
+}
+
+.user-answers {
+  flex-grow: 1;
+}
+
+.rate-completed-quiz {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  &__form {
+    width: 200px;
+  }
+}

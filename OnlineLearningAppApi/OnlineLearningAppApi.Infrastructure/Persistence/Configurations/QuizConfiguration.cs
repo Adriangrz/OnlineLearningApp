@@ -29,6 +29,7 @@ namespace OnlineLearningAppApi.Infrastructure.Persistence.Configurations
                 j =>
                 {
                     j.Property(pt => pt.IsDone).HasDefaultValue(false);
+                    j.Property(pt => pt.Grade).IsRequired(false).HasDefaultValue(null);
                     j.HasKey(t => new { t.UserId, t.QuizId });
                 });
         }

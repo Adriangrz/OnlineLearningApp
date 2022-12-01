@@ -22,4 +22,10 @@ export class AnswerService {
       .post<Answer>(`/api/Question/${questionId}/Answer`, addAnswer)
       .pipe(catchError(this.handleError));
   }
+
+  getUserAnswers(quizId: string, userId: string) {
+    return this.http
+      .get<Answer[]>(`api/Quiz/${quizId}/User/${userId}/Answer`)
+      .pipe(catchError(this.handleError));
+  }
 }

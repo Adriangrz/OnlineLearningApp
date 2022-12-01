@@ -4,7 +4,7 @@
 
 namespace OnlineLearningAppApi.Infrastructure.Persistence.Migrations
 {
-    public partial class Fix : Migration
+    public partial class AddGradeColumnToUserQuiz : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -37,6 +37,12 @@ namespace OnlineLearningAppApi.Infrastructure.Persistence.Migrations
                 keyColumn: "Id",
                 keyValue: "425ef0eb-304d-42bf-a081-a28aa335e25b");
 
+            migrationBuilder.AddColumn<int>(
+                name: "Grade",
+                table: "UserQuizzes",
+                type: "int",
+                nullable: true);
+
             migrationBuilder.AlterColumn<string>(
                 name: "UserId",
                 table: "Tokens",
@@ -48,27 +54,27 @@ namespace OnlineLearningAppApi.Infrastructure.Persistence.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "2df9f646-4660-41e3-b0f8-5e3592530e1d", "b638d077-34cc-41ec-8377-fe42bbd903ab", "Admin", "ADMIN" });
+                values: new object[] { "20d75387-d5bf-4333-b50a-6259f9a7964b", "ca98ebda-e2b3-4121-acc5-fae0cc4fe021", "Admin", "ADMIN" });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "ba5d75ac-7b69-4c5e-9094-0e263dcc820d", "d5c6ee55-4ced-4f79-b081-fcc9a585bbd8", "User", "USER" });
+                values: new object[] { "44bd355a-4a95-4134-bd76-8990ea56676e", "36bbf953-ab23-4f7e-ba7b-d12242540f81", "User", "USER" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "ImagePath", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "SiteRules", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "98559e96-52a2-4212-ac5f-9dd12f9a4942", 0, "4ab72b92-9962-41f6-b177-3e75c66230f5", "admin@test.pl", true, "Antek", null, "Kowalski", true, null, "ADMIN@TEST.PL", "ADMIN@TEST.PL", "AQAAAAEAACcQAAAAEMkSw6/hX4MTLUIdzznTmScvF2OQ2eWtuoJ57BwPdf1km893W0wlYGemMC5lDmfqPA==", null, false, "6e595a1a-e214-453c-a4cc-211d322709e7", true, false, "admin@test.pl" });
+                values: new object[] { "a01bb744-1946-48bf-8d81-600d7fcad4ad", 0, "99b8f54f-af69-45de-ae6e-a0618c281b2d", "admin@test.pl", true, "Antek", null, "Kowalski", true, null, "ADMIN@TEST.PL", "ADMIN@TEST.PL", "AQAAAAEAACcQAAAAEKjqApHP7OFtJTLJfHhAt0vwAoL4UUD9JCp3VKCn9OkO9zdcZHxrZFJiHUcb8Bruvg==", null, false, "ee0d5f29-4d4c-4509-9aa2-e4dad39254ce", true, false, "admin@test.pl" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",
                 columns: new[] { "RoleId", "UserId" },
-                values: new object[] { "2df9f646-4660-41e3-b0f8-5e3592530e1d", "98559e96-52a2-4212-ac5f-9dd12f9a4942" });
+                values: new object[] { "20d75387-d5bf-4333-b50a-6259f9a7964b", "a01bb744-1946-48bf-8d81-600d7fcad4ad" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",
                 columns: new[] { "RoleId", "UserId" },
-                values: new object[] { "ba5d75ac-7b69-4c5e-9094-0e263dcc820d", "98559e96-52a2-4212-ac5f-9dd12f9a4942" });
+                values: new object[] { "44bd355a-4a95-4134-bd76-8990ea56676e", "a01bb744-1946-48bf-8d81-600d7fcad4ad" });
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Tokens_AspNetUsers_UserId",
@@ -87,27 +93,31 @@ namespace OnlineLearningAppApi.Infrastructure.Persistence.Migrations
             migrationBuilder.DeleteData(
                 table: "AspNetUserRoles",
                 keyColumns: new[] { "RoleId", "UserId" },
-                keyValues: new object[] { "2df9f646-4660-41e3-b0f8-5e3592530e1d", "98559e96-52a2-4212-ac5f-9dd12f9a4942" });
+                keyValues: new object[] { "20d75387-d5bf-4333-b50a-6259f9a7964b", "a01bb744-1946-48bf-8d81-600d7fcad4ad" });
 
             migrationBuilder.DeleteData(
                 table: "AspNetUserRoles",
                 keyColumns: new[] { "RoleId", "UserId" },
-                keyValues: new object[] { "ba5d75ac-7b69-4c5e-9094-0e263dcc820d", "98559e96-52a2-4212-ac5f-9dd12f9a4942" });
+                keyValues: new object[] { "44bd355a-4a95-4134-bd76-8990ea56676e", "a01bb744-1946-48bf-8d81-600d7fcad4ad" });
 
             migrationBuilder.DeleteData(
                 table: "AspNetRoles",
                 keyColumn: "Id",
-                keyValue: "2df9f646-4660-41e3-b0f8-5e3592530e1d");
+                keyValue: "20d75387-d5bf-4333-b50a-6259f9a7964b");
 
             migrationBuilder.DeleteData(
                 table: "AspNetRoles",
                 keyColumn: "Id",
-                keyValue: "ba5d75ac-7b69-4c5e-9094-0e263dcc820d");
+                keyValue: "44bd355a-4a95-4134-bd76-8990ea56676e");
 
             migrationBuilder.DeleteData(
                 table: "AspNetUsers",
                 keyColumn: "Id",
-                keyValue: "98559e96-52a2-4212-ac5f-9dd12f9a4942");
+                keyValue: "a01bb744-1946-48bf-8d81-600d7fcad4ad");
+
+            migrationBuilder.DropColumn(
+                name: "Grade",
+                table: "UserQuizzes");
 
             migrationBuilder.AlterColumn<string>(
                 name: "UserId",

@@ -14,5 +14,6 @@ namespace OnlineLearningAppApi.Core.Entities
         public Guid QuizId { get; set; }
         public Quiz<TUser> Quiz { get; set; }
         public bool IsDone { get; set; }
+        public int? Grade { get; set; }
     }
 }

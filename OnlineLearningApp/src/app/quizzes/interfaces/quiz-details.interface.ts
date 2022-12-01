@@ -6,4 +6,5 @@ export interface QuizDetails {
   teamId: string;
   isUserAssigned: boolean;
   isDone: boolean | null;
+  grade: number | null;
 }

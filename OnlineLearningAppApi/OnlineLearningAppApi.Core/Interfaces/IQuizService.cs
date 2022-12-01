@@ -1,4 +1,5 @@
-﻿using OnlineLearningAppApi.Core.Mapper.Dtos;
+﻿using Core.Mapper.Dtos;
+using OnlineLearningAppApi.Core.Mapper.Dtos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,5 +13,6 @@ namespace OnlineLearningAppApi.Core.Interfaces
         Task<QuizDto> CreateAsync(CreateQuizDto dto, Guid teamId);
         Task<List<QuizDto>> GetAllAsync(Guid teamId);
         Task<QuizDetailsDto> GetByIdAsync(Guid teamId, Guid quizId);
+        Task RateCompletedQuiz(Guid quizId, string userId, GradeDto gradeDto);
     }
 }

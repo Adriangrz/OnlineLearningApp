@@ -43,4 +43,10 @@ export class QuizService {
       .get<QuizDetails>(`/api/Team/${teamId}/Quiz/${quizId}`)
       .pipe(catchError(this.handleError));
   }
+
+  rateCompletedQuiz(quizId: string, userId: string, grade: number) {
+    return this.http
+      .post(`api/Quiz/${quizId}/User/${userId}/Grade`, { grade })
+      .pipe(catchError(this.handleError));
+  }
 }

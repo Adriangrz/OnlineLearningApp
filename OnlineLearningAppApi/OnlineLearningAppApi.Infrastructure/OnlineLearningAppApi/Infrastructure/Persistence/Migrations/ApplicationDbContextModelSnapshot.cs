@@ -3,7 +3,6 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OnlineLearningAppApi.Infrastructure.Persistence;
 
@@ -12,10 +11,9 @@ using OnlineLearningAppApi.Infrastructure.Persistence;
 namespace OnlineLearningAppApi.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20221108164259_Fix")]
-    partial class Fix
+    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -53,15 +51,15 @@ namespace OnlineLearningAppApi.Infrastructure.Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "2df9f646-4660-41e3-b0f8-5e3592530e1d",
-                            ConcurrencyStamp = "b638d077-34cc-41ec-8377-fe42bbd903ab",
+                            Id = "20d75387-d5bf-4333-b50a-6259f9a7964b",
+                            ConcurrencyStamp = "ca98ebda-e2b3-4121-acc5-fae0cc4fe021",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "ba5d75ac-7b69-4c5e-9094-0e263dcc820d",
-                            ConcurrencyStamp = "d5c6ee55-4ced-4f79-b081-fcc9a585bbd8",
+                            Id = "44bd355a-4a95-4134-bd76-8990ea56676e",
+                            ConcurrencyStamp = "36bbf953-ab23-4f7e-ba7b-d12242540f81",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -156,13 +154,13 @@ namespace OnlineLearningAppApi.Infrastructure.Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "98559e96-52a2-4212-ac5f-9dd12f9a4942",
-                            RoleId = "2df9f646-4660-41e3-b0f8-5e3592530e1d"
+                            UserId = "a01bb744-1946-48bf-8d81-600d7fcad4ad",
+                            RoleId = "20d75387-d5bf-4333-b50a-6259f9a7964b"
                         },
                         new
                         {
-                            UserId = "98559e96-52a2-4212-ac5f-9dd12f9a4942",
-                            RoleId = "ba5d75ac-7b69-4c5e-9094-0e263dcc820d"
+                            UserId = "a01bb744-1946-48bf-8d81-600d7fcad4ad",
+                            RoleId = "44bd355a-4a95-4134-bd76-8990ea56676e"
                         });
                 });
 
@@ -419,6 +417,9 @@ namespace OnlineLearningAppApi.Infrastructure.Persistence.Migrations
                     b.Property<Guid>("QuizId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<int?>("Grade")
+                        .HasColumnType("int");
+
                     b.Property<bool>("IsDone")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
@@ -512,9 +513,9 @@ namespace OnlineLearningAppApi.Infrastructure.Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "98559e96-52a2-4212-ac5f-9dd12f9a4942",
+                            Id = "a01bb744-1946-48bf-8d81-600d7fcad4ad",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "4ab72b92-9962-41f6-b177-3e75c66230f5",
+                            ConcurrencyStamp = "99b8f54f-af69-45de-ae6e-a0618c281b2d",
                             Email = "admin@test.pl",
                             EmailConfirmed = true,
                             FirstName = "Antek",
@@ -522,9 +523,9 @@ namespace OnlineLearningAppApi.Infrastructure.Persistence.Migrations
                             LockoutEnabled = true,
                             NormalizedEmail = "ADMIN@TEST.PL",
                             NormalizedUserName = "ADMIN@TEST.PL",
-                            PasswordHash = "AQAAAAEAACcQAAAAEMkSw6/hX4MTLUIdzznTmScvF2OQ2eWtuoJ57BwPdf1km893W0wlYGemMC5lDmfqPA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEKjqApHP7OFtJTLJfHhAt0vwAoL4UUD9JCp3VKCn9OkO9zdcZHxrZFJiHUcb8Bruvg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "6e595a1a-e214-453c-a4cc-211d322709e7",
+                            SecurityStamp = "ee0d5f29-4d4c-4509-9aa2-e4dad39254ce",
                             SiteRules = true,
                             TwoFactorEnabled = false,
                             UserName = "admin@test.pl"
