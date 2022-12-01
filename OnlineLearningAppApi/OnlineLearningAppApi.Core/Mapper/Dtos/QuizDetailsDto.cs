@@ -13,6 +13,7 @@ namespace OnlineLearningAppApi.Core.Mapper.Dtos
         public DateTime CreatedDate { get; set; }
         public DateTime EndDate { get; set; }
         public Guid TeamId { get; set; }
+        public bool isUserAssigned { get; set; }
         public bool? IsDone { get; set; } = null;
     }
 }

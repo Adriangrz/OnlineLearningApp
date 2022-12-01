@@ -5,10 +5,19 @@
   <h1>{{ quiz.name }}</h1>
   <h6>Data zamknięcia testu:</h6>
   <p>{{ quiz.endDate | date: "dd.MM.yyyy, HH:mm" }}</p>
-  <div class="alert alert-info" role="alert">Test został już wykonany</div>
+  <div *ngIf="quiz.isDone" class="alert alert-info" role="alert">
+    Test został już wykonany
+  </div>
+  <div *ngIf="!quiz.isUserAssigned" class="alert alert-danger" role="alert">
+    Nie masz dostępu do testu
+  </div>
   <div class="d-flex flex-row">
     <button
-      *ngIf="quizDateGreaterThanNow(quiz.endDate) && quiz.isDone === false"
+      *ngIf="
+        quizDateGreaterThanNow(quiz.endDate) &&
+        !quiz.isDone &&
+        quiz.isUserAssigned
+      "
       type="button"
       class="btn btn-primary me-1"
       routerLink="./pytania"

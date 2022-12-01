@@ -12,6 +12,7 @@ using OnlineLearningAppApi.Core.Entities;
 using OnlineLearningAppApi.Infrastructure.Persistence;
 using OnlineLearningAppApi.Core.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Core.Mapper.Dtos;
 
 namespace OnlineLearningAppApi.Infrastructure.Services
 {
@@ -89,10 +90,16 @@ namespace OnlineLearningAppApi.Infrastructure.Services
             var quizDetailsDto = _mapper.Map<QuizDetailsDto>(quiz);
 
             var userQuiz = await _dbContext.UserQuizzes.FirstOrDefaultAsync(uq => uq.UserId == _userContextService.GetUserId && uq.QuizId == quizId);
-            
+
             if (userQuiz is not null)
+            {
                 quizDetailsDto.IsDone = userQuiz.IsDone;
-            
+                quizDetailsDto.isUserAssigned = true;
+            }
+
+            if(userQuiz is null)
+                quizDetailsDto.isUserAssigned = false;
+
             return quizDetailsDto;
         }
 

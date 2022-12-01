@@ -57,7 +57,10 @@ namespace Infrastructure.Services
                 .FirstOrDefaultAsync(r => r.UserId == _userContextService.GetUserId && r.QuizId == question.QuizId);
 
             if (userQuiz is null)
-                throw new NotFoundException("Użytkownik nie ma przypisanego testu");
+                throw new ForbidException();
+
+            if(userQuiz.IsDone)
+                throw new ForbidException();
 
             userQuiz.IsDone = true;
 

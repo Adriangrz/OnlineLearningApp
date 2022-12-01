@@ -4,5 +4,6 @@ export interface QuizDetails {
   createdDate: Date;
   endDate: Date;
   teamId: string;
+  isUserAssigned: boolean;
   isDone: boolean | null;
 }
