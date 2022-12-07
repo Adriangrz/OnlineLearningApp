@@ -1,9 +1,14 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from '../auth/guards/auth.guard';
 import { TeamsDashboardComponent } from './teams-dashboard/teams-dashboard.component';
 
 const routes: Routes = [
-  { path: 'zespoły', component: TeamsDashboardComponent },
+  {
+    path: 'zespoły',
+    component: TeamsDashboardComponent,
+    canActivate: [AuthGuard],
+  },
 ];
 
 @NgModule({
