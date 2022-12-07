@@ -1,4 +1,5 @@
 using FluentValidation.AspNetCore;
+using Infrastructure.Hubs;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -89,6 +90,7 @@ app.UseHttpsRedirection();
 app.UseResponseCaching();
 app.UseCors("CorsPolicy");
 app.MapHub<TeamHub>("/hubs/teamHub");
+app.MapHub<QuizHub>("/hubs/quizHub");
 
 app.UseAuthentication();
 app.UseAuthorization();

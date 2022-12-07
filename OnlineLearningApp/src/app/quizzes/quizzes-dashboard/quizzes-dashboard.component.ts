@@ -15,10 +15,13 @@ import {
   faPenToSquare,
   faUsers,
 } from '@fortawesome/free-solid-svg-icons';
+import { AuthService } from 'src/app/auth/services/auth.service';
 import { Team } from 'src/app/teams/interfaces/team.interface';
 import { TeamService } from 'src/app/teams/services/team.service';
 import { Quiz } from '../interfaces/quiz.interface';
 import { QuizService } from '../services/quiz.service';
+import { HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
+import { lastValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-quizzes-dashboard',
@@ -43,6 +46,7 @@ export class QuizzesDashboardComponent implements OnInit, AfterViewChecked {
 
   constructor(
     private teamService: TeamService,
+    private authService: AuthService,
     private quizService: QuizService,
     private route: ActivatedRoute,
     @Inject(DOCUMENT) private document: Document
@@ -73,11 +77,38 @@ export class QuizzesDashboardComponent implements OnInit, AfterViewChecked {
     this.getQuizzes();
   }
 
+  connectToSignalR() {
+    let connection = new HubConnectionBuilder()
+      .withUrl('https://localhost:7067/hubs/quizHub', {
+        accessTokenFactory: async () => {
+          let expirationTime = new Date(
+            this.authService.getTokenExpirationTime()!
+          );
+          expirationTime.setMinutes(expirationTime.getMinutes() - 5);
+          if (new Date().getTime() >= expirationTime.getTime()) {
+            let token = await lastValueFrom(this.authService.refreshToken());
+            return token.token;
+          }
+          return this.authService.getJwtToken()!;
+        },
+      })
+      .withAutomaticReconnect()
+      .configureLogging(LogLevel.Information)
+      .build();
+
+    connection.on('addToQuiz', (data: Quiz) => {
+      this.quizzes.push(data);
+    });
+
+    connection.start();
+  }
+
   getQuizzes() {
     this.quizService.getQuizzes(this.teamId!).subscribe({
       next: (data) => {
         this.error = undefined;
         this.quizzes = data;
+        this.connectToSignalR();
       },
       error: (err) => {
         this.error = err;

@@ -13,6 +13,9 @@ using OnlineLearningAppApi.Infrastructure.Persistence;
 using OnlineLearningAppApi.Core.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Core.Mapper.Dtos;
+using Microsoft.AspNetCore.SignalR;
+using OnlineLearningAppApi.Infrastructure.Hubs;
+using Infrastructure.Hubs;
 
 namespace OnlineLearningAppApi.Infrastructure.Services
 {
@@ -22,13 +25,15 @@ namespace OnlineLearningAppApi.Infrastructure.Services
         private readonly ApplicationDbContext _dbContext;
         private readonly IUserContextService _userContextService;
         private readonly IAuthorizationService _authorizationService;
+        private readonly IHubContext<QuizHub> _quizHubContext;
 
-        public QuizService(IMapper mapper, ApplicationDbContext dbContext, IUserContextService userContextService, IAuthorizationService authorizationService)
+        public QuizService(IMapper mapper, ApplicationDbContext dbContext, IUserContextService userContextService, IAuthorizationService authorizationService, IHubContext<QuizHub> quizHubContext)
         {
             _mapper = mapper;
             _dbContext = dbContext;
             _userContextService = userContextService;
             _authorizationService = authorizationService;
+            _quizHubContext = quizHubContext;
         }
 
         public async Task<QuizDto> CreateAsync(CreateQuizDto dto, Guid teamId)
@@ -61,6 +66,7 @@ namespace OnlineLearningAppApi.Infrastructure.Services
             await _dbContext.SaveChangesAsync();
 
             var quizDto = _mapper.Map<QuizDto>(quiz);
+            await _quizHubContext.Clients.Users(team.Users.Select(u => u.Id)).SendAsync("addToQuiz", quizDto);
             return quizDto;
         }
 
