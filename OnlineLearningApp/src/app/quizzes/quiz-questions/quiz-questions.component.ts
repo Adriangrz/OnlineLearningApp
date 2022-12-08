@@ -77,7 +77,6 @@ export class QuizQuestionsComponent implements OnInit {
   }
 
   executeCode() {
-    console.log(this.codeArgumentsFormControl.value);
     this.isCodeExecuting = true;
     this.codeService
       .sendCode(
