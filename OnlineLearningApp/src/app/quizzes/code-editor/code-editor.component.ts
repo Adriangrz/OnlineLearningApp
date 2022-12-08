@@ -17,7 +17,6 @@ import 'ace-builds/src-noconflict/mode-python';
 import 'ace-builds/src-noconflict/theme-dracula';
 import { CodeLanguage } from '../enums/code-language.enum';
 import { AddQuestion } from '../interfaces/add-question.interface';
-
 const THEME = 'ace/theme/dracula';
 
 @Component({
@@ -41,7 +40,9 @@ export class CodeEditorComponent implements AfterViewInit, OnChanges {
 
     this.codeEditor = ace.edit(element, editorOptions);
     this.codeEditor.setTheme(THEME);
-    this.codeEditor.getSession().setMode('ace/mode/javascript');
+    this.codeEditor
+      .getSession()
+      .setMode(`ace/mode/${this.codeLanguage!.toLowerCase()}`);
     this.codeEditor.setShowFoldWidgets(true);
     this.codeEditor.setReadOnly(this.isReadOnly);
     if (this.code) this.codeEditor.setValue(this.code);
