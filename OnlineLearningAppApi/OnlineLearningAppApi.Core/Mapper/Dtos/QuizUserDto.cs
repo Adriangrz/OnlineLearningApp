@@ -14,5 +14,6 @@ namespace Core.Mapper.Dtos
         public UserDto User { get; set; }
         public Guid QuizId { get; set; }
         public bool IsDone { get; set; }
+        public int? Grade { get; set; }
     }
 }
