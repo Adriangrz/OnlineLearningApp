@@ -156,11 +156,11 @@
               }}"
               alt="Team thumbnail"
             />
-            <a routerLink="/" class="team__link stretched-link overflow-hidden">
+            <div class="text-center flex-grow-1">
               <h6 class="team__name p-0 m-0 text-truncate">
                 {{ team.name }}
               </h6>
-            </a>
+            </div>
             <div
               *ngIf="team.email === loggedInUser"
               class="dropdown more-settings"
