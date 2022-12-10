@@ -60,6 +60,15 @@
               >
                 {{ quizUser.isDone ? "Wykonał test" : "Nie wykonał testu" }}
               </p>
+              <p
+                class="{{
+                  quizUser.grade ? 'text-success' : 'text-danger'
+                }} m-0 mx-2 text-center"
+              >
+                {{
+                  quizUser.grade ? "Ocena: " + quizUser.grade : "Nie oceniono"
+                }}
+              </p>
               <div class="d-flex align-items-center justify-content-center">
                 <button
                   *ngIf="quizUser.isDone"
@@ -70,7 +79,7 @@
                   type="button"
                   class="btn btn-primary"
                 >
-                  Oceń
+                  {{ quizUser.grade ? "Zmień ocene" : "Oceń" }}
                 </button>
               </div>
             </li>

@@ -4,4 +4,5 @@ export interface QuizUser {
   user: User;
   quizId: string;
   isDone: boolean;
+  grade: number | null;
 }
