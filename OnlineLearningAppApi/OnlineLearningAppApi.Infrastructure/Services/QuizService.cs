@@ -137,6 +137,23 @@ namespace OnlineLearningAppApi.Infrastructure.Services
 
         public async Task RateCompletedQuiz(Guid quizId,string userId, GradeDto gradeDto)
         {
+            var team = await _dbContext
+                .Teams
+                .Include(t => t.Quizzes)
+                .FirstOrDefaultAsync(r => r.Quizzes.Any(q=>q.Id == quizId));
+
+            if (team is null)
+                throw new NotFoundException("Zespół nie istnieje");
+
+
+            var authorizationResult = _authorizationService.AuthorizeAsync(_userContextService.User, team.AdminId,
+                new ResourceOperationRequirement(ResourceOperation.Update)).Result;
+
+            if (!authorizationResult.Succeeded)
+            {
+                throw new ForbidException();
+            }
+
             var userQuiz = await _dbContext.UserQuizzes.FirstOrDefaultAsync(uq => uq.UserId == userId && uq.QuizId == quizId);
             if (userQuiz is null)
                 throw new NotFoundException("Użytkownik nie jest przypisany do danego testu");

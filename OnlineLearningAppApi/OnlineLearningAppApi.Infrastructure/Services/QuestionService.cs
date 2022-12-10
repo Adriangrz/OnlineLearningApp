@@ -66,12 +66,27 @@ namespace OnlineLearningAppApi.Infrastructure.Services
             return questionsDtos;
         }
 
-        public async Task<PagedResult<QuestionDto>> GetAllAsync(Guid quizId,QuestionQuery query)
+        public async Task<PagedResult<QuestionDto>> GetAllAsync(Guid quizId, QuestionQuery query)
         {
+            var quiz = await _dbContext
+                .Quizzes
+                .FirstOrDefaultAsync(q => q.Id == quizId);
+
+            if (quiz is null)
+                throw new NotFoundException("Quiz nie istnieje");
+
+            var authorizationResult = _authorizationService.AuthorizeAsync(_userContextService.User, quiz,
+                new ResourceOperationRequirement(ResourceOperation.Read)).Result;
+
+            if (!authorizationResult.Succeeded)
+            {
+                throw new ForbidException();
+            }
+
             var baseQuery = _dbContext
                 .Questions
                 .Where(q => q.QuizId == quizId);
-                
+
 
             var questions = await baseQuery
                 .Skip(query.PageSize * (query.PageNumber - 1))

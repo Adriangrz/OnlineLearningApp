@@ -91,6 +91,7 @@ public static class ConfigureServices
         services.AddScoped<IAuthorizationHandler, ResourceOperationRequirementHandler>();
         services.AddScoped<IAuthorizationHandler, TeamAuthorizationHandler>();
         services.AddScoped<IAuthorizationHandler, AnswerAuthorizationHandler>();
+        services.AddScoped<IAuthorizationHandler, QuizAuthorizationHandler>();
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<ITeamService, TeamService>();
         services.AddScoped<ITeamImageService, TeamImageService>();

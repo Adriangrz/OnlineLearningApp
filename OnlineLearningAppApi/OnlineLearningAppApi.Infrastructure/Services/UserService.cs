@@ -54,31 +54,44 @@ namespace OnlineLearningAppApi.Infrastructure.Services
         {
             var team = await GetTeamByIdAsync(teamId);
 
-            var users = await _dbContext.Users.Where(u=>u.AddedTeams.Any(t=>t.Id==teamId)).ToListAsync();
+            var authorizationResult = _authorizationService.AuthorizeAsync(_userContextService.User, team,
+                new ResourceOperationRequirement(ResourceOperation.Read)).Result;
+
+            if (!authorizationResult.Succeeded)
+            {
+                throw new ForbidException();
+            }
+
+            var users = await _dbContext.Users.Where(u => u.AddedTeams.Any(t => t.Id == teamId)).ToListAsync();
 
             var usersDtos = _mapper.Map<List<UserDto>>(users);
             return usersDtos;
         }
         public async Task<List<QuizUserDto>> GetAllQuizMembersAsync(Guid quizId)
         {
-            var quiz = await _dbContext.Quizzes.FirstOrDefaultAsync(q=>q.Id == quizId);
+            var quiz = await _dbContext.Quizzes.FirstOrDefaultAsync(q => q.Id == quizId);
             if (quiz is null)
                 throw new NotFoundException("Test nie istnieje");
 
             var team = await GetTeamByIdAsync(quiz.TeamId);
 
             var authorizationResult = _authorizationService.AuthorizeAsync(_userContextService.User, team.AdminId,
-                new ResourceOperationRequirement(ResourceOperation.Update)).Result;
+                new ResourceOperationRequirement(ResourceOperation.Read)).Result;
 
-            var users = await _dbContext.UserQuizzes.Include(uq=>uq.User).Where(uq=>uq.QuizId==quizId).ToListAsync();
+            if (!authorizationResult.Succeeded)
+            {
+                throw new ForbidException();
+            }
+
+            var users = await _dbContext.UserQuizzes.Include(uq => uq.User).Where(uq => uq.QuizId == quizId).ToListAsync();
 
             var usersDtos = _mapper.Map<List<QuizUserDto>>(users);
             return usersDtos;
         }
-        public async Task<UserDto> AddUserToTeamAsync(Guid teamId,AddUserToTeamDto dto)
+        public async Task<UserDto> AddUserToTeamAsync(Guid teamId, AddUserToTeamDto dto)
         {
             var team = await GetTeamByIdAsync(teamId);
-            var user = await _dbContext.Users.Include(u=>u.AddedTeams).FirstOrDefaultAsync(u => u.Email == dto.Email);
+            var user = await _dbContext.Users.Include(u => u.AddedTeams).FirstOrDefaultAsync(u => u.Email == dto.Email);
             if (user is null)
                 throw new NotFoundException("Użytkownik nie istnieje");
 
@@ -103,6 +116,12 @@ namespace OnlineLearningAppApi.Infrastructure.Services
         public async Task DeleteUserFromTeamAsync(Guid teamId, string userId)
         {
             var team = await GetTeamByIdAsync(teamId);
+            var authorizationResult = _authorizationService.AuthorizeAsync(_userContextService.User, team.AdminId,
+                new ResourceOperationRequirement(ResourceOperation.Delete)).Result;
+            if (!authorizationResult.Succeeded)
+            {
+                throw new ForbidException();
+            }
             var user = await _dbContext.Users.Include(u => u.AddedTeams).FirstOrDefaultAsync(u => u.Id == userId);
             if (user is null)
                 throw new NotFoundException("Użytkownik nie istnieje");

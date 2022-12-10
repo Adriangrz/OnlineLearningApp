@@ -59,7 +59,7 @@ namespace Infrastructure.Services
             if (userQuiz is null)
                 throw new ForbidException();
 
-            if(userQuiz.IsDone)
+            if (userQuiz.IsDone)
                 throw new ForbidException();
 
             userQuiz.IsDone = true;
@@ -73,10 +73,26 @@ namespace Infrastructure.Services
         }
         public async Task<List<AnswerDto>> GetAllAsync(string userId, Guid quizId)
         {
+            var team = await _dbContext
+                .Teams
+                .Include(t => t.Quizzes)
+                .FirstOrDefaultAsync(r => r.Quizzes.Any(q => q.Id == quizId));
+
+            if (team is null)
+                throw new NotFoundException("Zespół nie istnieje");
+
+            var authorizationResult = _authorizationService.AuthorizeAsync(_userContextService.User, team.AdminId,
+                new ResourceOperationRequirement(ResourceOperation.Create)).Result;
+
+            if (!authorizationResult.Succeeded)
+            {
+                throw new ForbidException();
+            }
+
             var answers = await _dbContext
                 .Answers
-                .Include(a=>a.Question)
-                .Where(a=>a.UserId==userId && a.Question.QuizId == quizId).ToListAsync();
+                .Include(a => a.Question)
+                .Where(a => a.UserId == userId && a.Question.QuizId == quizId).ToListAsync();
 
             var answersDtos = _mapper.Map<List<AnswerDto>>(answers);
 

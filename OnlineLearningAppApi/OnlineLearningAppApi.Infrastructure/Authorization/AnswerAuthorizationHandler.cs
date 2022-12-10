@@ -46,16 +46,17 @@ namespace Infrastructure.Authorization
 
             var userId = context.User.FindFirst(c => c.Type == ClaimTypes.NameIdentifier).Value;
 
-            var userQuiz = await _dbContext
-                .UserQuizzes
-                .FirstOrDefaultAsync(r => r.UserId == userId && r.QuizId == question.QuizId);
+            if (requirement.ResourceOperation == ResourceOperation.Create) {
+                var userQuiz = await _dbContext
+                    .UserQuizzes
+                    .FirstOrDefaultAsync(r => r.UserId == userId && r.QuizId == question.QuizId);
 
-            if (userQuiz is null)
-                return;
+                if (userQuiz is null)
+                    return;
 
-            if (userQuiz.IsDone == false && (team.Users.Any(u => u.Id == userId) || team.AdminId == userId))
-                context.Succeed(requirement);
-
+                if (userQuiz.IsDone == false && (team.Users.Any(u => u.Id == userId) || team.AdminId == userId))
+                    context.Succeed(requirement);
+            }
         }
     }
 }

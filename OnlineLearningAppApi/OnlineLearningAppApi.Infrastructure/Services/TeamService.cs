@@ -37,10 +37,19 @@ namespace OnlineLearningAppApi.Infrastructure.Services
             var team = await _dbContext
                .Teams
                .Include(t => t.Admin)
+               .Include(t=>t.Users)
                .FirstOrDefaultAsync(r => r.Id == id);
 
             if (team is null)
                 throw new NotFoundException("Zespół nie istnieje");
+
+            var authorizationResult = _authorizationService.AuthorizeAsync(_userContextService.User, team,
+                new ResourceOperationRequirement(ResourceOperation.Read)).Result;
+
+            if (!authorizationResult.Succeeded)
+            {
+                throw new ForbidException();
+            }
 
             var teamDto = _mapper.Map<TeamDto>(team);
             return teamDto;
