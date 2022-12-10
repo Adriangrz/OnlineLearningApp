@@ -37,6 +37,7 @@ export class QuizzesDashboardComponent implements OnInit, AfterViewChecked {
   currentScrollHeight: number = 0;
   selectQuizId: string | undefined;
   teamId: string | undefined;
+  loggedInUser: string | null = null;
 
   faChevronLeft = faChevronLeft;
   faEllipsis = faEllipsis;
@@ -70,6 +71,7 @@ export class QuizzesDashboardComponent implements OnInit, AfterViewChecked {
   }
 
   ngOnInit(): void {
+    this.loggedInUser = this.authService.getLoggedInUser;
     this.teamId = this.route.snapshot.paramMap.get('id')!;
     this.scrollToBottom();
     this.addStyles();
