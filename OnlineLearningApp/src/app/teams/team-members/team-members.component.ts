@@ -104,6 +104,12 @@ export class TeamMembersComponent implements OnInit, OnChanges {
       });
   }
 
+  cancelAddingUserToTeam() {
+    this.error = undefined;
+    this.isUserBeingAdded = false;
+    this.teamMemberForm.reset();
+  }
+
   deleteUserFromTeam(userId: string) {
     this.teamService.deleteUserFromTeam(this.teamId, userId).subscribe({
       next: () => {

@@ -1,6 +1,16 @@
 <div class="mt-1">
   <div class="mb-2 d-flex justify-content-between align-items-center">
     <h6 class="m-0">Członkowie</h6>
+    <button
+      *ngIf="!isUserBeingAdded && adminEmail === loggedInUser"
+      class="h6 fw-normal p-0 m-0 modal-dialog__edit-team-name-btn border border-0 bg-white text-nowrap"
+      type="button"
+      (click)="isUserBeingAdded = true"
+    >
+      <fa-icon [icon]="faPlus" size="sm"></fa-icon> Dodaj
+    </button>
+  </div>
+  <div *ngIf="isUserBeingAdded && adminEmail === loggedInUser">
     <div
       *ngIf="error"
       class="alert alert-danger alert-dismissible fade show mb-1"
@@ -14,16 +24,6 @@
         aria-label="Close"
       ></button>
     </div>
-    <button
-      *ngIf="!isUserBeingAdded && adminEmail === loggedInUser"
-      class="h6 fw-normal p-0 m-0 modal-dialog__edit-team-name-btn border border-0 bg-white text-nowrap"
-      type="button"
-      (click)="isUserBeingAdded = true"
-    >
-      <fa-icon [icon]="faPlus" size="sm"></fa-icon> Dodaj
-    </button>
-  </div>
-  <div *ngIf="isUserBeingAdded && adminEmail === loggedInUser">
     <form
       class="mb-2 d-flex flex-md-row flex-column"
       [formGroup]="teamMemberForm"
@@ -70,7 +70,7 @@
             type="button"
             class="btn btn-secondary"
             aria-label="Cancel name editing"
-            (click)="isUserBeingAdded = false"
+            (click)="cancelAddingUserToTeam()"
           >
             Anuluj
           </button>
