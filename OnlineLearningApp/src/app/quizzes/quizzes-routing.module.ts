@@ -10,32 +10,32 @@ import { UserAnswersToQuizComponent } from './user-answers-to-quiz/user-answers-
 
 const routes: Routes = [
   {
-    path: 'zespoły/:id',
+    path: '',
     component: QuizzesDashboardComponent,
     canActivate: [AuthGuard],
   },
   {
-    path: 'zespoły/:id/utwórz-test',
+    path: 'utwórz-test',
     component: AddQuizComponent,
     canActivate: [AuthGuard],
   },
   {
-    path: 'zespoły/:id/test/:quizId',
+    path: 'test/:quizId',
     component: QuizComponent,
     canActivate: [AuthGuard],
   },
   {
-    path: 'zespoły/:id/test/:quizId/użytkownicy/:userId/odpowiedzi',
+    path: 'test/:quizId/użytkownicy/:userId/odpowiedzi',
     component: UserAnswersToQuizComponent,
     canActivate: [AuthGuard],
   },
   {
-    path: 'zespoły/:id/test/:quizId/użytkownicy',
+    path: 'test/:quizId/użytkownicy',
     component: ListQuizUsersComponent,
     canActivate: [AuthGuard],
   },
   {
-    path: 'zespoły/:id/test/:quizId/pytania',
+    path: 'test/:quizId/pytania',
     component: QuizQuestionsComponent,
     canActivate: [AuthGuard],
   },

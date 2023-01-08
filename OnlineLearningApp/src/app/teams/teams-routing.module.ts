@@ -5,7 +5,7 @@ import { TeamsDashboardComponent } from './teams-dashboard/teams-dashboard.compo
 
 const routes: Routes = [
   {
-    path: 'zespoły',
+    path: '',
     component: TeamsDashboardComponent,
     canActivate: [AuthGuard],
   },
