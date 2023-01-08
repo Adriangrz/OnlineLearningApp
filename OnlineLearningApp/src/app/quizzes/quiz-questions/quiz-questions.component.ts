@@ -57,11 +57,18 @@ export class QuizQuestionsComponent implements OnInit {
     this.getQuestion(this.currentQuestionNumber);
   }
 
+  resetAnswer() {
+    if (this.userCode) this.userCode.setValue(null);
+    this.codeResult = '';
+    this.textAnswerForm.reset();
+  }
+
   getQuestion(num: number) {
     this.questionService
       .getQuestions(this.route.snapshot.paramMap.get('quizId')!, num, 1)
       .subscribe({
         next: (data) => {
+          this.resetAnswer();
           this.error = undefined;
           this.totalQuestionsCount = data.totalItemsCount;
           this.question = data.items[0];

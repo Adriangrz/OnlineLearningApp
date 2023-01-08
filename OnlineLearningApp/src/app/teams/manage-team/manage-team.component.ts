@@ -4,6 +4,7 @@ import {
   ElementRef,
   Input,
   OnChanges,
+  OnInit,
   ViewChild,
 } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
@@ -25,13 +26,14 @@ import { UserService } from '../services/user.service';
   templateUrl: './manage-team.component.html',
   styleUrls: ['./manage-team.component.scss'],
 })
-export class ManageTeamComponent implements OnChanges {
+export class ManageTeamComponent implements OnInit, OnChanges {
   @Input()
   team: Team | undefined;
 
   admin: User | undefined;
   error: string | undefined;
   selectedUser: string = '';
+  loggedInUser: string | null = null;
 
   faCircleInfo = faCircleInfo;
   faEllipsis = faEllipsis;
@@ -41,6 +43,10 @@ export class ManageTeamComponent implements OnChanges {
     public userService: UserService,
     private teamService: TeamService
   ) {}
+
+  ngOnInit(): void {
+    this.loggedInUser = this.authService.getLoggedInUser;
+  }
 
   ngOnChanges() {
     if (!this.team) return;
