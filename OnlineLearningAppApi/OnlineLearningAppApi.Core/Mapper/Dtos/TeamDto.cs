@@ -8,5 +8,6 @@
         public string AdminId { get; set; }
         public string Email { get; set; }
         public bool IsArchived { get; set; }
+        public UserDto Admin { get; set; }
     }
 }

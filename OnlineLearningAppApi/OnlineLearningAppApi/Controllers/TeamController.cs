@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using JsonApiSerializer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using OnlineLearningAppApi.Core.Interfaces;
 using OnlineLearningAppApi.Core.Mapper.Dtos;
 
@@ -35,7 +37,7 @@ namespace OnlineLearningAppApi.Controllers
         {
             var result = await _teamService.GetAllAsync(teamQuery);
 
-            return Ok(result);
+            return Ok(JsonConvert.SerializeObject(result, new JsonApiSerializerSettings()));
         }
         [HttpPut("{id}/IsArchived")]
         public async Task<ActionResult<TeamDto>> UpdateTeamIsArchived([FromBody] UpdateTeamIsArchivedDto dto, [FromRoute] Guid id)
